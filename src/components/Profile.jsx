@@ -14,21 +14,50 @@ import {
   Clock,
   Sparkles,
   Gamepad2,
-  ChevronRight
+  KeyRound,
+  ExternalLink
 } from 'lucide-react'
 import getCoverImage, { DEFAULT_FALLBACK_COVER } from '../utils/gameImages'
 
 const DEFAULT_ORDERS = [
   {
-    orderId: 'SG-TOPUP-941824',
+    orderId: 'SG-VOUCH-78912',
     date: 'Sep 27, 2026',
     time: '04:15 PM',
+    game: 'Steam Gift Card (Global Region)',
+    item: 'Steam $10 Card',
+    packageName: '$10 USD Wallet Code',
+    amount: 1450,
+    redeemCode: 'ABCD-1234-EFGH',
+    paymentMethod: 'eSewa',
+    status: 'Completed',
+    deliveryType: 'Digital code delivery',
+    image: '/covers/steam-random-keys.jpg'
+  },
+  {
+    orderId: 'SG-VOUCH-65201',
+    date: 'Sep 26, 2026',
+    time: '01:20 PM',
+    game: 'Roblox Gift Card',
+    item: 'Roblox 800 Robux Card',
+    packageName: '800 Robux Digital Code',
+    amount: 1350,
+    redeemCode: 'RBLX-9921-8842-KLPQ',
+    paymentMethod: 'Khalti',
+    status: 'Completed',
+    deliveryType: 'Digital code delivery',
+    image: '/covers/roblox-gift-card.jpg'
+  },
+  {
+    orderId: 'SG-TOPUP-941824',
+    date: 'Sep 25, 2026',
+    time: '08:40 PM',
     game: 'PUBG Mobile UID Topup',
     item: 'PUBG Mobile - 325 UC',
     packageName: '325 UC',
     amount: 650,
     uid: '5123456789',
-    server: '',
+    server: 'Global / Nepal',
     paymentMethod: 'eSewa',
     status: 'Completed',
     deliveryType: 'UID/Player ID digital top-up',
@@ -36,8 +65,8 @@ const DEFAULT_ORDERS = [
   },
   {
     orderId: 'SG-TOPUP-872311',
-    date: 'Sep 25, 2026',
-    time: '08:40 PM',
+    date: 'Sep 23, 2026',
+    time: '06:10 PM',
     game: 'Free Fire',
     item: 'Free Fire - 240 Diamonds',
     packageName: '240 Diamonds',
@@ -50,19 +79,18 @@ const DEFAULT_ORDERS = [
     image: '/covers/free-fire.jpg'
   },
   {
-    orderId: 'SG-ORDER-562910',
-    date: 'Sep 22, 2026',
-    time: '02:10 PM',
-    game: 'Grand Theft Auto V',
-    item: 'Grand Theft Auto V Premium Edition',
-    packageName: 'Rockstar Digital Key',
-    amount: 850,
-    uid: 'SaujanGamer',
-    server: '',
+    orderId: 'SG-VOUCH-41908',
+    date: 'Sep 20, 2026',
+    time: '11:05 AM',
+    game: 'PlayStation Gift Card US',
+    item: 'PlayStation $20 Network Card',
+    packageName: '$20 USD PSN Wallet',
+    amount: 2850,
+    redeemCode: 'PSN-7741-9923-MNBV',
     paymentMethod: 'Mobile Banking',
     status: 'Completed',
-    deliveryType: 'Digital key/code delivery',
-    image: '/covers/gta-v-premium-edition-ps4-disc-sealed.jpg'
+    deliveryType: 'Digital code delivery',
+    image: '/covers/playstation-gift-card-us.jpg'
   }
 ]
 
@@ -78,7 +106,7 @@ const DEFAULT_SAVED_IDS = [
     id: 2,
     game: 'PUBG Mobile UID Topup',
     uid: '5123456789',
-    server: '',
+    server: 'Global / Nepal',
     nickname: 'HimalayanHunter'
   },
   {
@@ -94,7 +122,8 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
   const [activeTab, setActiveTab] = useState('orders')
   const [orders, setOrders] = useState([])
   const [savedIds, setSavedIds] = useState([])
-  const [copiedId, setCopiedId] = useState(null)
+  const [copiedCode, setCopiedCode] = useState(null)
+  const [copiedUid, setCopiedUid] = useState(null)
   const [isLoggedOut, setIsLoggedOut] = useState(false)
 
   // New Saved ID Form State
@@ -140,10 +169,16 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
     }
   }, [])
 
-  const handleCopy = (text, id) => {
-    navigator.clipboard?.writeText(text)
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 1800)
+  const handleCopyCode = (code, id) => {
+    navigator.clipboard?.writeText(code)
+    setCopiedCode(id)
+    setTimeout(() => setCopiedCode(null), 1800)
+  }
+
+  const handleCopyUid = (uid, id) => {
+    navigator.clipboard?.writeText(uid)
+    setCopiedUid(id)
+    setTimeout(() => setCopiedUid(null), 1800)
   }
 
   const handleDeleteSavedId = (id) => {
@@ -194,7 +229,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 text-white">
-      {/* Top Navigation / Breadcrumb */}
+      {/* Top Navigation */}
       <div className="flex items-center justify-between mb-6">
         <button
           type="button"
@@ -215,7 +250,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
         </span>
       </div>
 
-      {/* Profile Header Card */}
+      {/* User Overview Card */}
       <div className="relative rounded-2xl bg-[#0e1526] border border-slate-800 p-6 sm:p-8 mb-8 overflow-hidden shadow-2xl">
         <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -240,7 +275,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
               </div>
               <p className="text-slate-400 text-xs sm:text-sm mt-1">gamer@sagarmatha.com  +977 98XXXXXXXX</p>
               <div className="flex items-center gap-4 mt-3 text-xs text-slate-300">
-                <span className="flex items-center gap-1.5"><ShoppingBag size={14} className="text-cyan-400" /> <b>{orders.length}</b> Orders</span>
+                <span className="flex items-center gap-1.5"><ShoppingBag size={14} className="text-cyan-400" /> <b>{orders.length}</b> Orders &amp; Vouchers</span>
                 <span className="flex items-center gap-1.5"><Gamepad2 size={14} className="text-cyan-400" /> <b>{savedIds.length}</b> Saved Player UIDs</span>
               </div>
             </div>
@@ -259,7 +294,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
         </div>
       </div>
 
-      {/* Tabs Switcher */}
+      {/* Tabs */}
       <div className="flex border-b border-slate-800 mb-6 gap-2 sm:gap-4">
         <button
           type="button"
@@ -271,7 +306,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
           }`}
         >
           <ShoppingBag size={17} />
-          My Orders &amp; Recharges
+          My Orders &amp; Vouchers
           <span className="text-xs bg-slate-800 px-2 py-0.5 rounded-full font-mono text-slate-300">{orders.length}</span>
         </button>
 
@@ -290,14 +325,14 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
         </button>
       </div>
 
-      {/* Tab 1: Orders & Recharges */}
+      {/* Tab 1: Orders & Vouchers */}
       {activeTab === 'orders' && (
         <div className="space-y-4">
           {orders.length === 0 ? (
             <div className="p-12 text-center bg-[#0d1424] border border-slate-800 rounded-2xl">
               <ShoppingBag size={48} className="mx-auto text-slate-600 mb-3" />
               <h3 className="text-lg font-bold text-white mb-1">No Orders Yet</h3>
-              <p className="text-slate-400 text-xs sm:text-sm mb-4">Your in-game recharges and game keys will appear here.</p>
+              <p className="text-slate-400 text-xs sm:text-sm mb-4">Your digital vouchers and mobile top-ups will appear here.</p>
               <button
                 type="button"
                 onClick={() => {
@@ -315,8 +350,8 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
                 key={order.orderId || idx}
                 className="bg-[#0e1629] border border-slate-800/80 hover:border-slate-700/90 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all shadow-md"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-16 sm:w-14 sm:h-20 rounded-xl overflow-hidden border border-slate-800 bg-slate-900 shrink-0">
+                <div className="flex items-start sm:items-center gap-4">
+                  <div className="w-14 h-18 sm:w-16 sm:h-22 rounded-xl overflow-hidden border border-slate-800 bg-slate-900 shrink-0 shadow-md">
                     <img
                       src={order.image || DEFAULT_FALLBACK_COVER}
                       alt={order.game}
@@ -332,12 +367,33 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
                       </span>
                       <span className="text-xs text-slate-500">• {order.date}</span>
                     </div>
+
                     <h3 className="font-bold text-white text-sm sm:text-base leading-snug">{order.item || order.game}</h3>
+
+                    {/* Voucher Code Box */}
+                    {order.redeemCode && (
+                      <div className="mt-2 flex items-center gap-2 bg-[#090d18] border border-cyan-500/40 rounded-xl px-3 py-1.5 w-fit">
+                        <KeyRound size={14} className="text-cyan-400" />
+                        <span className="text-xs text-slate-400">Code:</span>
+                        <span className="font-mono font-black text-sm text-cyan-300 tracking-wider select-all">{order.redeemCode}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopyCode(order.redeemCode, order.orderId)}
+                          className="ml-2 text-slate-400 hover:text-white transition-colors cursor-pointer border-0 bg-transparent p-1"
+                          title="Copy Voucher Code"
+                        >
+                          {copiedCode === order.orderId ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                        </button>
+                      </div>
+                    )}
+
+                    {/* UID Top-Up Box */}
                     {order.uid && (
-                      <p className="text-xs text-slate-400 mt-1 font-mono">
-                        Target UID: <span className="text-white font-bold bg-slate-800/70 px-1.5 py-0.5 rounded">{order.uid}</span>
-                        {order.server ? ` (Server: ${order.server})` : ''}
-                      </p>
+                      <div className="mt-1.5 flex items-center gap-2 text-xs text-slate-400 font-mono">
+                        <span>Target UID:</span>
+                        <span className="text-white font-bold bg-slate-800/80 px-2 py-0.5 rounded">{order.uid}</span>
+                        {order.server && <span className="text-slate-500">({order.server})</span>}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -349,15 +405,6 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
                       Rs. {typeof order.amount === 'number' ? order.amount.toLocaleString() : order.amount}
                     </strong>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(order.orderId, order.orderId)}
-                    className="p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer border-0"
-                    title="Copy Order ID"
-                  >
-                    {copiedId === order.orderId ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} />}
-                  </button>
                 </div>
               </div>
             ))
@@ -370,7 +417,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <p className="text-slate-400 text-xs sm:text-sm">
-              Save your PUBG, Free Fire, and MLBB Character IDs for 1-click instant recharges.
+              Save your PUBG, Free Fire, and MLBB Character IDs for fast, 1-click in-game recharges.
             </p>
             <button
               type="button"
@@ -477,15 +524,15 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
                     <span className="font-mono text-sm text-cyan-300">{item.uid}</span>
                     <button
                       type="button"
-                      onClick={() => handleCopy(item.uid, item.id)}
+                      onClick={() => handleCopyUid(item.uid, item.id)}
                       className="text-slate-400 hover:text-white transition-colors cursor-pointer border-0 bg-transparent"
                       title="Copy UID"
                     >
-                      {copiedId === item.id ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                      {copiedUid === item.id ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
                     </button>
                   </div>
                   {item.server && (
-                    <span className="text-[11px] text-slate-400 block mt-1">Server: {item.server}</span>
+                    <span className="text-[11px] text-slate-400 block mt-1 font-mono">Region: {item.server}</span>
                   )}
                 </div>
 
@@ -503,7 +550,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
                     className="w-full py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                   >
                     <Zap size={14} className="fill-cyan-400" />
-                    Quick Recharge
+                    Fast Recharge Now
                   </button>
                 </div>
               </div>

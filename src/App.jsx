@@ -34,6 +34,7 @@ import {
 import productsCleanData from './data/products_clean.json'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
 import getCoverImage, { getCoverImage as namedGetCoverImage, DEFAULT_FALLBACK_COVER, FALLBACK_POSTER, getGameCover, getDynamicPlaceholder } from './utils/gameImages'
+import GiftCardModal from './components/GiftCardModal'
 import TopUpModal from './components/TopUpModal'
 import Profile from './components/Profile'
 import './App.css'
@@ -209,10 +210,11 @@ function getCategoryCover(category) {
   return `https://images.unsplash.com/${categoryImages[category] || categoryImages['Steam Private Account']}?auto=format&fit=crop&w=600&q=80`
 }
 
-function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCart, onOpenTopUp }) {
+function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCart, onOpenTopUp, onOpenGiftCard }) {
   if (!product || typeof product !== 'object') return null
   const isSoldOut = product?.status === 'Sold Out'
   const isTopUp = product?.category === 'Game Top-Up' || product?.category === 'Topup' || product?.deliveryType === 'UID/Player ID digital top-up'
+  const isGiftCard = product?.category === 'Gift Cards' || product?.name?.toLowerCase().includes('gift card')
 
   return (
     <article className={`product-card group ${isSoldOut ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
@@ -253,7 +255,9 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
             className="add-to-cart-cyan"
             disabled={product?.status !== 'Available'}
             onClick={() => {
-              if (isTopUp && onOpenTopUp) {
+              if (isGiftCard && onOpenGiftCard) {
+                onOpenGiftCard(product)
+              } else if (isTopUp && onOpenTopUp) {
                 onOpenTopUp(product)
               } else {
                 onAddToCart?.(product)
@@ -261,7 +265,13 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
             }}
           >
             {product?.status === 'Available' ? (
-              isTopUp ? <><Zap size={14} className="fill-slate-950" /> Top Up</> : <><Plus size={14} /> Add</>
+              isGiftCard ? (
+                <><Sparkles size={14} className="fill-cyan-400/20" /> Select Value</>
+              ) : isTopUp ? (
+                <><Zap size={14} className="fill-slate-950" /> Top Up</>
+              ) : (
+                <><Plus size={14} /> Add</>
+              )
             ) : 'Sold out'}
           </button>
         </div>
@@ -270,7 +280,7 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
   )
 }
 
-function ProductRail({ title, category, items, onAdd, onSeeAll, onOpenTopUp }) {
+function ProductRail({ title, category, items, onAdd, onSeeAll, onOpenTopUp, onOpenGiftCard }) {
   if (!items || !items.length) return null
 
   return (
@@ -283,6 +293,7 @@ function ProductRail({ title, category, items, onAdd, onSeeAll, onOpenTopUp }) {
         {Array.isArray(items) && items.map((product, index) => {
           if (!product) return null
           const isTopUp = product?.category === 'Game Top-Up' || product?.category === 'Topup' || product?.deliveryType === 'UID/Player ID digital top-up'
+          const isGiftCard = product?.category === 'Gift Cards' || product?.name?.toLowerCase().includes('gift card')
           return (
             <article className={`rail-product ${product?.status === 'Sold Out' ? 'sold-out' : ''}`} key={product?.sku || product?.id || index}>
               <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${getCoverImage(product)}")` }}>
@@ -299,14 +310,24 @@ function ProductRail({ title, category, items, onAdd, onSeeAll, onOpenTopUp }) {
                     disabled={product?.status !== 'Available'}
                     aria-label={`Add ${product?.name || 'item'} to cart`}
                     onClick={() => {
-                      if (isTopUp && onOpenTopUp) {
+                      if (isGiftCard && onOpenGiftCard) {
+                        onOpenGiftCard(product)
+                      } else if (isTopUp && onOpenTopUp) {
                         onOpenTopUp(product)
                       } else {
                         onAdd?.(product)
                       }
                     }}
                   >
-                    {product?.status === 'Available' ? (isTopUp ? <Zap size={16} className="fill-current" /> : <Plus size={16} />) : 'Sold out'}
+                    {product?.status === 'Available' ? (
+                      isGiftCard ? (
+                        <Sparkles size={16} />
+                      ) : isTopUp ? (
+                        <Zap size={16} className="fill-current" />
+                      ) : (
+                        <Plus size={16} />
+                      )
+                    ) : 'Sold out'}
                   </button>
                 </div>
               </div>
@@ -514,9 +535,14 @@ function App() {
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const [topUpModalProduct, setTopUpModalProduct] = useState(null)
+  const [giftCardModalProduct, setGiftCardModalProduct] = useState(null)
 
   const handleOpenTopUp = (prod) => {
     setTopUpModalProduct(prod)
+  }
+
+  const handleOpenGiftCard = (prod) => {
+    setGiftCardModalProduct(prod)
   }
   const [paymentMethod, setPaymentMethod] = useState('eSewa')
   const [playerUid, setPlayerUid] = useState('')
@@ -911,7 +937,7 @@ function App() {
       {currentPage === 'home' && (
         <>
           {homeRows.slice(0, 4).map((row) => (
-            <ProductRail key={row.title} {...row} onAdd={addToCart} onSeeAll={openShop} onOpenTopUp={handleOpenTopUp} />
+            <ProductRail key={row.title} {...row} onAdd={addToCart} onSeeAll={openShop} onOpenTopUp={handleOpenTopUp} onOpenGiftCard={handleOpenGiftCard} />
           ))}
           <section className="bundle-promo">
             <div className="bundle-copy">
@@ -942,7 +968,7 @@ function App() {
             </div>
             <span className="fc27-mark">FC<span>27</span></span>
           </section>
-          <ProductRail {...homeRows[4]} onAdd={addToCart} onSeeAll={openShop} onOpenTopUp={handleOpenTopUp} />
+          <ProductRail {...homeRows[4]} onAdd={addToCart} onSeeAll={openShop} onOpenTopUp={handleOpenTopUp} onOpenGiftCard={handleOpenGiftCard} />
           <section className="feature-perks">
             <div><CloudDownload size={20} /><span><strong>Instant Delivery</strong><small>Digital products, delivered fast</small></span></div>
             <div><Check size={20} /><span><strong>100% Authentic</strong><small>Genuine codes and accounts</small></span></div>
@@ -1224,6 +1250,7 @@ function App() {
                           onToggleWishlist={toggleWishlist}
                           onAddToCart={addToCart}
                           onOpenTopUp={handleOpenTopUp}
+                          onOpenGiftCard={handleOpenGiftCard}
                         />
                       </ErrorBoundary>
                     )
@@ -1375,6 +1402,22 @@ function App() {
         </div>
       )}
 
+      {/* Gift Card Denomination Modal */}
+      {giftCardModalProduct && (
+        <GiftCardModal
+          product={giftCardModalProduct}
+          onClose={() => setGiftCardModalProduct(null)}
+          onAddToCart={(customItem) => {
+            addToCart(customItem)
+          }}
+          onDirectCheckout={(customItem) => {
+            addToCart(customItem)
+            setGiftCardModalProduct(null)
+            setCheckoutOpen(true)
+          }}
+        />
+      )}
+
       {/* Specialized Codashop-Style Top-Up Modal */}
       {topUpModalProduct && (
         <TopUpModal
@@ -1460,18 +1503,19 @@ function App() {
                       </div>
                     </div>
                   ) : (
-                    <div className="form-section conditional-section bg-cyan-950/25 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 my-2">
+                    <div className="form-section conditional-section bg-cyan-950/30 border border-cyan-500/40 rounded-2xl p-4 sm:p-5 my-2">
                       <div className="flex items-start gap-3.5">
                         <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 border border-cyan-500/30">
-                          <Sparkles size={20} className="fill-cyan-400/20" />
+                          <Zap size={20} className="fill-cyan-400" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="text-cyan-300 font-bold text-sm sm:text-base">Instant Digital Delivery</h4>
-                            <span className="text-[10px] font-bold bg-cyan-900/60 text-cyan-400 px-2 py-0.5 rounded border border-cyan-500/20">NO SHIPPING REQUIRED</span>
+                            <h4 className="text-cyan-300 font-bold text-sm sm:text-base">
+                              ⚡ Instant Digital Delivery (Delivered to your Email / WhatsApp / UID within 5-15 mins)
+                            </h4>
                           </div>
                           <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                            Instant Digital Delivery: Voucher/UC will be delivered via Email &amp; In-Game UID.
+                            No shipping address, city, or postal code required. Digital voucher codes and in-game recharges will be dispatched directly to your WhatsApp or Email.
                           </p>
                         </div>
                       </div>

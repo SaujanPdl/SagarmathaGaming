@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { X, Check, Zap, ShieldCheck, Sparkles, AlertCircle, Copy, CheckCircle2, User } from 'lucide-react'
+import { X, Check, Zap, ShieldCheck, Sparkles, AlertCircle, Copy, CheckCircle2, User, Globe } from 'lucide-react'
 import getCoverImage, { DEFAULT_FALLBACK_COVER } from '../utils/gameImages'
 
 const GAME_DENOMINATIONS = {
@@ -8,7 +8,7 @@ const GAME_DENOMINATIONS = {
     { id: 'ff_240', name: '240 Diamonds', price: 240, badge: 'Best Value' },
     { id: 'ff_355', name: '355 Diamonds', price: 350 },
     { id: 'ff_610', name: '610 Diamonds', price: 600, badge: '+Bonus' },
-    { id: 'ff_weekly', name: 'Weekly Pass', price: 260, badge: 'Hot' },
+    { id: 'ff_weekly', name: 'Weekly Pass', price: 260, badge: 'Hot Deal' },
     { id: 'ff_monthly', name: 'Monthly Pass', price: 1050, badge: 'VIP' }
   ],
   pubg: [
@@ -51,7 +51,7 @@ const GAME_DENOMINATIONS = {
 
 export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpenProfile }) {
   const [playerUid, setPlayerUid] = useState('')
-  const [serverId, setServerId] = useState('')
+  const [serverRegion, setServerRegion] = useState('')
   const [selectedPack, setSelectedPack] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState('eSewa')
   const [savedUids, setSavedUids] = useState([])
@@ -62,10 +62,15 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
   const productName = product?.name || 'Game Top-Up'
   const nameLower = productName.toLowerCase()
 
-  const gameKey = nameLower.includes('free fire') ? 'freefire'
-    : nameLower.includes('pubg') ? 'pubg'
-    : nameLower.includes('mobile legends') || nameLower.includes('mlbb') ? 'mlbb'
-    : nameLower.includes('genshin') ? 'genshin'
+  const isPubg = nameLower.includes('pubg')
+  const isFreeFire = nameLower.includes('free fire')
+  const isMlbb = nameLower.includes('mobile legends') || nameLower.includes('mlbb')
+  const isGenshin = nameLower.includes('genshin')
+
+  const gameKey = isFreeFire ? 'freefire'
+    : isPubg ? 'pubg'
+    : isMlbb ? 'mlbb'
+    : isGenshin ? 'genshin'
     : nameLower.includes('clash') ? 'clash'
     : 'default'
 
@@ -73,8 +78,12 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
 
   useEffect(() => {
     if (denominations.length > 0 && !selectedPack) {
-      setSelectedPack(denominations[0])
+      setSelectedPack(denominations[1] || denominations[0])
     }
+
+    if (isPubg && !serverRegion) setServerRegion('Global / Nepal')
+    if (isFreeFire && !serverRegion) setServerRegion('Nepal / India')
+    if (isGenshin && !serverRegion) setServerRegion('Asia')
   }, [gameKey])
 
   useEffect(() => {
@@ -87,7 +96,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
           const match = parsed.find(u => u.game?.toLowerCase() === gameKey || nameLower.includes(u.game?.toLowerCase() || ''))
           if (match && !playerUid) {
             setPlayerUid(match.uid)
-            if (match.server) setServerId(match.server)
+            if (match.server) setServerRegion(match.server)
           }
         }
       }
@@ -111,7 +120,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
       packageName: selectedPack?.name || 'Top-Up Pack',
       amount: selectedPack?.price || product?.price || 0,
       uid: playerUid.trim(),
-      server: serverId.trim(),
+      server: serverRegion.trim(),
       paymentMethod,
       status: 'Completed',
       deliveryType: 'UID/Player ID digital top-up',
@@ -131,7 +140,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
               id: Date.now(),
               game: productName,
               uid: playerUid.trim(),
-              server: serverId.trim(),
+              server: serverRegion.trim(),
               nickname: 'My Account'
             },
             ...uids
@@ -151,7 +160,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
 
   const copyOrder = () => {
     if (!submittedOrder) return
-    const text = `Sagarmatha Gaming Order: ${submittedOrder.orderId}\nGame: ${submittedOrder.game}\nPackage: ${submittedOrder.packageName}\nUID: ${submittedOrder.uid}\nAmount: Rs. ${submittedOrder.amount}\nPayment: ${submittedOrder.paymentMethod}`
+    const text = `Sagarmatha Gaming Recharge Order: ${submittedOrder.orderId}\nGame: ${submittedOrder.game}\nPackage: ${submittedOrder.packageName}\nPlayer UID: ${submittedOrder.uid}\nRegion: ${submittedOrder.server || 'Global'}\nAmount: Rs. ${submittedOrder.amount}\nPayment: ${submittedOrder.paymentMethod}`
     navigator.clipboard?.writeText(text)
     setCopiedOrder(true)
     setTimeout(() => setCopiedOrder(false), 2000)
@@ -164,9 +173,9 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="relative px-6 py-4 border-b border-slate-800 bg-[#0f172a]/80 flex items-center justify-between shrink-0">
+        <div className="relative px-6 py-4 border-b border-slate-800 bg-[#0f172a]/90 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-14 rounded-lg overflow-hidden border border-cyan-500/30 shrink-0 bg-slate-900">
+            <div className="w-12 h-16 rounded-lg overflow-hidden border border-cyan-500/30 shrink-0 bg-slate-900 shadow-md">
               <img 
                 src={product?.image || getCoverImage(product)} 
                 alt={productName} 
@@ -206,7 +215,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
             </span>
             <h3 className="text-2xl font-black text-white mb-1">Instant Top-Up Placed!</h3>
             <p className="text-slate-300 text-xs sm:text-sm max-w-md mb-6">
-              Instant Digital Delivery: Voucher/UC will be delivered via Email &amp; In-Game UID within 515 minutes.
+              Instant Digital Delivery: Voucher/UC will be delivered via Email &amp; In-Game UID within 5-15 mins.
             </p>
 
             <div className="w-full bg-[#121a2f] border border-slate-800 rounded-xl p-4 text-left mb-6 space-y-2.5 text-xs sm:text-sm">
@@ -219,13 +228,19 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
                 <span className="font-semibold text-white">{submittedOrder.game}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-400">Selected Package</span>
+                <span className="text-slate-400">Package</span>
                 <span className="font-bold text-cyan-400">{submittedOrder.packageName}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-400">Player UID</span>
                 <span className="font-mono font-bold text-white bg-slate-800/80 px-2 py-0.5 rounded">{submittedOrder.uid}</span>
               </div>
+              {submittedOrder.server && (
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400">Server / Region</span>
+                  <span className="text-slate-300 font-medium">{submittedOrder.server}</span>
+                </div>
+              )}
               <div className="flex justify-between items-center pt-2 border-t border-slate-800/60 text-base">
                 <span className="font-semibold text-slate-300">Total Paid</span>
                 <span className="font-black text-cyan-300">Rs. {submittedOrder.amount.toLocaleString()}</span>
@@ -253,12 +268,12 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
         ) : (
           /* Normal Multi-Step Form */
           <form onSubmit={handleConfirm} className="overflow-y-auto p-5 sm:p-6 space-y-6">
-            {/* Step 1: Player UID Input */}
+            {/* Step 1: Player ID & Server Region */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <label className="text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-2">
                   <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 text-xs flex items-center justify-center font-black">1</span>
-                  Enter Player ID / UID
+                  Enter Player ID / In-Game UID
                 </label>
                 {savedUids.length > 0 && (
                   <span className="text-[11px] text-cyan-400/80 flex items-center gap-1">
@@ -267,7 +282,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
                 )}
               </div>
 
-              {/* Quick Fill from saved UIDs */}
+              {/* Quick Fill Chips */}
               {savedUids.length > 0 && (
                 <div className="flex flex-wrap gap-2 pt-1">
                   {savedUids.slice(0, 3).map((item, idx) => (
@@ -276,7 +291,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
                       type="button"
                       onClick={() => {
                         setPlayerUid(item.uid)
-                        if (item.server) setServerId(item.server)
+                        if (item.server) setServerRegion(item.server)
                       }}
                       className="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs text-slate-300 hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
@@ -288,33 +303,75 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
               )}
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className={nameLower.includes('mobile legends') || nameLower.includes('genshin') ? 'sm:col-span-2' : 'sm:col-span-3'}>
+                <div className="sm:col-span-2">
                   <input
                     type="text"
                     required
                     value={playerUid}
                     onChange={(e) => setPlayerUid(e.target.value)}
                     placeholder={
-                      nameLower.includes('free fire') ? 'Enter Free Fire UID (e.g. 192837465)' :
-                      nameLower.includes('pubg') ? 'Enter PUBG Character ID (e.g. 5123456789)' :
-                      nameLower.includes('mobile legends') ? 'Enter MLBB User ID (e.g. 12345678)' :
-                      nameLower.includes('genshin') ? 'Enter Genshin UID (e.g. 812345678)' :
+                      isFreeFire ? 'Enter Free Fire UID (e.g. 192837465)' :
+                      isPubg ? 'Enter PUBG Character ID (e.g. 5123456789)' :
+                      isMlbb ? 'Enter MLBB User ID (e.g. 12345678)' :
+                      isGenshin ? 'Enter Genshin UID (e.g. 812345678)' :
                       'Enter your Player ID / Character UID'
                     }
                     className="w-full h-11 px-4 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white placeholder-slate-500 text-sm font-mono outline-none transition-colors"
                   />
                 </div>
-                {(nameLower.includes('mobile legends') || nameLower.includes('genshin')) && (
-                  <div>
+
+                <div>
+                  {isPubg ? (
+                    <select
+                      value={serverRegion}
+                      onChange={(e) => setServerRegion(e.target.value)}
+                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-xs outline-none"
+                    >
+                      <option>Global / Nepal</option>
+                      <option>Middle East</option>
+                      <option>Europe</option>
+                      <option>North America</option>
+                      <option>Asia</option>
+                    </select>
+                  ) : isFreeFire ? (
+                    <select
+                      value={serverRegion}
+                      onChange={(e) => setServerRegion(e.target.value)}
+                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-xs outline-none"
+                    >
+                      <option>Nepal / India</option>
+                      <option>Singapore</option>
+                      <option>Global Region</option>
+                    </select>
+                  ) : isMlbb ? (
                     <input
                       type="text"
-                      value={serverId}
-                      onChange={(e) => setServerId(e.target.value)}
-                      placeholder={nameLower.includes('genshin') ? 'Server (Asia)' : 'Zone ID (4 digits)'}
-                      className="w-full h-11 px-4 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white placeholder-slate-500 text-sm font-mono outline-none transition-colors"
+                      value={serverRegion}
+                      onChange={(e) => setServerRegion(e.target.value)}
+                      placeholder="Zone ID (4 digits)"
+                      className="w-full h-11 px-4 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white placeholder-slate-500 text-sm font-mono outline-none"
                     />
-                  </div>
-                )}
+                  ) : isGenshin ? (
+                    <select
+                      value={serverRegion}
+                      onChange={(e) => setServerRegion(e.target.value)}
+                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-xs outline-none"
+                    >
+                      <option>Asia</option>
+                      <option>America</option>
+                      <option>Europe</option>
+                      <option>TW/HK/MO</option>
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      value={serverRegion}
+                      onChange={(e) => setServerRegion(e.target.value)}
+                      placeholder="Server / Region"
+                      className="w-full h-11 px-4 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white placeholder-slate-500 text-sm font-mono outline-none"
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center justify-between text-xs text-slate-400">
@@ -384,9 +441,9 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
 
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {[
-                  { id: 'eSewa', name: 'eSewa', color: 'emerald', sub: 'Instant Wallet' },
-                  { id: 'Khalti', name: 'Khalti', color: 'purple', sub: 'Instant Wallet' },
-                  { id: 'Mobile Banking', name: 'Bank Transfer', color: 'cyan', sub: 'All Nepal Banks' }
+                  { id: 'eSewa', name: 'eSewa', sub: 'Instant Wallet' },
+                  { id: 'Khalti', name: 'Khalti', sub: 'Instant Wallet' },
+                  { id: 'Mobile Banking', name: 'Bank Transfer', sub: 'All Nepal Banks' }
                 ].map((method) => {
                   const isSelected = paymentMethod === method.id
                   return (
