@@ -29,10 +29,13 @@ import {
   Sparkles,
   Trash2,
   X,
+  Zap,
 } from 'lucide-react'
 import productsCleanData from './data/products_clean.json'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
 import getCoverImage, { getCoverImage as namedGetCoverImage, DEFAULT_FALLBACK_COVER, FALLBACK_POSTER, getGameCover, getDynamicPlaceholder } from './utils/gameImages'
+import TopUpModal from './components/TopUpModal'
+import Profile from './components/Profile'
 import './App.css'
 
 class ErrorBoundary extends Component {
@@ -206,9 +209,11 @@ function getCategoryCover(category) {
   return `https://images.unsplash.com/${categoryImages[category] || categoryImages['Steam Private Account']}?auto=format&fit=crop&w=600&q=80`
 }
 
-function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCart }) {
+function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCart, onOpenTopUp }) {
   if (!product || typeof product !== 'object') return null
   const isSoldOut = product?.status === 'Sold Out'
+  const isTopUp = product?.category === 'Game Top-Up' || product?.category === 'Topup' || product?.deliveryType === 'UID/Player ID digital top-up'
+
   return (
     <article className={`product-card group ${isSoldOut ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
       <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-[#111726]">
@@ -247,9 +252,17 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
             type="button"
             className="add-to-cart-cyan"
             disabled={product?.status !== 'Available'}
-            onClick={() => onAddToCart?.(product)}
+            onClick={() => {
+              if (isTopUp && onOpenTopUp) {
+                onOpenTopUp(product)
+              } else {
+                onAddToCart?.(product)
+              }
+            }}
           >
-            {product?.status === 'Available' ? <><Plus size={14} /> Add</> : 'Sold out'}
+            {product?.status === 'Available' ? (
+              isTopUp ? <><Zap size={14} className="fill-slate-950" /> Top Up</> : <><Plus size={14} /> Add</>
+            ) : 'Sold out'}
           </button>
         </div>
       </div>
@@ -257,7 +270,7 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
   )
 }
 
-function ProductRail({ title, category, items, onAdd, onSeeAll }) {
+function ProductRail({ title, category, items, onAdd, onSeeAll, onOpenTopUp }) {
   if (!items || !items.length) return null
 
   return (
@@ -269,6 +282,7 @@ function ProductRail({ title, category, items, onAdd, onSeeAll }) {
       <div className="product-rail">
         {Array.isArray(items) && items.map((product, index) => {
           if (!product) return null
+          const isTopUp = product?.category === 'Game Top-Up' || product?.category === 'Topup' || product?.deliveryType === 'UID/Player ID digital top-up'
           return (
             <article className={`rail-product ${product?.status === 'Sold Out' ? 'sold-out' : ''}`} key={product?.sku || product?.id || index}>
               <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${getCoverImage(product)}")` }}>
@@ -280,8 +294,19 @@ function ProductRail({ title, category, items, onAdd, onSeeAll }) {
                 <h3>{product?.name || 'Untitled'}</h3>
                 <div>
                   <strong>{formatPrice(product?.price)}</strong>
-                  <button type="button" disabled={product?.status !== 'Available'} aria-label={`Add ${product?.name || 'item'} to cart`} onClick={() => onAdd?.(product)}>
-                    {product?.status === 'Available' ? <Plus size={16} /> : 'Sold out'}
+                  <button
+                    type="button"
+                    disabled={product?.status !== 'Available'}
+                    aria-label={`Add ${product?.name || 'item'} to cart`}
+                    onClick={() => {
+                      if (isTopUp && onOpenTopUp) {
+                        onOpenTopUp(product)
+                      } else {
+                        onAdd?.(product)
+                      }
+                    }}
+                  >
+                    {product?.status === 'Available' ? (isTopUp ? <Zap size={16} className="fill-current" /> : <Plus size={16} />) : 'Sold out'}
                   </button>
                 </div>
               </div>
@@ -488,6 +513,11 @@ function App() {
   const [cartOpen, setCartOpen] = useState(false)
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
+  const [topUpModalProduct, setTopUpModalProduct] = useState(null)
+
+  const handleOpenTopUp = (prod) => {
+    setTopUpModalProduct(prod)
+  }
   const [paymentMethod, setPaymentMethod] = useState('eSewa')
   const [playerUid, setPlayerUid] = useState('')
   const [serverId, setServerId] = useState('')
@@ -546,8 +576,14 @@ function App() {
 
   const cartCount = cart.reduce((total, item) => total + (item?.quantity ?? 0), 0)
   const subtotal = cart.reduce((total, item) => total + (item?.price ?? 0) * (item?.quantity ?? 0), 0)
-  const hasTopUp = cart.some((item) => item?.category === 'Game Top-Up')
-  const hasPhysicalDisc = cart.some((item) => item?.category === 'PlayStation Physical Disc')
+  const isPhysicalItem = (item) =>
+    item?.category === 'PlayStation Physical Disc' ||
+    item?.category?.toLowerCase().includes('physical') ||
+    item?.deliveryType?.toLowerCase().includes('physical')
+
+  const hasPhysicalDisc = cart.some(isPhysicalItem)
+  const hasTopUp = cart.some((item) => item?.category === 'Game Top-Up' || item?.category === 'Topup' || item?.deliveryType === 'UID/Player ID digital top-up')
+  const isOnlyDigital = cart.length > 0 && !hasPhysicalDisc
   const homeRows = [
     { title: 'Best Selling', category: 'Steam Private Account', items: products.filter((product) => product?.category === 'Steam Private Account').slice(0, 6) },
     { title: 'Steam Offline Games', category: 'Steam Offline Games', items: products.filter((product) => product?.category === 'Steam Offline Games').slice(0, 4) },
@@ -774,13 +810,23 @@ function App() {
             </span>
           </button>
 
-          <a
-            href="#about"
-            className="w-10 h-10 rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-slate-700 cursor-pointer transition-colors no-underline"
-            aria-label="Profile and store details"
+          <button
+            type="button"
+            onClick={() => {
+              window.location.hash = 'profile'
+              setCurrentPage('profile')
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            className={`w-10 h-10 rounded-xl bg-[#13192b] border flex items-center justify-center transition-all cursor-pointer ${
+              currentPage === 'profile'
+                ? 'border-cyan-400 text-cyan-400 bg-cyan-950/40 shadow-lg shadow-cyan-500/20'
+                : 'border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+            }`}
+            aria-label="User Profile and Orders"
+            title="My Profile & Orders"
           >
             <CircleUserRound size={20} />
-          </a>
+          </button>
 
           <a
             href="#categories"
@@ -796,6 +842,7 @@ function App() {
       {currentPage === 'home' && <HeroCarousel onNavigateShop={openShop} setCurrentPage={setCurrentPage} />}
 
       {/* Category Section */}
+      {currentPage !== 'profile' && (
       <section className="category-section" id="categories">
         <div className="section-heading">
           <div>
@@ -845,12 +892,26 @@ function App() {
           })}
         </div>
       </section>
+      )}
+
+      {/* Profile View */}
+      {currentPage === 'profile' && (
+        <Profile
+          onClose={() => {
+            window.location.hash = 'home'
+            setCurrentPage('home')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          onOpenTopUp={handleOpenTopUp}
+          onNavigateShop={openShop}
+        />
+      )}
 
       {/* Home View */}
       {currentPage === 'home' && (
         <>
           {homeRows.slice(0, 4).map((row) => (
-            <ProductRail key={row.title} {...row} onAdd={addToCart} onSeeAll={openShop} />
+            <ProductRail key={row.title} {...row} onAdd={addToCart} onSeeAll={openShop} onOpenTopUp={handleOpenTopUp} />
           ))}
           <section className="bundle-promo">
             <div className="bundle-copy">
@@ -881,7 +942,7 @@ function App() {
             </div>
             <span className="fc27-mark">FC<span>27</span></span>
           </section>
-          <ProductRail {...homeRows[4]} onAdd={addToCart} onSeeAll={openShop} />
+          <ProductRail {...homeRows[4]} onAdd={addToCart} onSeeAll={openShop} onOpenTopUp={handleOpenTopUp} />
           <section className="feature-perks">
             <div><CloudDownload size={20} /><span><strong>Instant Delivery</strong><small>Digital products, delivered fast</small></span></div>
             <div><Check size={20} /><span><strong>100% Authentic</strong><small>Genuine codes and accounts</small></span></div>
@@ -1075,6 +1136,7 @@ function App() {
       )}
 
       {/* Catalog / Shop Section */}
+      {currentPage !== 'profile' && (
       <section className="catalog-section" id="shop">
         <div className="shop-layout">
           <aside className="shop-sidebar" aria-label="Product filters">
@@ -1161,6 +1223,7 @@ function App() {
                           isWishlisted={Array.isArray(wishlist) && wishlist.includes(product?.id)}
                           onToggleWishlist={toggleWishlist}
                           onAddToCart={addToCart}
+                          onOpenTopUp={handleOpenTopUp}
                         />
                       </ErrorBoundary>
                     )
@@ -1201,6 +1264,7 @@ function App() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Footer */}
       <footer className="site-footer" id="contact">
@@ -1311,6 +1375,23 @@ function App() {
         </div>
       )}
 
+      {/* Specialized Codashop-Style Top-Up Modal */}
+      {topUpModalProduct && (
+        <TopUpModal
+          product={topUpModalProduct}
+          onClose={() => setTopUpModalProduct(null)}
+          onConfirmRecharge={(orderData) => {
+            // Recharge saved in localStorage
+          }}
+          onOpenProfile={() => {
+            setTopUpModalProduct(null)
+            window.location.hash = 'profile'
+            setCurrentPage('profile')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+        />
+      )}
+
       {/* Checkout Modal */}
       {checkoutOpen && (
         <div className="overlay modal-overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCheckoutOpen(false) }}>
@@ -1360,7 +1441,7 @@ function App() {
                     </div>
                   )}
 
-                  {hasPhysicalDisc && (
+                  {hasPhysicalDisc ? (
                     <div className="form-section conditional-section">
                       <h3><span>{hasTopUp ? '03' : '02'}</span> Delivery Address <span className="required-tag">PHYSICAL DELIVERY</span></h3>
                       <p>We’ll courier your physical PlayStation disc anywhere in Nepal.</p>
@@ -1376,6 +1457,23 @@ function App() {
                           <span>Full delivery address</span>
                           <textarea value={shippingAddress} onChange={(event) => setShippingAddress(event.target.value)} placeholder="Street, area, city, district" rows="3" required />
                         </label>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="form-section conditional-section bg-cyan-950/25 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 my-2">
+                      <div className="flex items-start gap-3.5">
+                        <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 border border-cyan-500/30">
+                          <Sparkles size={20} className="fill-cyan-400/20" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="text-cyan-300 font-bold text-sm sm:text-base">Instant Digital Delivery</h4>
+                            <span className="text-[10px] font-bold bg-cyan-900/60 text-cyan-400 px-2 py-0.5 rounded border border-cyan-500/20">NO SHIPPING REQUIRED</span>
+                          </div>
+                          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                            Instant Digital Delivery: Voucher/UC will be delivered via Email &amp; In-Game UID.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   )}
