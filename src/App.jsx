@@ -29,7 +29,7 @@ import {
   X,
 } from 'lucide-react'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
-import { getGameCover, FALLBACK_POSTER } from './utils/gameImages'
+import { getGameCover, FALLBACK_POSTER, getDynamicPlaceholder } from './utils/gameImages'
 import './App.css'
 
 const productData = parse(productCsv, {
@@ -154,7 +154,7 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
           loading="lazy"
           onError={(e) => {
             e.currentTarget.onerror = null
-            e.currentTarget.src = FALLBACK_POSTER
+            e.currentTarget.src = getDynamicPlaceholder(product.name) || FALLBACK_POSTER
           }}
         />
         {product.status === 'Sold Out' && (
