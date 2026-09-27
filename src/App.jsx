@@ -226,13 +226,11 @@ const navItems = [
   { label: 'Categories', page: 'categories' },
   { label: 'About', page: 'about' },
   { label: 'FAQ', page: 'faq' },
-  { label: 'Blogs', page: 'blogs' },
+  { label: 'Contact', page: 'contact' },
 ]
 
-const getInitialPage = () => window.location.hash.replace('#', '').trim().toLowerCase() || 'home'
-
 function App() {
-  const [currentPage, setCurrentPage] = useState(getInitialPage)
+  const [currentPage, setCurrentPage] = useState('home')
   const [activeCategory, setActiveCategory] = useState('All products')
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState('date')
@@ -262,14 +260,15 @@ function App() {
   const [deliveryZone, setDeliveryZone] = useState('Inside Valley')
   const [order, setOrder] = useState(null)
 
-  // URL Hash Sync on Mount and hashchange
+  // Two-Way Sync with React State via hashchange listener
   useEffect(() => {
-    const handleHash = () => {
-      const route = window.location.hash.replace('#', '').trim().toLowerCase() || 'home'
-      setCurrentPage(route)
+    const syncWithHash = () => {
+      const hash = window.location.hash.replace('#', '').trim().toLowerCase()
+      setCurrentPage(hash || 'home')
     }
-    window.addEventListener('hashchange', handleHash)
-    return () => window.removeEventListener('hashchange', handleHash)
+    window.addEventListener('hashchange', syncWithHash)
+    syncWithHash()
+    return () => window.removeEventListener('hashchange', syncWithHash)
   }, [])
 
   const allFilteredProducts = useMemo(() => {
@@ -411,8 +410,7 @@ function App() {
         <div>
           <a
             href="#faq"
-            onClick={(event) => {
-              event.preventDefault()
+            onClick={() => {
               window.location.hash = 'faq'
               setCurrentPage('faq')
               window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -429,8 +427,7 @@ function App() {
           className="brand"
           href="#home"
           aria-label="Hamro Gaming Store home"
-          onClick={(event) => {
-            event.preventDefault()
+          onClick={() => {
             window.location.hash = 'home'
             setCurrentPage('home')
             window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -446,8 +443,7 @@ function App() {
               key={page}
               href={`#${page}`}
               className={currentPage === page ? 'nav-current' : ''}
-              onClick={(event) => {
-                event.preventDefault()
+              onClick={() => {
                 window.location.hash = page
                 setCurrentPage(page)
                 if (page === 'shop') {
@@ -520,11 +516,27 @@ function App() {
             <span>Cart</span>
             <b>{cartCount}</b>
           </button>
-          <a className="nav-icon profile-icon" href="#about" aria-label="About" onClick={(e) => { e.preventDefault(); window.location.hash = 'about'; setCurrentPage('about'); }}>
+          <a
+            className="nav-icon profile-icon"
+            href="#about"
+            aria-label="About"
+            onClick={() => {
+              window.location.hash = 'about'
+              setCurrentPage('about')
+            }}
+          >
             <CircleUserRound size={20} />
           </a>
         </div>
-        <a className="mobile-menu" href="#categories" aria-label="Browse categories" onClick={(e) => { e.preventDefault(); window.location.hash = 'categories'; setCurrentPage('categories'); }}>
+        <a
+          className="mobile-menu"
+          href="#categories"
+          aria-label="Browse categories"
+          onClick={() => {
+            window.location.hash = 'categories'
+            setCurrentPage('categories')
+          }}
+        >
           <Menu size={22} />
         </a>
       </header>
@@ -710,7 +722,7 @@ function App() {
             <aside className="reach-card">
               <span className="section-eyebrow">REACH US</span>
               <h2>We’re here to help.</h2>
-              <a href="https://wa.me/9779700979030"><MessageCircle size={17} /><span><small>WHATSAPP / PHONE</small>+977 9700979030</span></a>
+              <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer"><MessageCircle size={17} /><span><small>WHATSAPP / PHONE</small>+977 9700979030</span></a>
               <a href="mailto:support@hamrogamingstore.com"><span className="reach-icon">@</span><span><small>SUPPORT EMAIL</small>support@hamrogamingstore.com</span></a>
               <div className="operating-hours"><small>OPERATING HOURS (NPT)</small><strong>10:00 AM – 11:00 PM</strong><span>Every day</span></div>
             </aside>
@@ -760,57 +772,38 @@ function App() {
         </section>
       )}
 
-      {/* Blogs View */}
-      {currentPage === 'blogs' && (
-        <section className="blogs-page">
-          <header className="blogs-heading">
-            <span className="section-eyebrow">FROM THE HGS TEAM</span>
-            <h1>Our Latest News &amp; Posts</h1>
-            <p>Guides, answers, and updates for gamers in Nepal.</p>
+      {/* Contact View */}
+      {currentPage === 'contact' && (
+        <section className="about-page">
+          <header className="about-hero">
+            <span className="section-eyebrow">GET IN TOUCH</span>
+            <h1>Contact Us <span>— Hamro Gaming Store</span></h1>
+            <p>Have questions about your order or need instant gaming support? We’re always here to help.</p>
           </header>
-          <article className="featured-article">
-            <div className="article-art discord-art"><span>DISCORD</span><strong>NITRO</strong><i>NEPAL GUIDE</i></div>
-            <div className="featured-article-copy">
-              <span className="article-label">FEATURED GUIDE · 6 MIN READ</span>
-              <h2>How to Buy Discord Nitro in Nepal | Discord Giftcard</h2>
-              <p>Learn how to choose a Discord gift card, redeem your balance, and activate Nitro from Nepal.</p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchTerm('Discord')
-                  setActiveCategory('All products')
-                  window.location.hash = 'shop'
-                  setCurrentPage('shop')
-                  setCatalogPage(1)
-                }}
-              >
-                Explore gift cards <ArrowRight size={15} />
-              </button>
-            </div>
-          </article>
-          <div className="blog-card-grid">
-            {[
-              { title: 'How to Buy Nintendo Gift Card in Nepal', category: 'GIFT CARD GUIDE', image: categoryImages['Gift Cards'], copy: 'Choose a region-compatible Nintendo gift card and redeem it on your account.' },
-              { title: 'How to Buy Epic Games Gift Card in Nepal', category: 'GIFT CARD GUIDE', image: categoryImages['Game Keys'], copy: 'Add funds to your Epic balance and prepare for your next PC game.' },
-              { title: 'How to Buy EA Gift Card in Nepal', category: 'GIFT CARD GUIDE', image: categoryImages['Gift Cards'], copy: 'A quick guide to selecting and redeeming an EA wallet code.' },
-              { title: 'How to Buy Netflix Gift Card in Nepal', category: 'GIFT CARD GUIDE', image: categoryImages['Gift Cards'], copy: 'Understand regions and redemption before adding a Netflix balance.' },
-              { title: 'How to Buy Xbox Gift Card in Nepal', category: 'GIFT CARD GUIDE', image: categoryImages.Xbox, copy: 'Choose the right Xbox region and redeem your store balance.' },
-              { title: 'How to Buy Apple Gift Card in Nepal', category: 'GIFT CARD GUIDE', image: categoryImages['Gift Cards'], copy: 'Use an Apple gift card for eligible apps, services, and subscriptions.' },
-              { title: 'How to Buy Valorant Gift Card / Points', category: 'GIFT CARD GUIDE', image: categoryImages['Game Top-Up'], copy: 'Learn how Valorant Points work and how to redeem a compatible code.' },
-              { title: 'How to Buy Roblox Gift Card', category: 'GIFT CARD GUIDE', image: categoryImages['Gift Cards'], copy: 'Redeem a Roblox gift card and add credit to your account.' },
-              { title: 'How to Buy Steam Gift Card in Nepal (Complete 2026 Guide)', category: 'STEAM GUIDE', image: categoryImages['Steam Private Account'], copy: 'Pick a compatible Steam Wallet region, redeem your code, and shop the store.' },
-            ].map((article) => (
-              <article className="blog-card" key={article.title}>
-                <div className="blog-card-art" style={{ backgroundImage: `linear-gradient(0deg, rgba(7,9,14,.55), transparent), url(https://images.unsplash.com/${article.image}?auto=format&fit=crop&w=700&q=80)` }}>
-                  <span>{article.category}</span>
-                </div>
-                <div>
-                  <h2>{article.title}</h2>
-                  <p>{article.copy}</p>
-                  <button type="button" onClick={() => openShop('Gift Cards')}>Read guide <ArrowRight size={14} /></button>
-                </div>
-              </article>
-            ))}
+          <div className="about-columns">
+            <article className="about-mission">
+              <span className="section-eyebrow">24/7 SUPPORT</span>
+              <h2>Fast assistance via WhatsApp and Email.</h2>
+              <p>Our support team is available around the clock to assist you with game activations, top-up delivery, account credentials, and general questions.</p>
+              <p>Reach out directly with your Order ID or Player UID for priority handling.</p>
+            </article>
+            <aside className="reach-card">
+              <span className="section-eyebrow">REACH US</span>
+              <h2>Direct Support Channels</h2>
+              <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">
+                <MessageCircle size={17} />
+                <span><small>WHATSAPP / PHONE</small>+977 9700979030</span>
+              </a>
+              <a href="mailto:support@hamrogamingstore.com">
+                <span className="reach-icon">@</span>
+                <span><small>SUPPORT EMAIL</small>support@hamrogamingstore.com</span>
+              </a>
+              <div className="operating-hours">
+                <small>OPERATING HOURS (NPT)</small>
+                <strong>10:00 AM – 11:00 PM</strong>
+                <span>Every day</span>
+              </div>
+            </aside>
           </div>
         </section>
       )}
@@ -938,13 +931,12 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="site-footer" id="about">
+      <footer className="site-footer" id="contact">
         <div className="footer-about">
           <a
             className="footer-logo"
             href="#home"
-            onClick={(event) => {
-              event.preventDefault()
+            onClick={() => {
               window.location.hash = 'home'
               setCurrentPage('home')
               window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -958,21 +950,21 @@ function App() {
         </div>
         <div className="footer-column">
           <strong>SHOP</strong>
-          <a href="#shop" onClick={(event) => { event.preventDefault(); openShop() }}>All products</a>
-          <a href="#categories" onClick={(event) => { event.preventDefault(); window.location.hash = 'categories'; setCurrentPage('categories'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Categories</a>
+          <a href="#shop" onClick={() => { window.location.hash = 'shop'; openShop(); }}>All products</a>
+          <a href="#categories" onClick={() => { window.location.hash = 'categories'; setCurrentPage('categories'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Categories</a>
         </div>
         <div className="footer-column">
           <strong>COMPANY</strong>
-          <a href="#about" onClick={(event) => { event.preventDefault(); window.location.hash = 'about'; setCurrentPage('about'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>About Us</a>
-          <a href="#faq" onClick={(event) => { event.preventDefault(); window.location.hash = 'faq'; setCurrentPage('faq'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>FAQ</a>
-          <a href="#blogs" onClick={(event) => { event.preventDefault(); window.location.hash = 'blogs'; setCurrentPage('blogs'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Blogs</a>
+          <a href="#about" onClick={() => { window.location.hash = 'about'; setCurrentPage('about'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>About Us</a>
+          <a href="#faq" onClick={() => { window.location.hash = 'faq'; setCurrentPage('faq'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>FAQ</a>
+          <a href="#contact" onClick={() => { window.location.hash = 'contact'; setCurrentPage('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Contact</a>
         </div>
         <div className="footer-column">
           <strong>HELP &amp; POLICIES</strong>
           <a href="tel:+9779700979030">+977 9700979030</a>
           <a href="mailto:support@hamrogamingstore.com">support@hamrogamingstore.com</a>
           <a href="https://hamrogamingstore.com/return-policy">Return &amp; refund policy</a>
-          <a href="https://wa.me/9779700979030">WhatsApp Support</a>
+          <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">WhatsApp Support</a>
         </div>
         <small className="footer-copyright">© 2026 Hamro Gaming Store</small>
       </footer>
