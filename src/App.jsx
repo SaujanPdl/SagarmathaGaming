@@ -31,33 +31,21 @@ import {
   X,
 } from 'lucide-react'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
-import cleanProducts from './products_clean.json'
 import { getGameCover, FALLBACK_POSTER, getDynamicPlaceholder } from './utils/gameImages'
 import './App.css'
-
-const cleanProductMap = new Map()
-cleanProducts.forEach((p) => {
-  if (p.sku) cleanProductMap.set(p.sku, p)
-  if (p.name) cleanProductMap.set(p.name.toLowerCase().trim(), p)
-})
 
 const productData = parse(productCsv, {
   columns: true,
   skip_empty_lines: true,
   trim: true,
-}).map((row) => {
-  const cleanItem = cleanProductMap.get(row.SKU) || cleanProductMap.get(row['Product Name']?.toLowerCase().trim())
-  return {
-    sku: row.SKU,
-    name: row['Product Name'],
-    price: Number(row['Sagarmatha Selling Price (NPR)']),
-    originalPrice: cleanItem?.originalPrice || Number(row['Original / Reference Price (NPR)']) || Number(row['Sagarmatha Selling Price (NPR)']),
-    category: row.Category,
-    deliveryType: row['Delivery Type'],
-    status: row['HGS Status'],
-    image: cleanItem?.image || null,
-  }
-})
+}).map((row) => ({
+  sku: row.SKU,
+  name: row['Product Name'],
+  price: Number(row['Sagarmatha Selling Price (NPR)']),
+  category: row.Category,
+  deliveryType: row['Delivery Type'],
+  status: row['HGS Status'],
+}))
 
 const categoryOrder = [
   'Steam Private Account',
@@ -162,16 +150,12 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
     <article className={`product-card group ${product.status === 'Sold Out' ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
       <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726]">
         <img
-          src={product.image || getGameCover(product.name)}
+          src={product.name.image || getGameCover(product.name.name || product.name)}
           alt={product.name}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity ${product.status === 'Sold Out' ? 'grayscale-[40%] opacity-90' : ''}`}
           loading="lazy"
           onError={(e) => {
             e.currentTarget.onerror = null
-            if (product.name && product.name.toLowerCase().includes('discord')) {
-              e.currentTarget.src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80'
-              return
-            }
             e.currentTarget.src = getDynamicPlaceholder(product.name) || FALLBACK_POSTER
           }}
         />
@@ -222,7 +206,7 @@ function ProductRail({ title, category, items, onAdd, onSeeAll }) {
       <div className="product-rail">
         {items.map((product) => (
           <article className={`rail-product ${product.status === 'Sold Out' ? 'sold-out' : ''}`} key={product.sku}>
-            <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${product.image || getGameCover(product.name)}")` }}>
+            <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${product.image}")` }}>
               <span className="product-badge">{product.badge}</span>
               <span className="rail-number">{product.sku}</span>
             </div>
