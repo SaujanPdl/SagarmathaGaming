@@ -971,10 +971,12 @@ function App() {
 
             <div className="pt-4 border-t border-slate-800 space-y-2">
               <a
-                href="https://wa.me/9779700979030"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs no-underline min-h-[44px]"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault()
+                  alert('WhatsApp support will be available soon!')
+                }}
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs no-underline min-h-[44px] cursor-pointer"
               >
                 <MessageCircle size={15} /> WhatsApp Support
               </a>
@@ -1375,7 +1377,16 @@ function App() {
             <aside className="reach-card">
               <span className="section-eyebrow">REACH US</span>
               <h2>We’re here to help.</h2>
-              <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer"><MessageCircle size={17} /><span><small>WHATSAPP / PHONE</small>+977 9700979030</span></a>
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault()
+                  alert('WhatsApp support will be available soon!')
+                }}
+              >
+                <MessageCircle size={17} />
+                <span><small>WHATSAPP / PHONE</small>+977 ----------</span>
+              </a>
               <a href="mailto:support@sagarmathagamingstore.com"><span className="reach-icon">@</span><span><small>SUPPORT EMAIL</small>support@sagarmathagamingstore.com</span></a>
               <div className="operating-hours"><small>OPERATING HOURS (NPT)</small><strong>10:00 AM – 11:00 PM</strong><span>Every day</span></div>
             </aside>
@@ -1419,7 +1430,7 @@ function App() {
             </article>
             <article className="faq-card">
               <h3><HelpCircle size={18} /> What if I need assistance after purchasing?</h3>
-              <p>Our dedicated support team is available 24/7 on WhatsApp (+977 9700979030) and email to help with setup, activation, and troubleshooting.</p>
+              <p>Our dedicated support team is available 24/7 on WhatsApp (+977 ----------) and email to help with setup, activation, and troubleshooting.</p>
             </article>
           </div>
         </section>
@@ -1443,9 +1454,15 @@ function App() {
             <aside className="reach-card">
               <span className="section-eyebrow">REACH US</span>
               <h2>Direct Support Channels</h2>
-              <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault()
+                  alert('WhatsApp support will be available soon!')
+                }}
+              >
                 <MessageCircle size={17} />
-                <span><small>WHATSAPP / PHONE</small>+977 9700979030</span>
+                <span><small>WHATSAPP / PHONE</small>+977 ----------</span>
               </a>
               <a href="mailto:support@sagarmathagamingstore.com">
                 <span className="reach-icon">@</span>
@@ -1918,16 +1935,40 @@ function App() {
         </div>
         <div className="footer-column">
           <strong>HELP &amp; POLICIES</strong>
-          <a href="tel:+9779700979030">+977 9700979030</a>
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault()
+              alert('Phone support will be available soon!')
+            }}
+          >
+            +977 ----------
+          </a>
           <a href="mailto:support@sagarmathagamingstore.com">support@sagarmathagamingstore.com</a>
           <a href="https://sagarmathagamingstore.com/return-policy">Return &amp; refund policy</a>
-          <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">WhatsApp Support</a>
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault()
+              alert('WhatsApp support will be available soon!')
+            }}
+          >
+            WhatsApp Support
+          </a>
         </div>
         <small className="footer-copyright">© 2026 Sagarmatha Gaming Store</small>
       </footer>
 
       {/* Floating WhatsApp Contact */}
-      <a className="whatsapp-float" href="https://wa.me/9779700979030" target="_blank" rel="noreferrer" aria-label="Chat with Sagarmatha Gaming Store on WhatsApp">
+      <a 
+        className="whatsapp-float cursor-pointer" 
+        href="#" 
+        onClick={(e) => {
+          e.preventDefault()
+          alert('WhatsApp support will be available soon!')
+        }}
+        aria-label="Chat with Sagarmatha Gaming Store on WhatsApp"
+      >
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.4 28.6l6.4-1.7A12.8 12.8 0 1 0 16 3.2Zm0 23.2a10.3 10.3 0 0 1-5.2-1.4l-.4-.2-3.8 1 1-3.7-.3-.4a10.2 10.2 0 1 1 8.7 4.7Zm5.6-7.6c-.3-.2-1.7-.9-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.1.2-.3.2-.6.1-1.7-.9-2.8-1.6-3.9-3.5-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.1.2 2.2 3.4 5.4 4.8 2 .9 2.8 1 3.8.8.6-.1 1.7-.7 1.9-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z" /></svg>
       </a>
 
