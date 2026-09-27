@@ -32,7 +32,16 @@ export const DIRECT_GAME_ART = {
   "wwe 2k15": "https://cdn.cloudflare.steamstatic.com/steam/apps/240460/library_600x900_2x.jpg",
   "wwe 2k14": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x1e.png",
 
-  // Major Catalog & Mystery / Bundle Titles
+  // Bundles & Generic/Mystery Key Artwork
+  "vip mystery bundle": "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600&auto=format&fit=crop&q=80",
+  "steam random elite key": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
+  "grand random steam key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "steam random key": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+  "steam random keys": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+  "mystery bundle": "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600&auto=format&fit=crop&q=80",
+  "steam key": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+
+  // Major Catalog & Franchise Titles
   "gta v": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg",
   "grand theft auto v": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg",
   "gta iv": "https://cdn.cloudflare.steamstatic.com/steam/apps/12210/library_600x900_2x.jpg",
@@ -57,13 +66,8 @@ export const DIRECT_GAME_ART = {
   "uncharted legacy of thieves": "https://cdn.cloudflare.steamstatic.com/steam/apps/1659420/library_600x900_2x.jpg",
   "uncharted 4": "https://cdn.cloudflare.steamstatic.com/steam/apps/1659420/library_600x900_2x.jpg",
   "uncharted": "https://cdn.cloudflare.steamstatic.com/steam/apps/1659420/library_600x900_2x.jpg",
-  "steam random": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "mystery bundle": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
-  "steam key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
   "valorant": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.png",
   "minecraft": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80",
-
-  // Additional Popular Catalog Titles
   "red dead redemption 2": "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/library_600x900_2x.jpg",
   "red dead redemption": "https://cdn.cloudflare.steamstatic.com/steam/apps/2668510/library_600x900_2x.jpg",
   "black myth wukong": "https://cdn.cloudflare.steamstatic.com/steam/apps/2358720/library_600x900_2x.jpg",
@@ -154,7 +158,13 @@ export function getGameCover(title) {
   // 1. Clean extra platform / condition text
   const clean = cleanGameTitle(title);
 
-  // 2. Specific year extraction for sports / wrestling franchises:
+  // 2. Dedicated bundle and mystery key checks:
+  if (clean.includes('vip mystery')) return DIRECT_GAME_ART['vip mystery bundle'];
+  if (clean.includes('elite key')) return DIRECT_GAME_ART['steam random elite key'];
+  if (clean.includes('grand random')) return DIRECT_GAME_ART['grand random steam key'];
+  if (clean.includes('random key')) return DIRECT_GAME_ART['steam random key'];
+
+  // 3. Specific year extraction for sports / wrestling franchises:
   const yearMatch = clean.match(/(1[2-9]|2[0-7])/);
   if (clean.includes('fifa') && yearMatch) {
     const key = `fifa ${yearMatch[1]}`;
@@ -169,7 +179,7 @@ export function getGameCover(title) {
     if (DIRECT_GAME_ART[key]) return DIRECT_GAME_ART[key];
   }
 
-  // 3. Match keys sorted by string length descending (longest match wins first)
+  // 4. Match keys sorted by string length descending (longest match wins first)
   const sortedKeys = Object.keys(DIRECT_GAME_ART).sort((a, b) => b.length - a.length);
   for (const key of sortedKeys) {
     if (clean.includes(key)) {

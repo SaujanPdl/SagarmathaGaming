@@ -150,15 +150,20 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
         <img
           src={getGameCover(product.name)}
           alt={product.name}
-          className="absolute inset-0 h-full w-full object-cover"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity ${product.status === 'Sold Out' ? 'grayscale-[40%] opacity-90' : ''}`}
           loading="lazy"
           onError={(e) => {
             e.currentTarget.onerror = null
             e.currentTarget.src = FALLBACK_POSTER
           }}
         />
+        {product.status === 'Sold Out' && (
+          <span className="absolute top-2 right-2 bg-rose-600/90 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider z-10">
+            Sold Out
+          </span>
+        )}
         <button
-          className={isWishlisted ? 'quick-add saved' : 'quick-add'}
+          className={`${isWishlisted ? 'quick-add saved' : 'quick-add'} ${product.status === 'Sold Out' ? '!left-2 !right-auto' : ''}`}
           type="button"
           aria-label={`${isWishlisted ? 'Remove' : 'Add'} ${product.name} to wishlist`}
           onClick={() => onToggleWishlist(product.id)}
