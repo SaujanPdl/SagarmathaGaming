@@ -31,21 +31,33 @@ import {
   X,
 } from 'lucide-react'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
+import cleanProducts from './products_clean.json'
 import { getGameCover, FALLBACK_POSTER, getDynamicPlaceholder } from './utils/gameImages'
 import './App.css'
+
+const cleanProductMap = new Map()
+cleanProducts.forEach((p) => {
+  if (p.sku) cleanProductMap.set(p.sku, p)
+  if (p.name) cleanProductMap.set(p.name.toLowerCase().trim(), p)
+})
 
 const productData = parse(productCsv, {
   columns: true,
   skip_empty_lines: true,
   trim: true,
-}).map((row) => ({
-  sku: row.SKU,
-  name: row['Product Name'],
-  price: Number(row['Sagarmatha Selling Price (NPR)']),
-  category: row.Category,
-  deliveryType: row['Delivery Type'],
-  status: row['HGS Status'],
-}))
+}).map((row) => {
+  const cleanItem = cleanProductMap.get(row.SKU) || cleanProductMap.get(row['Product Name']?.toLowerCase().trim())
+  return {
+    sku: row.SKU,
+    name: row['Product Name'],
+    price: Number(row['Sagarmatha Selling Price (NPR)']),
+    originalPrice: cleanItem?.originalPrice || Number(row['Original / Reference Price (NPR)']) || Number(row['Sagarmatha Selling Price (NPR)']),
+    category: row.Category,
+    deliveryType: row['Delivery Type'],
+    status: row['HGS Status'],
+    image: cleanItem?.image || null,
+  }
+})
 
 const categoryOrder = [
   'Steam Private Account',
@@ -76,7 +88,7 @@ function getProductPlatform(product) {
 
 const categoryImages = {
   'Steam Private Account': 'photo-1511512578047-dfb367046420',
-  'Steam Offline Games': 'photo-1550745165-9bc0b252726f',
+  'Steam Offline Games': 'photo-1542751371-adc38448a05e',
   'Game Top-Up': 'photo-1560253023-3ec5d502959f',
   'Gift Cards': 'photo-1493711662062-fa541adb3fc8',
   'PlayStation Physical Disc': 'photo-1605901309584-818e25960a8f',
@@ -146,17 +158,31 @@ function getCategoryCover(category) {
 }
 
 function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCart }) {
+  const imgSrc = product.image || getGameCover(product.name)
+  const isLogo = imgSrc && (
+    imgSrc.includes('wikimedia.org') || 
+    imgSrc.includes('.svg') || 
+    imgSrc.includes('logo') || 
+    imgSrc.includes('icon')
+  )
+  const isDarkLogo = isLogo && (
+    imgSrc.includes('black') || 
+    imgSrc.toLowerCase().includes('apple') || 
+    imgSrc.toLowerCase().includes('roblox_player')
+  )
+
   return (
     <article className={`product-card group ${product.status === 'Sold Out' ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
-      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726]">
+      <div className={`relative aspect-[2/3] w-full overflow-hidden rounded-lg ${isLogo ? 'bg-[#111728] p-6 flex items-center justify-center' : 'bg-[#111726]'}`}>
         <img
-          src={getGameCover(product.name)}
+          src={imgSrc}
           alt={product.name}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity ${product.status === 'Sold Out' ? 'grayscale-[40%] opacity-90' : ''}`}
+          className={`${isLogo ? `max-h-full max-w-full object-contain ${isDarkLogo ? 'invert brightness-200' : ''} drop-shadow-[0_0_12px_rgba(56,189,248,0.2)]` : 'absolute inset-0 h-full w-full object-cover'} transition-all duration-300 ${product.status === 'Sold Out' ? 'grayscale-[40%] opacity-90' : ''}`}
           loading="lazy"
           onError={(e) => {
             e.currentTarget.onerror = null
             e.currentTarget.src = getDynamicPlaceholder(product.name) || FALLBACK_POSTER
+            e.currentTarget.className = "absolute inset-0 h-full w-full object-cover transition-opacity"
           }}
         />
         {product.status === 'Sold Out' && (
@@ -206,7 +232,7 @@ function ProductRail({ title, category, items, onAdd, onSeeAll }) {
       <div className="product-rail">
         {items.map((product) => (
           <article className={`rail-product ${product.status === 'Sold Out' ? 'sold-out' : ''}`} key={product.sku}>
-            <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${product.image}")` }}>
+            <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${product.image || getGameCover(product.name)}")` }}>
               <span className="product-badge">{product.badge}</span>
               <span className="rail-number">{product.sku}</span>
             </div>
@@ -383,7 +409,7 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
             className="relative h-full min-h-[340px] rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl group cursor-pointer"
           >
             <img 
-              src="https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png" 
+              src="https://upload.wikimedia.org/wikipedia/en/4/46/Grand_Theft_Auto_VI.png" 
               alt="Grand Theft Auto VI" 
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
             />
@@ -779,7 +805,7 @@ function App() {
             <div className="bundle-art">
               <div className="bundle-cover-stack" aria-label="Featured games in the collection">
                 {products.filter((product) => product.category === 'Steam Offline Games').slice(0, 4).map((product) => (
-                  <div key={product.sku} title={product.name} style={{ backgroundImage: `url("${product.image}")` }} />
+                  <div key={product.sku} title={product.name} style={{ backgroundImage: `url("${product.image || getGameCover(product.name)}")` }} />
                 ))}
               </div>
               <div className="bundle-art-type"><span>220+</span><b>GAMES</b><i>STEAM COLLECTION</i></div>

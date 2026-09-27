@@ -3,40 +3,45 @@
 
 export const DIRECT_ART = {
   // Official Brand Posters & Subscription Logos
-  "xbox game pass": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
-  "xbox live": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
-  "xbox pass": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
-  "pc game pass": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
-  "xbox": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
-  "netflix": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80",
-  "spotify premium": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80",
-  "spotify": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80",
-  "discord nitro": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80",
-  "discord": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80",
-  "playstation plus": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "ps plus": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "psn card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "psn": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "playstation gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "roblox": "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80",
-  "robux": "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80",
-  "steam wallet": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "steam gift card": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "steam random elite key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "xbox game pass": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+  "xbox live": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+  "xbox pass": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+  "pc game pass": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+  "xbox gift card": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+  "xbox": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+  "netflix": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/800px-Netflix_2015_logo.svg.png",
+  "spotify premium": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/800px-Spotify_logo_without_text.svg.png",
+  "spotify": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/800px-Spotify_logo_without_text.svg.png",
+  "discord nitro": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Discord_color_icon_%28vector%29.svg/800px-Discord_color_icon_%28vector%29.svg.png",
+  "discord": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Discord_color_icon_%28vector%29.svg/800px-Discord_color_icon_%28vector%29.svg.png",
+  "discord gift card": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Discord_color_icon_%28vector%29.svg/800px-Discord_color_icon_%28vector%29.svg.png",
+  "playstation plus": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+  "ps plus": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+  "psn card": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+  "psn": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+  "playstation gift card": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+  "roblox": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/800px-Roblox_player_icon_black.svg.png",
+  "robux": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/800px-Roblox_player_icon_black.svg.png",
+  "roblox gift card": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/800px-Roblox_player_icon_black.svg.png",
+  "steam wallet": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/800px-Steam_icon_logo.svg.png",
+  "steam gift card": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/800px-Steam_icon_logo.svg.png",
+  "steam random elite key": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
   "grand random steam key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "steam random key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "steam random keys": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "steam keys": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "steam key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "vip mystery bundle": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "mystery bundle": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "apple gift card": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80",
-  "google play": "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=600&auto=format&fit=crop&q=80",
-  "nintendo": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&auto=format&fit=crop&q=80",
-  "battle.net": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "exitlag": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
-  "ea gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "epic gift card": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "steam random key": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+  "steam random keys": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+  "steam keys": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+  "steam key": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
+  "vip mystery bundle": "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600&auto=format&fit=crop&q=80",
+  "mystery bundle": "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600&auto=format&fit=crop&q=80",
+  "apple gift card": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/800px-Apple_logo_black.svg.png",
+  "apple": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/800px-Apple_logo_black.svg.png",
+  "google play": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Google_Play_2022_logo.svg/800px-Google_Play_2022_logo.svg.png",
+  "nintendo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo.svg/800px-Nintendo.svg.png",
+  "battle.net": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Battle.net_logo.svg/800px-Battle.net_logo.svg.png",
+  "exitlag": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80",
+  "ea gift card": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Electronic-Arts-Logo.svg/800px-Electronic-Arts-Logo.svg.png",
+  "ea play": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Electronic-Arts-Logo.svg/800px-Electronic-Arts-Logo.svg.png",
+  "epic gift card": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Epic_Games_logo.svg/800px-Epic_Games_logo.svg.png",
 
   // Minecraft Variants
   "minecraft": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80",
@@ -80,9 +85,24 @@ export const DIRECT_ART = {
   "wwe 2k14": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x1e.png",
 
   // Grand Theft Auto Series
-  "grand theft auto vi": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png",
-  "gta vi": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png",
-  "gta 6": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png",
+  "grand theft auto vi": "https://upload.wikimedia.org/wikipedia/en/4/46/Grand_Theft_Auto_VI.png",
+  "gta vi": "https://upload.wikimedia.org/wikipedia/en/4/46/Grand_Theft_Auto_VI.png",
+  "gta 6": "https://upload.wikimedia.org/wikipedia/en/4/46/Grand_Theft_Auto_VI.png",
+  "grand theft auto v": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg",
+  "gta v": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg",
+  "gta 5": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg",
+  "grand theft auto iv": "https://cdn.cloudflare.steamstatic.com/steam/apps/12210/library_600x900_2x.jpg",
+  "gta iv": "https://cdn.cloudflare.steamstatic.com/steam/apps/12210/library_600x900_2x.jpg",
+  "gta 4": "https://cdn.cloudflare.steamstatic.com/steam/apps/12210/library_600x900_2x.jpg",
+  "grand theft auto san andreas": "https://cdn.cloudflare.steamstatic.com/steam/apps/1547000/library_600x900_2x.jpg",
+  "gta san andreas": "https://cdn.cloudflare.steamstatic.com/steam/apps/1547000/library_600x900_2x.jpg",
+  "san andreas": "https://cdn.cloudflare.steamstatic.com/steam/apps/1547000/library_600x900_2x.jpg",
+  "grand theft auto vice city": "https://cdn.cloudflare.steamstatic.com/steam/apps/1546990/library_600x900_2x.jpg",
+  "gta vice city": "https://cdn.cloudflare.steamstatic.com/steam/apps/1546990/library_600x900_2x.jpg",
+  "vice city": "https://cdn.cloudflare.steamstatic.com/steam/apps/1546990/library_600x900_2x.jpg",
+  "grand theft auto iii": "https://cdn.cloudflare.steamstatic.com/steam/apps/1546970/library_600x900_2x.jpg",
+  "grand theft auto 3": "https://cdn.cloudflare.steamstatic.com/steam/apps/1546970/library_600x900_2x.jpg",
+  "gta 3": "https://cdn.cloudflare.steamstatic.com/steam/apps/1546970/library_600x900_2x.jpg",
   "grand theft auto v": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg",
   "gta v": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg",
   "gta 5": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg",
@@ -370,6 +390,40 @@ export function getGameCover(name) {
   const rawLower = name.toLowerCase();
 
   // 1. Dedicated Official Brand Subscriptions & Services Logos/Posters
+  // Steam Mystery & Random Keys (check specific key types before generic steam)
+  if (clean.includes("vip mystery") || clean.includes("mystery bundle")) {
+    return DIRECT_ART["vip mystery bundle"];
+  }
+  if (clean.includes("elite key")) {
+    return DIRECT_ART["steam random elite key"];
+  }
+  if (clean.includes("grand random")) {
+    return DIRECT_ART["grand random steam key"];
+  }
+  if (clean.includes("steam random keys") || clean.includes("steam random key") || clean.includes("random key")) {
+    return DIRECT_ART["steam random keys"];
+  }
+
+  // EA Gift Card / EA Play
+  if (clean.includes("ea gift") || clean.includes("ea play") || (clean.includes("ea") && clean.includes("card"))) {
+    return DIRECT_ART["ea gift card"];
+  }
+
+  // Battle.net
+  if (clean.includes("battle.net") || clean.includes("battlenet")) {
+    return DIRECT_ART["battle.net"];
+  }
+
+  // Apple
+  if (clean.includes("apple")) {
+    return DIRECT_ART["apple gift card"];
+  }
+
+  // ExitLag
+  if (clean.includes("exitlag")) {
+    return DIRECT_ART["exitlag"];
+  }
+
   // Xbox Game Pass / Xbox Live
   if (
     clean.includes("xbox") ||
@@ -378,22 +432,22 @@ export function getGameCover(name) {
     rawLower.includes("xbox") ||
     rawLower.includes("game pass")
   ) {
-    return "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["xbox gift card"];
   }
 
   // Netflix Subscription / Pass
   if (clean.includes("netflix") || rawLower.includes("netflix")) {
-    return "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["netflix"];
   }
 
   // Spotify Premium
   if (clean.includes("spotify") || rawLower.includes("spotify")) {
-    return "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["spotify premium"];
   }
 
-  // Discord Nitro
+  // Discord Nitro / Gift Card
   if (clean.includes("discord") || rawLower.includes("discord")) {
-    return "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["discord nitro"];
   }
 
   // PlayStation Plus / PSN
@@ -405,44 +459,30 @@ export function getGameCover(name) {
     clean.includes("playstation network") ||
     rawLower.includes("psn")
   ) {
-    return "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["playstation gift card"];
   }
 
   // Roblox / Robux
   if (clean.includes("roblox") || clean.includes("robux") || rawLower.includes("roblox")) {
-    return "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["roblox"];
   }
 
-  // Steam Wallet / Keys / Mystery
-  if (
-    clean.includes("steam wallet") ||
-    clean.includes("steam key") ||
-    clean.includes("steam keys") ||
-    clean.includes("random key") ||
-    clean.includes("mystery") ||
-    clean.includes("steam gift") ||
-    rawLower.includes("steam wallet") ||
-    rawLower.includes("steam key") ||
-    rawLower.includes("random key") ||
-    rawLower.includes("mystery")
-  ) {
-    return "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80";
+  // Steam Wallet / Gift Card
+  if (clean.includes("steam wallet") || clean.includes("steam gift")) {
+    return DIRECT_ART["steam gift card"];
   }
 
   // Minecraft
   if (clean.includes("minecraft") || rawLower.includes("minecraft")) {
-    return "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["minecraft"];
   }
 
-  // Apple & Google Play
-  if (clean.includes("apple")) {
-    return "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80";
-  }
+  // Google Play & Nintendo
   if (clean.includes("google play")) {
-    return "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["google play"];
   }
   if (clean.includes("nintendo")) {
-    return "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&auto=format&fit=crop&q=80";
+    return DIRECT_ART["nintendo"];
   }
 
   // 2. Franchise Year Extraction (FIFA 14-23, FC 24-26, WWE 2K16-24 strictly intact)
