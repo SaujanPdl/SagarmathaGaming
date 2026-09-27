@@ -5,6 +5,8 @@ import {
   ArrowLeft,
   ArrowRight,
   Blocks,
+  ChevronLeft,
+  ChevronRight,
   CloudDownload,
   Check,
   CircleUserRound,
@@ -236,6 +238,159 @@ const navItems = [
 const getPageFromHash = () => {
   const hash = window.location.hash.replace('#', '').trim().toLowerCase()
   return hash || 'home'
+}
+
+const HERO_CAROUSEL_SLIDES = [
+  {
+    id: 1,
+    badge: "FIFA WORLD CUP 2026",
+    title: "EA SPORTS FC 26",
+    subtitle: "BUY AT SAGARMATHA GAMING STORE AT BEST PRICE",
+    image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=1600&auto=format&fit=crop&q=80",
+    buttonText: "Order Now",
+    link: "#shop"
+  },
+  {
+    id: 2,
+    badge: "EXCLUSIVE BENEFITS",
+    title: "EA FC 26 SPECIAL EDITION",
+    subtitle: "World Cup Mode • Online & Multiplayer • Instant Delivery • Private Account",
+    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600&auto=format&fit=crop&q=80",
+    buttonText: "Explore Shop",
+    link: "#shop"
+  },
+  {
+    id: 3,
+    badge: "TOP-UPS & GIFT CARDS",
+    title: "ROBLOX, STEAM & PSN",
+    subtitle: "Instant Digital Delivery • Verified Nepali Payments (eSewa / Khalti)",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&auto=format&fit=crop&q=80",
+    buttonText: "Browse Gift Cards",
+    link: "#shop"
+  }
+]
+
+function HeroCarousel({ onNavigateShop }) {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prevIndex) => (prevIndex + 1) % HERO_CAROUSEL_SLIDES.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [currentSlide])
+
+  const handlePrev = () => {
+    setCurrentSlide((prevIndex) => (prevIndex - 1 + HERO_CAROUSEL_SLIDES.length) % HERO_CAROUSEL_SLIDES.length)
+  }
+
+  const handleNext = () => {
+    setCurrentSlide((prevIndex) => (prevIndex + 1) % HERO_CAROUSEL_SLIDES.length)
+  }
+
+  const handleDotClick = (index) => {
+    setCurrentSlide(index)
+  }
+
+  const handleActionClick = () => {
+    window.location.hash = 'shop'
+    if (onNavigateShop) {
+      onNavigateShop()
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return (
+    <section className="relative w-full max-w-[1400px] mx-auto px-4 sm:px-6 pt-3 pb-6 select-none" aria-label="Hero Banner Carousel">
+      <div className="relative w-full h-[380px] sm:h-[440px] md:h-[480px] lg:h-[500px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-800/80 shadow-2xl bg-[#0b0f19]">
+        {HERO_CAROUSEL_SLIDES.map((slide, index) => {
+          const isActive = index === currentSlide
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
+              }`}
+            >
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#070911]/95 via-[#070911]/80 to-transparent sm:w-2/3" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#070911]/90 via-transparent to-black/30" />
+
+              <div className="relative h-full flex flex-col justify-center px-6 sm:px-12 md:px-16 max-w-2xl text-left z-10">
+                <span className="inline-flex items-center self-start px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-bold tracking-widest uppercase bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 backdrop-blur-md mb-3">
+                  {slide.badge}
+                </span>
+
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.1] mb-3 drop-shadow-md">
+                  {slide.title}
+                </h1>
+
+                <p className="text-sm sm:text-base md:text-lg text-slate-300 font-medium mb-6 leading-relaxed max-w-xl">
+                  {slide.subtitle}
+                </p>
+
+                <div>
+                  <a
+                    href={slide.link}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleActionClick()
+                    }}
+                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold text-sm sm:text-base transition-all transform hover:scale-105 shadow-lg shadow-cyan-500/25 cursor-pointer no-underline"
+                  >
+                    <span>{slide.buttonText}</span>
+                    <ArrowRight size={18} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+
+        {/* Left Arrow Button */}
+        <button
+          type="button"
+          onClick={handlePrev}
+          aria-label="Previous slide"
+          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-900 shadow-lg p-2.5 rounded-full z-20 cursor-pointer transition-transform hover:scale-110 active:scale-95 flex items-center justify-center"
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        {/* Right Arrow Button */}
+        <button
+          type="button"
+          onClick={handleNext}
+          aria-label="Next slide"
+          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-900 shadow-lg p-2.5 rounded-full z-20 cursor-pointer transition-transform hover:scale-110 active:scale-95 flex items-center justify-center"
+        >
+          <ChevronRight size={20} />
+        </button>
+
+        {/* Bottom Indicator Pills */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+          {HERO_CAROUSEL_SLIDES.map((_, index) => {
+            const isActive = index === currentSlide
+            return (
+              <button
+                key={index}
+                type="button"
+                aria-label={`Jump to slide ${index + 1}`}
+                onClick={() => handleDotClick(index)}
+                className={`transition-all duration-300 rounded-full h-2 cursor-pointer border-0 p-0 ${
+                  isActive ? 'w-8 bg-cyan-400' : 'w-2 bg-white/40 hover:bg-white/70'
+                }`}
+              />
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
 }
 
 function App() {
@@ -548,72 +703,8 @@ function App() {
         </div>
       </header>
 
-      {/* Featured Hero Banner */}
-      <section className="hero-section" aria-label="Featured games and offers">
-        <div className="hero-kicker"><span>THE HOME OF GAMING IN NEPAL</span><span>LEVEL UP YOUR LIBRARY <ArrowDownRight size={14} /></span></div>
-        <div className="hero-trio">
-          <article className="feature-card feature-left" style={{ backgroundImage: 'linear-gradient(180deg, rgba(6,8,15,.02) 15%, rgba(6,8,15,.96) 100%), url(https://cdn.zalient.shop/media/1788443952480_7d49bc4763bf71d1.webp)' }}>
-            <span className="feature-tag">STEAM OFFLINE</span>
-            <div className="feature-card-copy">
-              <span>FEATURED ACTION</span>
-              <h2>{products.find((product) => product.name.toLowerCase().includes('onimusha'))?.name || 'Onimusha'}</h2>
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveCategory('Steam Offline Games')
-                  setSearchTerm('')
-                  setWishlistOnly(false)
-                  window.location.hash = 'shop'
-                  setCurrentPage('shop')
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                }}
-              >
-                Explore title <ArrowRight size={14} />
-              </button>
-            </div>
-          </article>
-          <article className="feature-card feature-center" style={{ backgroundImage: 'linear-gradient(90deg, rgba(7,9,17,.96) 0%, rgba(7,9,17,.84) 47%, rgba(7,9,17,.08) 100%), url(https://cdn.zalient.shop/media/1780094018222_25f1307ad1884db0.webp)' }}>
-            <div className="center-copy">
-              <span className="feature-tag cyan-tag">SAGARMATHA EXCLUSIVE</span>
-              <p className="promo-overline">THE NEW SEASON STARTS NOW</p>
-              <h1>EA FC 26</h1>
-              <p className="promo-subtitle">BUY AT SAGARMATHA GAMING STORE</p>
-              <div className="promo-benefits">
-                <span><Check size={14} /> World Cup Mode</span>
-                <span><Check size={14} /> Online &amp; Multiplayer</span>
-                <span><Check size={14} /> Instant Delivery</span>
-                <span><Check size={14} /> Private Account</span>
-              </div>
-              <button className="promo-button" type="button" onClick={() => { const game = products.find((product) => product.name === 'EA FC 26'); if (game) addToCart(game); }}>
-                Buy Now <ArrowRight size={16} />
-              </button>
-            </div>
-            <span className="banner-index">01 <i /> 03</span>
-          </article>
-          <article className="feature-card feature-right" style={{ backgroundImage: 'linear-gradient(180deg, rgba(4,8,16,.02) 12%, rgba(4,8,16,.9) 100%), url(https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85)' }}>
-            <span className="feature-tag">MOST ANTICIPATED</span>
-            <div className="gta-wordmark"><span>GRAND THEFT AUTO</span><strong>VI</strong></div>
-            <div className="feature-card-copy">
-              <span>COMING SOON</span>
-              <h2>{products.find((product) => product.name.toLowerCase().includes('gta 6'))?.name || 'GTA VI'}</h2>
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveCategory('PlayStation Digital')
-                  setSearchTerm('')
-                  setWishlistOnly(false)
-                  window.location.hash = 'shop'
-                  setCurrentPage('shop')
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                }}
-              >
-                See pre-orders <ArrowRight size={14} />
-              </button>
-            </div>
-          </article>
-        </div>
-        <div className="hero-pagination"><span className="active" /><span /><span /><span /><b>01 / 04</b></div>
-      </section>
+      {/* Featured Hero Banner Carousel */}
+      {currentPage === 'home' && <HeroCarousel onNavigateShop={openShop} />}
 
       {/* Category Section */}
       <section className="category-section" id="categories">
