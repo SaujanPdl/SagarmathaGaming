@@ -54,3 +54,8 @@ export function getGameCover(nameOrProduct) {
 export function getDynamicPlaceholder(name) {
   return getGameCover(name);
 }
+
+export function getCoverImage(product) {
+  const slug = product.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  return product.image || `/covers/${slug}.jpg`;
+}

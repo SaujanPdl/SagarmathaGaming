@@ -31,7 +31,7 @@ import {
   X,
 } from 'lucide-react'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
-import { getGameCover, FALLBACK_POSTER, getDynamicPlaceholder } from './utils/gameImages'
+import { getGameCover, FALLBACK_POSTER, getDynamicPlaceholder, getCoverImage } from './utils/gameImages'
 import './App.css'
 
 const productData = parse(productCsv, {
@@ -104,7 +104,7 @@ const products = productData.map((product) => ({
   oldPrice: null,
   badge: getDeliveryBadge(product),
   platform: getProductPlatform(product),
-  image: getGameCover(product.name),
+  image: getCoverImage(product),
   imageAlt: `${product.name} artwork`,
   description: product.deliveryType,
   delivery: product.deliveryType,
@@ -150,7 +150,7 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
     <article className={`product-card group ${product.status === 'Sold Out' ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
       <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726]">
         <img
-          src={product.name.image || getGameCover(product.name.name || product.name)}
+          src={getCoverImage(product)}
           alt={product.name}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity ${product.status === 'Sold Out' ? 'grayscale-[40%] opacity-90' : ''}`}
           loading="lazy"
@@ -974,199 +974,20 @@ function App() {
               <div
                 className="blog-card-art"
                 style={{
-                  backgroundImage: 'linear-gradient(180deg, rgba(11,15,25,.3), rgba(11,15,25,.9)), url("https://images.unsplash.com/photo-1605901309584-818e25960a8f?auto=format&fit=crop&w=600&q=80")',
+                  backgroundImage: 'linear-gradient(180deg, rgba(11,15,25,.3), rgba(11,15,25,.9)), url("https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&auto=format&fit=crop&q=80")',
                 }}
               >
-                <span>PLAYSTATION</span>
+                <span>CRICKET</span>
               </div>
               <div>
-                <h2>PlayStation Physical Discs vs Digital Keys in Nepal</h2>
-                <p>Comparing disc delivery across Nepal’s 77 districts with instant digital account activation. Which is the best choice for you?</p>
-                <button type="button" onClick={() => openShop('PlayStation Physical Disc')}>Read more <ArrowRight size={14} /></button>
+                <h2>Cricket: The Ultimate Guide</h2>
+                <p>Learn everything you need to know about cricket, from basic rules to advanced strategies.</p>
+                <button type="button" onClick={() => openShop('Cricket')}>Read more <ArrowRight size={14} /></button>
               </div>
             </article>
           </div>
         </section>
       )}
-
-
-      {/* Catalog / Shop Section */}
-      <section className="catalog-section" id="shop">
-        <div className="shop-layout">
-          <aside className="shop-sidebar" aria-label="Product filters">
-            <div className="shop-sidebar-heading"><h2>Filters</h2><button type="button" onClick={resetShopFilters}>Reset</button></div>
-            <label className="shop-sidebar-search">
-              <span>Search</span>
-              <div>
-                <Search size={14} />
-                <input
-                  type="search"
-                  value={searchTerm}
-                  onChange={(event) => {
-                    setSearchTerm(event.target.value)
-                    setCatalogPage(1)
-                  }}
-                  placeholder="Search products"
-                  aria-label="Search products in Shop"
-                />
-              </div>
-            </label>
-            <label className="shop-select"><span>Category</span><select value={draftCategory} onChange={(event) => setDraftCategory(event.target.value)}>{categories.map((category) => <option key={category}>{category}</option>)}</select></label>
-            <label className="shop-select"><span>Brand / Platform</span><select value={draftPlatform} onChange={(event) => setDraftPlatform(event.target.value)}>{platformOptions.map((platform) => <option key={platform}>{platform}</option>)}</select></label>
-            <div className="shop-sort-fields">
-              <label className="shop-select"><span>Sort By</span><select value={sortBy} onChange={(event) => setSortBy(event.target.value)}><option value="date">Date</option><option value="price">Price</option></select></label>
-              <label className="shop-select"><span>Order</span><select value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}><option value="desc">Descending</option><option value="asc">Ascending</option></select></label>
-            </div>
-            <div className="price-filter">
-              <div className="price-filter-heading"><span>Price Range</span><strong>{formatPrice(draftMinPrice)} – {formatPrice(draftMaxPrice)}</strong></div>
-              <input aria-label="Minimum price slider" type="range" min="0" max={draftMaxPrice} step="250" value={draftMinPrice} onChange={(event) => setDraftMinPrice(Math.min(Number(event.target.value), draftMaxPrice))} />
-              <input aria-label="Maximum price slider" type="range" min={draftMinPrice} max="15000" step="250" value={draftMaxPrice} onChange={(event) => setDraftMaxPrice(Math.max(Number(event.target.value), draftMinPrice))} />
-              <div className="price-range-inputs">
-                <label><span>Min</span><input type="number" min="0" max={draftMaxPrice} step="250" value={draftMinPrice} onChange={(event) => setDraftMinPrice(Math.min(Number(event.target.value), draftMaxPrice))} /></label>
-                <label><span>Max</span><input type="number" min={draftMinPrice} max="15000" step="250" value={draftMaxPrice} onChange={(event) => setDraftMaxPrice(Math.max(Number(event.target.value), draftMinPrice))} /></label>
-              </div>
-            </div>
-            <div className="filter-actions">
-              <button className="reset-filters" type="button" onClick={resetShopFilters}>Clear all</button>
-              <button className="apply-filters" type="button" onClick={applyShopFilters}>Apply Filters</button>
-            </div>
-          </aside>
-
-          <div className="shop-results">
-            <div className="catalog-heading">
-              <div>
-                <p className="section-eyebrow">THE FULL LINEUP</p>
-                <h2>{searchTerm ? `Results for '${searchTerm}'` : wishlistOnly ? 'Your wishlist' : activeCategory === 'All products' ? 'All products' : activeCategory}<span>.</span></h2>
-                <p>{allFilteredProducts.length} products · prices in NPR</p>
-              </div>
-              <label className="search-box">
-                <Search size={18} aria-hidden="true" />
-                <input
-                  type="search"
-                  value={searchTerm}
-                  onChange={(event) => {
-                    setSearchTerm(event.target.value)
-                    setCatalogPage(1)
-                  }}
-                  placeholder="Search name, SKU or category"
-                  aria-label="Search products"
-                />
-                <kbd>/</kbd>
-              </label>
-            </div>
-
-            <div className="catalog-controls shop-sort-summary">
-              Sorted by {sortBy} · {sortOrder === 'desc' ? 'descending' : 'ascending'}
-            </div>
-            <div className="results-line">
-              <span>{allFilteredProducts.length} RESULTS</span>
-              <span>SKU · SELLING PRICE · DELIVERY TYPE</span>
-            </div>
-
-            {/* Strict CSS Grid Catalog without Masonry Columns */}
-            {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
-                {filteredProducts.map((product, index) => (
-                  <ProductCard
-                    key={product.sku}
-                    product={product}
-                    index={index}
-                    isWishlisted={wishlist.includes(product.id)}
-                    onToggleWishlist={toggleWishlist}
-                    onAddToCart={addToCart}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="empty-results">
-                <Search size={27} />
-                <h3>No products found.</h3>
-                <p>Try another title or clear your filters.</p>
-                <button type="button" onClick={() => { setSearchTerm(''); setActiveCategory('All products'); setWishlistOnly(false) }}>
-                  Show all products <ArrowRight size={15} />
-                </button>
-              </div>
-            )}
-
-            <nav className="pagination" aria-label="Product pagination">
-              <button type="button" aria-label="Previous page" disabled={catalogPage === 1} onClick={() => setCatalogPage((page) => Math.max(1, page - 1))}>
-                <ArrowLeft size={15} />
-              </button>
-              {paginationPages.map((page) => (
-                <button
-                  className={page === catalogPage ? 'page-current' : ''}
-                  type="button"
-                  key={page}
-                  aria-current={page === catalogPage ? 'page' : undefined}
-                  onClick={() => setCatalogPage(page)}
-                >
-                  {page}
-                </button>
-              ))}
-              <button type="button" aria-label="Next page" disabled={catalogPage === pageCount} onClick={() => setCatalogPage((page) => Math.min(pageCount, page + 1))}>
-                <ArrowRight size={15} />
-              </button>
-              <span>Page {catalogPage} of {pageCount}</span>
-            </nav>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="site-footer" id="contact">
-        <div className="footer-about">
-          <a
-            className="flex items-center gap-3 no-underline group mb-4 transition-transform hover:scale-105"
-            href="#home"
-            onClick={() => {
-              window.location.hash = 'home'
-              setCurrentPage('home')
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-          >
-            <img 
-              src="/sagarmatha-games-logo.svg" 
-              alt="Sagarmatha Gaming Store" 
-              className="h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
-            />
-            <div className="flex flex-col">
-              <span className="font-extrabold text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
-                Sagarmatha
-              </span>
-              <span className="text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
-                Gaming Store
-              </span>
-            </div>
-          </a>
-          <p>Nepal’s trusted gaming store for genuine games, top-ups, and digital codes.</p>
-          <strong className="footer-label">PAYMENT METHODS</strong>
-          <div className="payment-tags"><span>eSewa</span><span>Khalti</span><span>ConnectIPS</span></div>
-        </div>
-        <div className="footer-column">
-          <strong>SHOP</strong>
-          <a href="#shop" onClick={() => { window.location.hash = 'shop'; openShop(); }}>All products</a>
-          <a href="#categories" onClick={() => { window.location.hash = 'categories'; setCurrentPage('categories'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Categories</a>
-        </div>
-        <div className="footer-column">
-          <strong>COMPANY</strong>
-          <a href="#about" onClick={() => { window.location.hash = 'about'; setCurrentPage('about'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>About Us</a>
-          <a href="#faq" onClick={() => { window.location.hash = 'faq'; setCurrentPage('faq'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>FAQ</a>
-          <a href="#contact" onClick={() => { window.location.hash = 'contact'; setCurrentPage('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Contact</a>
-        </div>
-        <div className="footer-column">
-          <strong>HELP &amp; POLICIES</strong>
-          <a href="tel:+9779700979030">+977 9700979030</a>
-          <a href="mailto:support@sagarmathagamingstore.com">support@sagarmathagamingstore.com</a>
-          <a href="https://sagarmathagamingstore.com/return-policy">Return &amp; refund policy</a>
-          <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">WhatsApp Support</a>
-        </div>
-        <small className="footer-copyright">© 2026 Sagarmatha Gaming Store</small>
-      </footer>
-
-      {/* Floating WhatsApp Contact */}
-      <a className="whatsapp-float" href="https://wa.me/9779700979030" target="_blank" rel="noreferrer" aria-label="Chat with Sagarmatha Gaming Store on WhatsApp">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.4 28.6l6.4-1.7A12.8 12.8 0 1 0 16 3.2Zm0 23.2a10.3 10.3 0 0 1-5.2-1.4l-.4-.2-3.8 1 1-3.7-.3-.4a10.2 10.2 0 1 1 8.7 4.7Zm5.6-7.6c-.3-.2-1.7-.9-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.1.2-.3.2-.6.1-1.7-.9-2.8-1.6-3.9-3.5-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.1.2 2.2 3.4 5.4 4.8 2 .9 2.8 1 3.8.8.6-.1 1.7-.7 1.9-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z" /></svg>
-      </a>
 
       {/* Cart Drawer */}
       {cartOpen && (
