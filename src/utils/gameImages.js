@@ -1,12 +1,39 @@
 // src/utils/gameImages.js
-// Maps game names to direct, high-resolution vertical Steam CDN box-art covers (600x900)
+// Maps game names to direct, high-resolution vertical CDN box-art covers (2:3 aspect ratio / 600x900)
 
 export const FALLBACK_POSTER = "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80";
 export const MINECRAFT_COVER = "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80";
 
-// Comprehensive Steam App ID dictionary matching official catalog titles
-const STEAM_APP_MAP = {
-  // 1. Exact App IDs specified by user instructions
+// Comprehensive catalog cover dictionary: supports direct image URLs and Steam App IDs
+const GAME_COVER_MAP = {
+  // 1. Non-Steam & Launcher Titles (direct 2:3 vertical covers)
+  "valorant": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.png",
+  "league of legends": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2949.png",
+  "fortnite": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x7d.png",
+  "genshin impact": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2040.png",
+  "minecraft": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80",
+
+  // 2. Exact EA Sports & FIFA years (prioritized before generic sports keys)
+  "ea sports fc 27": "2669320",
+  "ea sports fc 26": "2669320",
+  "ea sports fc 25": "2669320",
+  "ea sports fc 24": "2195250",
+  "fc 27": "2669320",
+  "fc 26": "2669320",
+  "fc 25": "2669320",
+  "fc 24": "2195250",
+  "fifa 23": "1811260",
+  "fifa 22": "1506830",
+  "fifa 21": "1313800",
+  "fifa 20": "1225580",
+  "fifa 19": "976310",
+  "fifa 18": "782330",
+  "fifa 17": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7h.png",
+  "ea sports fc": "2669320",
+  "ea fc": "2669320",
+  "fifa": "1811260",
+
+  // 3. Major Steam & Console Catalog Titles
   "grand theft auto v": "271590",
   "grand theft auto": "271590",
   "gta v": "271590",
@@ -22,18 +49,6 @@ const STEAM_APP_MAP = {
   "wwe 2k22": "2315690",
   "wwe 2k20": "1015830",
   "wwe 2k": "2315690",
-  "fifa 22": "1506830",
-  "fifa 23": "2195250",
-  "ea fc 24": "2195250",
-  "ea sports fc 24": "2195250",
-  "ea fc 25": "2195250",
-  "ea sports fc 25": "2195250",
-  "ea fc 26": "2195250",
-  "ea sports fc 26": "2195250",
-  "ea sports fc 27": "2195250",
-  "ea fc": "2195250",
-  "ea sports fc": "2195250",
-  "fifa": "2195250",
   "naruto shippuden ultimate ninja storm 4": "349040",
   "naruto shippuden ultimate ninja storm": "349040",
   "naruto storm 4": "349040",
@@ -56,8 +71,6 @@ const STEAM_APP_MAP = {
   "euro truck simulator 2": "227300",
   "euro truck simulator": "227300",
   "euro truck": "227300",
-
-  // 2. Additional major catalog titles
   "spider man": "1817070",
   "red dead redemption 2": "1174180",
   "red dead redemption": "1174180",
@@ -69,8 +82,8 @@ const STEAM_APP_MAP = {
   "farming simulator 22": "1248130",
   "farming simulator": "2300320",
   "palworld": "1623730",
-  "the forest": "242760",
   "sons of the forest": "1326470",
+  "the forest": "242760",
   "sea of thieves": "1172620",
   "it takes two": "1426210",
   "snowrunner": "1465360",
@@ -109,21 +122,17 @@ const STEAM_APP_MAP = {
   "split fiction": "2001120",
   "expedition 33": "1903380",
   "clair obscur": "1903380",
+  "assassins creed iv black flag": "242050",
+  "black flag": "242050",
+  "assassins creed shadows": "2851900",
   "assassins creed": "2851900",
-  "black flag": "242050"
-};
-
-// Direct high-res art overrides for non-Steam or special items
-const DIRECT_CUSTOM_MAP = {
-  "free fire": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80",
-  "pubg mobile": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&auto=format&fit=crop&q=80",
-  "valorant": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&auto=format&fit=crop&q=80",
-  "genshin impact": "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80",
   "wolverine": "https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?w=600&auto=format&fit=crop&q=80",
-  "gta 6": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80"
+  "gta 6": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
+  "free fire": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80",
+  "pubg mobile": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&auto=format&fit=crop&q=80"
 };
 
-// Clean the game title before lookup: strip /\(.*?\)/g, PS4 Disc, PS5 Disc, Standard Edition, Deluxe Edition, Pre-Owned, Sealed, and all non-alphanumeric characters
+// Clean the game title string: strip /\(.*?\)/g, PS4 Disc, PS5 Disc, Pre-Owned, Sealed, and all non-alphanumeric punctuation
 export function cleanGameTitle(name) {
   if (!name) return "";
   return name
@@ -142,7 +151,17 @@ export function cleanGameTitle(name) {
     .trim();
 }
 
-const sortedSteamEntries = Object.entries(STEAM_APP_MAP).sort((a, b) => b[0].length - a[0].length);
+// Converts Steam app IDs to full CDN URLs or returns direct HTTP(S) URLs
+const resolveCoverUrl = (target) => {
+  if (!target) return FALLBACK_POSTER;
+  if (target.startsWith("http://") || target.startsWith("https://")) {
+    return target;
+  }
+  return `https://cdn.cloudflare.steamstatic.com/steam/apps/${target}/library_600x900_2x.jpg`;
+};
+
+// Sorted dictionary keys by length in descending order (longest match first)
+const sortedEntries = Object.entries(GAME_COVER_MAP).sort((a, b) => b[0].length - a[0].length);
 
 export function getGameCover(name) {
   if (!name) return FALLBACK_POSTER;
@@ -159,22 +178,15 @@ export function getGameCover(name) {
     return MINECRAFT_COVER;
   }
 
-  // Check direct custom art overrides
-  for (const [key, url] of Object.entries(DIRECT_CUSTOM_MAP)) {
+  // 1. Exact cleaned match
+  if (GAME_COVER_MAP[cleaned]) {
+    return resolveCoverUrl(GAME_COVER_MAP[cleaned]);
+  }
+
+  // 2. Longest substring match (prevents generic collisions like "fifa" matching before "fifa 18" or "fc 25")
+  for (const [key, target] of sortedEntries) {
     if (cleaned.includes(key) || rawLower.includes(key)) {
-      return url;
-    }
-  }
-
-  // Check exact Steam App match
-  if (STEAM_APP_MAP[cleaned]) {
-    return `https://cdn.cloudflare.steamstatic.com/steam/apps/${STEAM_APP_MAP[cleaned]}/library_600x900_2x.jpg`;
-  }
-
-  // Check substring matches ordered by length descending
-  for (const [key, appId] of sortedSteamEntries) {
-    if (cleaned.includes(key)) {
-      return `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/library_600x900_2x.jpg`;
+      return resolveCoverUrl(target);
     }
   }
 
