@@ -531,17 +531,34 @@ function App() {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState(getSavedUser)
   const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [authNotice, setAuthNotice] = useState(null)
 
   useEffect(() => {
     const initDiscordAuth = async () => {
       const callbackUser = await handleDiscordCallback()
-      if (callbackUser) {
-        setCurrentUser(callbackUser)
-        window.location.hash = 'profile'
-        setCurrentPage('profile')
-      } else {
-        const saved = getSavedUser()
-        if (saved) setCurrentUser(saved)
+      const user = callbackUser || getSavedUser()
+      if (user) {
+        setCurrentUser(user)
+        const pending = localStorage.getItem('pending_purchase')
+        if (pending) {
+          try {
+            const data = JSON.parse(pending)
+            localStorage.removeItem('pending_purchase')
+            if (data.type === 'cart_checkout') {
+              setCheckoutOpen(true)
+              return
+            } else if (data.type === 'topup' && data.product) {
+              setTopUpModalProduct(data.product)
+              return
+            }
+          } catch (e) {
+            console.error('Error resuming purchase:', e)
+          }
+        }
+        if (callbackUser) {
+          window.location.hash = 'profile'
+          setCurrentPage('profile')
+        }
       }
     }
     initDiscordAuth()
@@ -553,6 +570,15 @@ function App() {
       if (!email && currentUser.email) setEmail(currentUser.email)
     }
   }, [currentUser])
+
+  
+  const requireLoginForAction = (noticeMessage, pendingData) => {
+    if (pendingData) {
+      localStorage.setItem('pending_purchase', JSON.stringify(pendingData))
+    }
+    setAuthNotice(noticeMessage || "Please log in with Discord to complete your order and track your vouchers.")
+    setAuthModalOpen(true)
+  }
 
   const handleUserLogout = () => {
     logoutUser()
@@ -775,6 +801,9 @@ function App() {
         }
       })
 
+      const userKey = currentUser?.id ? `gamer_orders_${currentUser.id}` : 'gamer_orders_guest'
+      const existingUserOrders = JSON.parse(localStorage.getItem(userKey) || '[]')
+      localStorage.setItem(userKey, JSON.stringify([...newGamerOrders, ...existingUserOrders]))
       localStorage.setItem('gamer_orders', JSON.stringify([...newGamerOrders, ...existingOrders]))
 
       if (hasTopUp && playerUid.trim()) {
@@ -1237,18 +1266,53 @@ function App() {
 
       {/* Profile View */}
       {currentPage === 'profile' && (
-        <Profile
-          currentUser={currentUser}
-          onLogout={handleUserLogout}
-          onOpenLogin={() => setAuthModalOpen(true)}
-          onClose={() => {
-            window.location.hash = 'home'
-            setCurrentPage('home')
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-          }}
-          onOpenTopUp={handleOpenTopUp}
-          onNavigateShop={openShop}
-        />
+        !currentUser ? (
+          <div className="max-w-md mx-auto my-12 p-8 bg-[#0e1629] border border-cyan-500/30 rounded-2xl text-center space-y-5 shadow-2xl">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-[#5865F2]/20 border border-[#5865F2]/50 text-[#5865F2] flex items-center justify-center shadow-lg shadow-[#5865F2]/20">
+              <DiscordIcon size={34} />
+            </div>
+            <div>
+              <h2 className="text-2xl font-black text-white">Sign In Required</h2>
+              <p className="text-slate-400 text-sm mt-1 max-w-xs mx-auto">
+                Please log in with Discord to view your account, order vouchers, and saved game UIDs.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setAuthNotice("Please log in with Discord to access your profile and order history.")
+                setAuthModalOpen(true)
+              }}
+              className="w-full py-3 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-extrabold text-sm flex items-center justify-center gap-2.5 transition-all shadow-lg shadow-[#5865F2]/30 cursor-pointer border-0"
+            >
+              <DiscordIcon size={20} />
+              <span>Login with Discord</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                window.location.hash = 'home'
+                setCurrentPage('home')
+              }}
+              className="w-full py-2 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer bg-transparent border-0"
+            >
+              ← Back to Store
+            </button>
+          </div>
+        ) : (
+          <Profile
+            currentUser={currentUser}
+            onLogout={handleUserLogout}
+            onOpenLogin={() => setAuthModalOpen(true)}
+            onClose={() => {
+              window.location.hash = 'home'
+              setCurrentPage('home')
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            onOpenTopUp={handleOpenTopUp}
+            onNavigateShop={openShop}
+          />
+        )
       )}
 
       {/* Home View */}
@@ -2021,7 +2085,19 @@ function App() {
                     <strong className="text-base font-extrabold text-white">{formatPrice(subtotal)}</strong>
                   </div>
                   <p className="text-xs text-slate-400 mb-3">Fast digital delivery to your WhatsApp / Email upon checkout.</p>
-                  <button type="button" className="primary-button w-full" onClick={() => { setCartOpen(false); setCheckoutOpen(true) }}>
+                  <button 
+                    type="button" 
+                    className="primary-button w-full" 
+                    onClick={() => {
+                      if (!currentUser) {
+                        requireLoginForAction("Please log in with Discord to complete your order and track your vouchers.", { type: 'cart_checkout' })
+                        setCartOpen(false)
+                        return
+                      }
+                      setCartOpen(false)
+                      setCheckoutOpen(true)
+                    }}
+                  >
                     Continue to checkout <ArrowRight size={17} />
                   </button>
                   <button 
@@ -2067,6 +2143,10 @@ function App() {
           onDirectCheckout={(customItem) => {
             addToCart(customItem)
             setGiftCardModalProduct(null)
+            if (!currentUser) {
+              requireLoginForAction("Please log in with Discord to complete your order and track your vouchers.", { type: 'cart_checkout' })
+              return
+            }
             setCheckoutOpen(true)
           }}
         />
@@ -2076,12 +2156,20 @@ function App() {
       {topUpModalProduct && (
         <TopUpModal
           product={topUpModalProduct}
+          currentUser={currentUser}
           onClose={() => setTopUpModalProduct(null)}
+          onRequireLogin={(msg, pending) => {
+            requireLoginForAction(msg, pending)
+          }}
           onConfirmRecharge={(orderData) => {
             // Recharge saved in localStorage
           }}
           onOpenProfile={() => {
             setTopUpModalProduct(null)
+            if (!currentUser) {
+              requireLoginForAction("Please log in with Discord to view your orders and profile.")
+              return
+            }
             window.location.hash = 'profile'
             setCurrentPage('profile')
             window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -2092,10 +2180,31 @@ function App() {
       {/* Discord Authentication Modal */}
       {authModalOpen && (
         <AuthModal
-          onClose={() => setAuthModalOpen(false)}
+          notice={authNotice}
+          onClose={() => {
+            setAuthModalOpen(false)
+            setAuthNotice(null)
+          }}
           onLoginSuccess={(user) => {
             setCurrentUser(user)
             setAuthModalOpen(false)
+            setAuthNotice(null)
+            const pending = localStorage.getItem('pending_purchase')
+            if (pending) {
+              try {
+                const data = JSON.parse(pending)
+                localStorage.removeItem('pending_purchase')
+                if (data.type === 'cart_checkout') {
+                  setCheckoutOpen(true)
+                  return
+                } else if (data.type === 'topup' && data.product) {
+                  setTopUpModalProduct(data.product)
+                  return
+                }
+              } catch (e) {
+                console.error('Error resuming purchase:', e)
+              }
+            }
             window.location.hash = 'profile'
             setCurrentPage('profile')
             window.scrollTo({ top: 0, behavior: 'smooth' })

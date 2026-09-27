@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react'
 import { X, Check, Zap, ShieldCheck, Sparkles, AlertCircle, Copy, CheckCircle2, User, Globe } from 'lucide-react'
+import { DiscordIcon } from './AuthModal'
 import getCoverImage, { DEFAULT_FALLBACK_COVER } from '../utils/gameImages'
 
 const GAME_DENOMINATIONS = {
@@ -49,7 +50,7 @@ const GAME_DENOMINATIONS = {
   ]
 }
 
-export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpenProfile }) {
+export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpenProfile, currentUser, onRequireLogin }) {
   const [playerUid, setPlayerUid] = useState('')
   const [serverRegion, setServerRegion] = useState('')
   const [selectedPack, setSelectedPack] = useState(null)
@@ -108,6 +109,19 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
   const handleConfirm = (e) => {
     e.preventDefault()
     if (!playerUid.trim()) return
+
+    if (!currentUser) {
+      if (onRequireLogin) {
+        onRequireLogin("Please log in with Discord to complete your order and track your vouchers.", {
+          type: 'topup',
+          product,
+          playerUid: playerUid.trim(),
+          serverRegion: serverRegion.trim(),
+          selectedPack
+        })
+      }
+      return
+    }
 
     const orderId = `SG-TOPUP-${Math.floor(100000 + Math.random() * 900000)}`
     const orderData = {

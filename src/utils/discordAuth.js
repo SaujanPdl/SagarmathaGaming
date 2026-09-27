@@ -137,20 +137,3 @@ export function logoutUser() {
 /**
  * Instant Mock Discord login for testing without registering a live client ID
  */
-export function loginMockDiscord(customData = {}) {
-  const mockUser = {
-    id: '894102948291048123',
-    username: 'nepalgamer',
-    global_name: 'Sagarmatha Gamer',
-    avatar: 'mock_discord_avatar',
-    avatarUrl: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=256&q=80',
-    email: 'nepalgamer@gmail.com',
-    accessToken: 'mock_discord_access_token_demo',
-    loginMethod: 'discord_demo',
-    loginTime: Date.now(),
-    ...customData
-  }
-
-  saveUser(mockUser)
-  return mockUser
-}

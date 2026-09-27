@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { X, ShieldCheck, Zap, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react'
-import { getDiscordLoginUrl, loginMockDiscord } from '../utils/discordAuth'
+import { X, ShieldCheck, Zap, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react'
+import { getDiscordLoginUrl } from '../utils/discordAuth'
 
 export const DiscordIcon = ({ size = 20, className = '' }) => (
   <svg 
@@ -15,21 +15,13 @@ export const DiscordIcon = ({ size = 20, className = '' }) => (
   </svg>
 )
 
-export default function AuthModal({ onClose, onLoginSuccess }) {
+export default function AuthModal({ onClose, onLoginSuccess, notice }) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleDiscordClick = () => {
     setIsLoading(true)
     const url = getDiscordLoginUrl()
     window.location.href = url
-  }
-
-  const handleInstantDemoLogin = () => {
-    const demoUser = loginMockDiscord()
-    if (onLoginSuccess) {
-      onLoginSuccess(demoUser)
-    }
-    if (onClose) onClose()
   }
 
   return (
@@ -45,8 +37,8 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
               <DiscordIcon size={18} />
             </div>
             <div>
-              <span className="text-[10px] font-bold text-cyan-400 tracking-wider uppercase">Gamer Authentication</span>
-              <h2 className="text-base sm:text-lg font-black text-white">Sign In to Sagarmatha</h2>
+              <span className="text-[10px] font-bold text-cyan-400 tracking-wider uppercase">Authentication Required</span>
+              <h2 className="text-base sm:text-lg font-black text-white">Sign In with Discord</h2>
             </div>
           </div>
           <button 
@@ -60,8 +52,16 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
         </div>
 
         {/* Content */}
-        <div className="p-5 sm:p-6 space-y-5 overflow-y-auto">
-          {/* Hero Banner inside Modal */}
+        <div className="p-5 sm:p-6 space-y-4 overflow-y-auto">
+          {/* Informative Purchase Notice if Triggered */}
+          {notice && (
+            <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-[#5865F2]/15 border border-[#5865F2]/40 text-indigo-200 text-xs">
+              <AlertCircle size={17} className="text-[#5865F2] shrink-0 mt-0.5" />
+              <span className="font-semibold leading-relaxed">{notice}</span>
+            </div>
+          )}
+
+          {/* Hero Banner */}
           <div className="text-center py-2">
             <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-[#5865F2] to-cyan-400 p-0.5 shadow-xl shadow-[#5865F2]/20 mb-3 flex items-center justify-center">
               <div className="w-full h-full bg-[#0a0f1d] rounded-2xl flex items-center justify-center text-[#5865F2]">
@@ -70,7 +70,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             </div>
             <h3 className="text-xl font-black text-white">Connect Your Discord</h3>
             <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-xs mx-auto">
-              Sync your gamer identity to access order voucher codes and fast 1-click game recharges.
+              Verify your gamer identity to complete orders, receive digital codes, and view saved UIDs.
             </p>
           </div>
 
@@ -90,9 +90,8 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="space-y-3 pt-1">
-            {/* Real Discord OAuth Button */}
+          {/* Action Buttons: ONLY official Discord login */}
+          <div className="space-y-3 pt-2">
             <button
               type="button"
               onClick={handleDiscordClick}
@@ -100,21 +99,11 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
               className="w-full h-12 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all shadow-lg shadow-[#5865F2]/30 cursor-pointer border-0 active:scale-[0.98]"
             >
               <DiscordIcon size={20} />
-              <span>{isLoading ? 'Connecting to Discord...' : 'Continue with Discord'}</span>
-            </button>
-
-            {/* Quick Demo Login Option */}
-            <button
-              type="button"
-              onClick={handleInstantDemoLogin}
-              className="w-full h-10 rounded-xl bg-[#141b2c] hover:bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
-            >
-              <Zap size={13} className="text-cyan-400" />
-              <span>Instant 1-Click Demo Login</span>
+              <span>{isLoading ? 'Redirecting to Discord...' : 'Login with Discord'}</span>
             </button>
           </div>
 
-          <div className="text-center pt-1 border-t border-slate-800/80">
+          <div className="text-center pt-2 border-t border-slate-800/80">
             <p className="text-[11px] text-slate-500 flex items-center justify-center gap-1">
               <ShieldCheck size={12} className="text-emerald-400" />
               We never access your passwords or private Discord messages.

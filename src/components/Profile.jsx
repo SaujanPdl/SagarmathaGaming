@@ -22,14 +22,16 @@ import { DiscordIcon } from './AuthModal'
 
 export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentUser, onLogout, onOpenLogin }) {
   const [activeTab, setActiveTab] = useState('orders')
+  const currentUserId = currentUser?.id || 'guest'
+
   const [orders, setOrders] = useState(() => {
     try {
-      const stored = localStorage.getItem('gamer_orders')
+      const userKey = `gamer_orders_${currentUserId}`
+      const stored = localStorage.getItem(userKey) || localStorage.getItem('gamer_orders')
       if (stored) {
         const parsed = JSON.parse(stored)
         if (Array.isArray(parsed)) {
-          // Filter out legacy mock data if present
-          return parsed.filter(o => !o.orderId?.startsWith('SG-TOPUP-872311') && !o.orderId?.startsWith('SG-TOPUP-290670') && !o.orderId?.startsWith('SG-VOUCH-78912') && !o.orderId?.startsWith('SG-VOUCH-65201') && !o.orderId?.startsWith('SG-TOPUP-941824') && !o.orderId?.startsWith('SG-VOUCH-41908'))
+          return parsed.filter(o => (!o.userId || o.userId === currentUserId) && !o.orderId?.startsWith('SG-TOPUP-872311') && !o.orderId?.startsWith('SG-TOPUP-290670') && !o.orderId?.startsWith('SG-VOUCH-78912') && !o.orderId?.startsWith('SG-VOUCH-65201') && !o.orderId?.startsWith('SG-TOPUP-941824') && !o.orderId?.startsWith('SG-VOUCH-41908'))
         }
       }
       return []
@@ -40,12 +42,12 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
 
   const [savedIds, setSavedIds] = useState(() => {
     try {
-      const stored = localStorage.getItem('saved_player_ids')
+      const userKey = `saved_player_ids_${currentUserId}`
+      const stored = localStorage.getItem(userKey) || localStorage.getItem('saved_player_ids')
       if (stored) {
         const parsed = JSON.parse(stored)
         if (Array.isArray(parsed)) {
-          // Filter out legacy default mock IDs
-          return parsed.filter(item => item.uid !== '789123456' && item.uid !== '5123456789' && item.uid !== '98124712')
+          return parsed.filter(item => (!item.userId || item.userId === currentUserId) && item.uid !== '789123456' && item.uid !== '5123456789' && item.uid !== '98124712')
         }
       }
       return []
@@ -68,22 +70,24 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
   useEffect(() => {
     const loadProfileData = () => {
       try {
-        const rawOrders = localStorage.getItem('gamer_orders')
+        const userOrdersKey = `gamer_orders_${currentUserId}`
+        const rawOrders = localStorage.getItem(userOrdersKey) || localStorage.getItem('gamer_orders')
         if (rawOrders) {
           const parsed = JSON.parse(rawOrders)
           const filtered = Array.isArray(parsed)
-            ? parsed.filter(o => !o.orderId?.startsWith('SG-TOPUP-872311') && !o.orderId?.startsWith('SG-TOPUP-290670') && !o.orderId?.startsWith('SG-VOUCH-78912') && !o.orderId?.startsWith('SG-VOUCH-65201') && !o.orderId?.startsWith('SG-TOPUP-941824') && !o.orderId?.startsWith('SG-VOUCH-41908'))
+            ? parsed.filter(o => (!o.userId || o.userId === currentUserId) && !o.orderId?.startsWith('SG-TOPUP-872311') && !o.orderId?.startsWith('SG-TOPUP-290670') && !o.orderId?.startsWith('SG-VOUCH-78912') && !o.orderId?.startsWith('SG-VOUCH-65201') && !o.orderId?.startsWith('SG-TOPUP-941824') && !o.orderId?.startsWith('SG-VOUCH-41908'))
             : []
           setOrders(filtered)
         } else {
           setOrders([])
         }
 
-        const rawUids = localStorage.getItem('saved_player_ids')
+        const userUidsKey = `saved_player_ids_${currentUserId}`
+        const rawUids = localStorage.getItem(userUidsKey) || localStorage.getItem('saved_player_ids')
         if (rawUids) {
           const parsed = JSON.parse(rawUids)
           const filtered = Array.isArray(parsed)
-            ? parsed.filter(item => item.uid !== '789123456' && item.uid !== '5123456789' && item.uid !== '98124712')
+            ? parsed.filter(item => (!item.userId || item.userId === currentUserId) && item.uid !== '789123456' && item.uid !== '5123456789' && item.uid !== '98124712')
             : []
           setSavedIds(filtered)
         } else {
@@ -141,6 +145,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
 
     const newEntry = {
       id: Date.now(),
+      userId: currentUserId,
       game: newGame,
       uid: newUid.trim(),
       server: newServer.trim(),
