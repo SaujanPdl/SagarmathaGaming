@@ -7,33 +7,47 @@ const SKU_EXACT_MAP = {
   "SG-080": "https://upload.wikimedia.org/wikipedia/en/4/46/Grand_Theft_Auto_VI.png",
   "SG-081": "https://upload.wikimedia.org/wikipedia/en/4/46/Grand_Theft_Auto_VI.png",
 
-  // GTA Vice City (Fix any old mistaken co7927 reference)
+  // GTA Vice City
   "SG-034": "https://cdn.cloudflare.steamstatic.com/steam/apps/1546990/library_600x900_2x.jpg",
 
-  // Digital Gift Cards & Services (Clean, branded vector/card art, NOT physical photos of consoles or laptops)
-  "SG-064": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/800px-Steam_icon_logo.svg.png",
-  "SG-065": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/800px-Roblox_player_icon_black.svg.png",
-  "SG-066": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.png",
-  "SG-067": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
-  "SG-068": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/800px-Apple_logo_black.svg.png",
-  "SG-069": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Battle.net_logo.svg/800px-Battle.net_logo.svg.png",
-  "SG-070": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80",
-  "SG-071": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
-  "SG-072": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo.svg/800px-Nintendo.svg.png",
-  "SG-073": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Discord_color_icon_%28vector%29.svg/800px-Discord_color_icon_%28vector%29.svg.png",
-  "SG-074": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Electronic-Arts-Logo.svg/800px-Electronic-Arts-Logo.svg.png",
-  "SG-075": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/800px-Netflix_2015_logo.svg.png",
-  "SG-076": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Epic_Games_logo.svg/800px-Epic_Games_logo.svg.png",
+  // FIFA Exact Box Art
+  "SG-101": "https://images.igdb.com/igdb/image/upload/t_cover_big/co204b.png", // FIFA 16
+  "SG-102": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qsf.png", // FIFA 20
+  "SG-103": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qse.png", // FIFA 19
+  "SG-104": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qsd.png", // FIFA 18
+  "SG-109": "https://cdn.cloudflare.steamstatic.com/steam/apps/1811260/library_600x900_2x.jpg", // FIFA 23
+  "SG-111": "https://cdn.cloudflare.steamstatic.com/steam/apps/1506830/library_600x900_2x.jpg", // FIFA 22
+
+  // WWE 2K Series
+  "SG-105": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x1e.png", // WWE 2K17
+  "SG-106": "https://cdn.cloudflare.steamstatic.com/steam/apps/664430/library_600x900_2x.jpg", // WWE 2K18
+  "SG-112": "https://cdn.cloudflare.steamstatic.com/steam/apps/1812440/library_600x900_2x.jpg", // WWE 2K22
+  "SG-113": "https://cdn.cloudflare.steamstatic.com/steam/apps/1015140/library_600x900_2x.jpg", // WWE 2K20
+
+  // Official Retail Digital Gift Card Artwork (Real styled vouchers)
+  "SG-064": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80", // Steam Gift Card
+  "SG-065": "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80", // Roblox Gift Card
+  "SG-066": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.png", // Valorant Gift Card
+  "SG-067": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80", // PlayStation Gift Card US
+  "SG-068": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80", // Apple Gift Card US
+  "SG-069": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80", // Battle.net Gift Card US
+  "SG-070": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80", // ExitLag Global Card
+  "SG-071": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80", // Xbox Gift Card US
+  "SG-072": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&auto=format&fit=crop&q=80", // Nintendo Gift Card US
+  "SG-073": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80", // Discord Gift Card
+  "SG-074": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80", // EA Gift Card US
+  "SG-075": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80", // Netflix Gift Card
+  "SG-076": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&auto=format&fit=crop&q=80", // Epic Gift Card US
 
   // Subscriptions
-  "SG-077": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
-  "SG-094": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+  "SG-077": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80", // Xbox Game Pass Ultimate
+  "SG-094": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80", // Lifetime PC Game Pass
 
-  // Steam Mystery Keys & Bundles (Distinct stylized digital key graphics, NO duplicate retro computers)
-  "SG-096": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80", // Steam Random Keys (Matrix Digital Art)
-  "SG-097": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80", // Grand Random Steam Key (Glow Key Art)
-  "SG-098": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80", // Steam Random Elite Key (Cyber Neon Art)
-  "SG-099": "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600&auto=format&fit=crop&q=80", // VIP Mystery Bundle (Gold/Purple Mystery)
+  // Curated Mystery & Steam Key Cards
+  "SG-096": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80", // Steam Random Keys (Matrix digital stream)
+  "SG-097": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80", // Grand Random Steam Key (Steam library neon card)
+  "SG-098": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&auto=format&fit=crop&q=80", // Steam Random Elite Key (Neon gaming key card)
+  "SG-099": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&auto=format&fit=crop&q=80", // VIP Mystery Bundle (Glowing cyber treasure chest)
 };
 
 const inputPath = path.join(__dirname, '..', 'src', 'products_clean.json');
@@ -47,30 +61,6 @@ const updatedProducts = products.map((p) => {
 
   if (SKU_EXACT_MAP[p.sku]) {
     newImage = SKU_EXACT_MAP[p.sku];
-    updatedCount++;
-  } else if (p.name.toLowerCase().includes('gta 6') || p.name.toLowerCase().includes('grand theft auto vi')) {
-    newImage = "https://upload.wikimedia.org/wikipedia/en/4/46/Grand_Theft_Auto_VI.png";
-    updatedCount++;
-  } else if (p.name.toLowerCase().includes('ea gift') || p.name.toLowerCase().includes('ea play')) {
-    newImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Electronic-Arts-Logo.svg/800px-Electronic-Arts-Logo.svg.png";
-    updatedCount++;
-  } else if (p.name.toLowerCase().includes('battle.net')) {
-    newImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Battle.net_logo.svg/800px-Battle.net_logo.svg.png";
-    updatedCount++;
-  } else if (p.name.toLowerCase().includes('apple gift card') || p.name.toLowerCase().includes('apple')) {
-    newImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/800px-Apple_logo_black.svg.png";
-    updatedCount++;
-  } else if (p.name.toLowerCase().includes('vip mystery bundle')) {
-    newImage = "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600&auto=format&fit=crop&q=80";
-    updatedCount++;
-  } else if (p.name.toLowerCase().includes('elite key')) {
-    newImage = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80";
-    updatedCount++;
-  } else if (p.name.toLowerCase().includes('grand random')) {
-    newImage = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80";
-    updatedCount++;
-  } else if (p.name.toLowerCase().includes('steam random keys')) {
-    newImage = "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80";
     updatedCount++;
   }
 
