@@ -18,113 +18,16 @@ import {
   ExternalLink
 } from 'lucide-react'
 import getCoverImage, { DEFAULT_FALLBACK_COVER } from '../utils/gameImages'
+import { apiRequest } from '../api'
 
-const DEFAULT_ORDERS = [
-  {
-    orderId: 'SG-VOUCH-78912',
-    date: 'Sep 27, 2026',
-    time: '04:15 PM',
-    game: 'Steam Gift Card (Global Region)',
-    item: 'Steam $10 Card',
-    packageName: '$10 USD Wallet Code',
-    amount: 1450,
-    redeemCode: 'ABCD-1234-EFGH',
-    paymentMethod: 'eSewa',
-    status: 'Completed',
-    deliveryType: 'Digital code delivery',
-    image: '/covers/steam-random-keys.jpg'
-  },
-  {
-    orderId: 'SG-VOUCH-65201',
-    date: 'Sep 26, 2026',
-    time: '01:20 PM',
-    game: 'Roblox Gift Card',
-    item: 'Roblox 800 Robux Card',
-    packageName: '800 Robux Digital Code',
-    amount: 1350,
-    redeemCode: 'RBLX-9921-8842-KLPQ',
-    paymentMethod: 'Khalti',
-    status: 'Completed',
-    deliveryType: 'Digital code delivery',
-    image: '/covers/roblox-gift-card.jpg'
-  },
-  {
-    orderId: 'SG-TOPUP-941824',
-    date: 'Sep 25, 2026',
-    time: '08:40 PM',
-    game: 'PUBG Mobile UID Topup',
-    item: 'PUBG Mobile - 325 UC',
-    packageName: '325 UC',
-    amount: 650,
-    uid: '5123456789',
-    server: 'Global / Nepal',
-    paymentMethod: 'eSewa',
-    status: 'Completed',
-    deliveryType: 'UID/Player ID digital top-up',
-    image: '/covers/pubg-mobile-uid-topup.jpg'
-  },
-  {
-    orderId: 'SG-TOPUP-872311',
-    date: 'Sep 23, 2026',
-    time: '06:10 PM',
-    game: 'Free Fire',
-    item: 'Free Fire - 240 Diamonds',
-    packageName: '240 Diamonds',
-    amount: 240,
-    uid: '789123456',
-    server: '',
-    paymentMethod: 'Khalti',
-    status: 'Completed',
-    deliveryType: 'UID/Player ID digital top-up',
-    image: '/covers/free-fire.jpg'
-  },
-  {
-    orderId: 'SG-VOUCH-41908',
-    date: 'Sep 20, 2026',
-    time: '11:05 AM',
-    game: 'PlayStation Gift Card US',
-    item: 'PlayStation $20 Network Card',
-    packageName: '$20 USD PSN Wallet',
-    amount: 2850,
-    redeemCode: 'PSN-7741-9923-MNBV',
-    paymentMethod: 'Mobile Banking',
-    status: 'Completed',
-    deliveryType: 'Digital code delivery',
-    image: '/covers/playstation-gift-card-us.jpg'
-  }
-]
-
-const DEFAULT_SAVED_IDS = [
-  {
-    id: 1,
-    game: 'Free Fire',
-    uid: '789123456',
-    server: '',
-    nickname: 'SagarSniper'
-  },
-  {
-    id: 2,
-    game: 'PUBG Mobile UID Topup',
-    uid: '5123456789',
-    server: 'Global / Nepal',
-    nickname: 'HimalayanHunter'
-  },
-  {
-    id: 3,
-    game: 'Mobile Legends: Bang Bang Nepal',
-    uid: '98124712',
-    server: '2314',
-    nickname: 'EverestMage'
-  }
-]
-
-export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
+export default function Profile({ user, onClose, onOpenTopUp, onNavigateShop, onLogout }) {
   const [activeTab, setActiveTab] = useState('orders')
   const [orders, setOrders] = useState([])
   const [savedIds, setSavedIds] = useState([])
   const [copiedCode, setCopiedCode] = useState(null)
   const [copiedUid, setCopiedUid] = useState(null)
   const [isLoggedOut, setIsLoggedOut] = useState(false)
+  const [accountError, setAccountError] = useState('')
 
   // New Saved ID Form State
   const [showAddForm, setShowAddForm] = useState(false)
@@ -134,39 +37,28 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
   const [newNickname, setNewNickname] = useState('')
 
   useEffect(() => {
-    try {
-      const storedOrders = localStorage.getItem('sagarmatha_orders')
-      if (storedOrders) {
-        const parsed = JSON.parse(storedOrders)
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setOrders(parsed)
-        } else {
-          setOrders(DEFAULT_ORDERS)
-          localStorage.setItem('sagarmatha_orders', JSON.stringify(DEFAULT_ORDERS))
-        }
-      } else {
-        setOrders(DEFAULT_ORDERS)
-        localStorage.setItem('sagarmatha_orders', JSON.stringify(DEFAULT_ORDERS))
-      }
-
-      const storedUids = localStorage.getItem('sagarmatha_saved_uids')
-      if (storedUids) {
-        const parsedUids = JSON.parse(storedUids)
-        if (Array.isArray(parsedUids) && parsedUids.length > 0) {
-          setSavedIds(parsedUids)
-        } else {
-          setSavedIds(DEFAULT_SAVED_IDS)
-          localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(DEFAULT_SAVED_IDS))
-        }
-      } else {
-        setSavedIds(DEFAULT_SAVED_IDS)
-        localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(DEFAULT_SAVED_IDS))
-      }
-    } catch (e) {
-      console.error(e)
-      setOrders(DEFAULT_ORDERS)
-      setSavedIds(DEFAULT_SAVED_IDS)
+    if (import.meta.env.VITE_API_URL) {
+      Promise.all([apiRequest('/api/orders/my-orders'), apiRequest('/api/player-ids')])
+        .then(([remoteOrders, remoteIds]) => {
+          setOrders((remoteOrders || []).map((item) => ({
+            orderId: item.orderNumber,
+            date: new Date(item.createdAt).toLocaleDateString(),
+            game: item.items?.[0]?.productName || 'Order',
+            item: item.items?.map((orderItem) => `${orderItem.productName} × ${orderItem.quantity}`).join(', '),
+            amount: Number(item.totalAmount),
+            paymentMethod: item.payments?.[0]?.method || 'Pending',
+            status: item.status,
+            uid: item.items?.[0]?.playerId,
+            server: item.items?.[0]?.server,
+            redeemCode: item.delivery?.code,
+            image: getCoverImage({ name: item.items?.[0]?.productName }),
+          })))
+          setSavedIds((remoteIds || []).map((item) => ({ ...item, uid: item.playerId })))
+        })
+        .catch((error) => setAccountError(error.message || 'Could not load account data.'))
+      return
     }
+    setAccountError('Connect the frontend to the backend API to load account data.')
   }, [])
 
   const handleCopyCode = (code, id) => {
@@ -182,33 +74,31 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
   }
 
   const handleDeleteSavedId = (id) => {
+    if (!import.meta.env.VITE_API_URL) {
+      setAccountError('Connect the frontend to the backend API to manage saved player IDs.')
+      return
+    }
     const updated = savedIds.filter(item => item.id !== id)
     setSavedIds(updated)
-    try {
-      localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(updated))
-    } catch (e) {
-      console.error(e)
+    if (import.meta.env.VITE_API_URL) {
+      apiRequest(`/api/player-ids/${id}`, { method: 'DELETE' }).catch((error) => console.error(error))
+      return
     }
   }
 
-  const handleAddSavedId = (e) => {
+  const handleAddSavedId = async (e) => {
     e.preventDefault()
     if (!newUid.trim()) return
 
-    const newEntry = {
-      id: Date.now(),
-      game: newGame,
-      uid: newUid.trim(),
-      server: newServer.trim(),
-      nickname: newNickname.trim() || 'My Account'
+    if (!import.meta.env.VITE_API_URL) {
+      setAccountError('Connect the frontend to the backend API to manage saved player IDs.')
+      return
     }
-
-    const updated = [newEntry, ...savedIds]
-    setSavedIds(updated)
     try {
-      localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(updated))
-    } catch (err) {
-      console.error(err)
+      const created = await apiRequest('/api/player-ids', { method: 'POST', body: JSON.stringify({ game: newGame, playerId: newUid.trim(), server: newServer.trim() || undefined, nickname: newNickname.trim() || 'My Account' }) })
+      setSavedIds((current) => [{ ...created, uid: created.playerId }, ...current])
+    } catch (error) {
+      setAccountError(error.message || 'Could not save player ID.')
     }
 
     setNewUid('')
@@ -218,6 +108,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
   }
 
   const handleLogout = () => {
+    if (onLogout) onLogout()
     setIsLoggedOut(true)
     setTimeout(() => {
       if (onClose) onClose()
@@ -249,6 +140,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
           Customer Portal  Sagarmatha Gaming
         </span>
       </div>
+      {accountError && <div className="mb-4 rounded-xl border border-amber-500/30 bg-amber-950/20 px-4 py-3 text-center text-sm text-amber-300">{accountError}</div>}
 
       {/* User Overview Card */}
       <div className="relative rounded-2xl bg-[#0e1526] border border-slate-800 p-6 sm:p-8 mb-8 overflow-hidden shadow-2xl">
@@ -268,12 +160,12 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
 
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
-                <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Sagarmatha Gamer</h1>
+                <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">{user?.name || 'Customer'}</h1>
                 <span className="text-[11px] font-bold bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 px-2.5 py-0.5 rounded-full flex items-center gap-1">
                   <Sparkles size={11} className="text-cyan-400" /> VIP Gold Member
                 </span>
               </div>
-              <p className="text-slate-400 text-xs sm:text-sm mt-1">gamer@sagarmatha.com  +977 98XXXXXXXX</p>
+              <p className="text-slate-400 text-xs sm:text-sm mt-1">{user?.email || 'Account details unavailable'} {user?.phone || ''}</p>
               <div className="flex items-center gap-4 mt-3 text-xs text-slate-300">
                 <span className="flex items-center gap-1.5"><ShoppingBag size={14} className="text-cyan-400" /> <b>{orders.length}</b> Orders &amp; Vouchers</span>
                 <span className="flex items-center gap-1.5"><Gamepad2 size={14} className="text-cyan-400" /> <b>{savedIds.length}</b> Saved Player UIDs</span>

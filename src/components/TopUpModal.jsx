@@ -1,53 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react'
 import { X, Check, Zap, ShieldCheck, Sparkles, AlertCircle, Copy, CheckCircle2, User, Globe } from 'lucide-react'
 import getCoverImage, { DEFAULT_FALLBACK_COVER } from '../utils/gameImages'
-
-const GAME_DENOMINATIONS = {
-  freefire: [
-    { id: 'ff_115', name: '115 Diamonds', price: 120, badge: 'Popular' },
-    { id: 'ff_240', name: '240 Diamonds', price: 240, badge: 'Best Value' },
-    { id: 'ff_355', name: '355 Diamonds', price: 350 },
-    { id: 'ff_610', name: '610 Diamonds', price: 600, badge: '+Bonus' },
-    { id: 'ff_weekly', name: 'Weekly Pass', price: 260, badge: 'Hot Deal' },
-    { id: 'ff_monthly', name: 'Monthly Pass', price: 1050, badge: 'VIP' }
-  ],
-  pubg: [
-    { id: 'pubg_60', name: '60 UC', price: 140 },
-    { id: 'pubg_325', name: '325 UC', price: 650, badge: 'Most Popular' },
-    { id: 'pubg_660', name: '660 UC', price: 1300, badge: 'Royale Pass' },
-    { id: 'pubg_1800', name: '1800 UC', price: 3500, badge: '+Bonus' },
-    { id: 'pubg_rp_upgrade', name: 'Royale Pass Upgrade', price: 950, badge: 'Season Pass' },
-    { id: 'pubg_elite_plus', name: 'Elite Pass Plus', price: 2350 }
-  ],
-  mlbb: [
-    { id: 'mlbb_86', name: '86 Diamonds', price: 210 },
-    { id: 'mlbb_172', name: '172 Diamonds', price: 420 },
-    { id: 'mlbb_257', name: '257 Diamonds', price: 620, badge: 'Popular' },
-    { id: 'mlbb_weekly', name: 'Weekly Diamond Pass', price: 270, badge: 'Best Value' },
-    { id: 'mlbb_706', name: '706 Diamonds', price: 1650, badge: '+Bonus' },
-    { id: 'mlbb_twilight', name: 'Twilight Pass', price: 1350 }
-  ],
-  genshin: [
-    { id: 'gi_60', name: '60 Genesis Crystals', price: 150 },
-    { id: 'gi_welkin', name: 'Blessing of Welkin Moon', price: 650, badge: 'Best Deal' },
-    { id: 'gi_330', name: '300 + 30 Crystals', price: 650 },
-    { id: 'gi_1090', name: '980 + 110 Crystals', price: 1950, badge: '+Bonus' },
-    { id: 'gi_2240', name: '1980 + 260 Crystals', price: 3850 }
-  ],
-  clash: [
-    { id: 'coc_80', name: '80 Gems', price: 130 },
-    { id: 'coc_500', name: '500 Gems', price: 650, badge: 'Popular' },
-    { id: 'coc_1200', name: '1200 Gems', price: 1350, badge: 'Value Pack' },
-    { id: 'coc_goldpass', name: 'Gold Pass', price: 850, badge: 'Season Pass' }
-  ],
-  default: [
-    { id: 'def_starter', name: 'Starter Pack', price: 180, badge: 'Quick Start' },
-    { id: 'def_standard', name: 'Standard Pack', price: 450, badge: 'Popular' },
-    { id: 'def_combat', name: 'Combat Pass', price: 850, badge: 'Season' },
-    { id: 'def_elite', name: 'Elite Bundle', price: 1450, badge: 'Best Value' },
-    { id: 'def_ultimate', name: 'Ultimate Cache', price: 2850, badge: 'Maximum' }
-  ]
-}
+import { apiRequest, createOrder } from '../api'
 
 export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpenProfile }) {
   const [playerUid, setPlayerUid] = useState('')
@@ -58,6 +12,10 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
   const [submittedOrder, setSubmittedOrder] = useState(null)
   const [copiedOrder, setCopiedOrder] = useState(false)
   const [saveThisUid, setSaveThisUid] = useState(true)
+  const [error, setError] = useState('')
+  const [customerName, setCustomerName] = useState('')
+  const [customerEmail, setCustomerEmail] = useState('')
+  const [customerPhone, setCustomerPhone] = useState('')
 
   const productName = product?.name || 'Game Top-Up'
   const nameLower = productName.toLowerCase()
@@ -74,7 +32,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
     : nameLower.includes('clash') ? 'clash'
     : 'default'
 
-  const denominations = GAME_DENOMINATIONS[gameKey] || GAME_DENOMINATIONS.default
+  const denominations = product?.id ? [{ id: product.id, name: 'Standard top-up', price: Number(product.price) || 0 }] : []
 
   useEffect(() => {
     if (denominations.length > 0 && !selectedPack) {
@@ -87,74 +45,37 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
   }, [gameKey])
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('sagarmatha_saved_uids')
-      if (stored) {
-        const parsed = JSON.parse(stored)
-        if (Array.isArray(parsed)) {
-          setSavedUids(parsed)
-          const match = parsed.find(u => u.game?.toLowerCase() === gameKey || nameLower.includes(u.game?.toLowerCase() || ''))
-          if (match && !playerUid) {
-            setPlayerUid(match.uid)
-            if (match.server) setServerRegion(match.server)
-          }
+    if (!import.meta.env.VITE_API_URL) return
+    apiRequest('/api/player-ids')
+      .then((items) => {
+        const mapped = (items || []).map((item) => ({ ...item, uid: item.playerId }))
+        setSavedUids(mapped)
+        const match = mapped.find((item) => item.game?.toLowerCase() === gameKey || nameLower.includes(item.game?.toLowerCase() || ''))
+        if (match && !playerUid) {
+          setPlayerUid(match.uid)
+          if (match.server) setServerRegion(match.server)
         }
-      }
-    } catch (e) {
-      console.error(e)
-    }
+      })
+      .catch((requestError) => setError(requestError.message))
   }, [gameKey])
 
-  const handleConfirm = (e) => {
+  const handleConfirm = async (e) => {
     e.preventDefault()
     if (!playerUid.trim()) return
-
-    const orderId = `SG-TOPUP-${Math.floor(100000 + Math.random() * 900000)}`
-    const orderData = {
-      orderId,
-      id: orderId,
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      game: productName,
-      item: `${productName} - ${selectedPack?.name || 'Recharge'}`,
-      packageName: selectedPack?.name || 'Top-Up Pack',
-      amount: selectedPack?.price || product?.price || 0,
-      uid: playerUid.trim(),
-      server: serverRegion.trim(),
-      paymentMethod,
-      status: 'Completed',
-      deliveryType: 'UID/Player ID digital top-up',
-      image: product?.image || getCoverImage(product)
+    if (!import.meta.env.VITE_API_URL) {
+      setError('Connect the frontend to the backend API before placing a top-up order.')
+      return
     }
-
     try {
-      const existing = JSON.parse(localStorage.getItem('sagarmatha_orders') || '[]')
-      localStorage.setItem('sagarmatha_orders', JSON.stringify([orderData, ...existing]))
-
-      if (saveThisUid && playerUid.trim()) {
-        const uids = JSON.parse(localStorage.getItem('sagarmatha_saved_uids') || '[]')
-        const alreadyExists = uids.some(u => u.uid === playerUid.trim())
-        if (!alreadyExists) {
-          const newSaved = [
-            {
-              id: Date.now(),
-              game: productName,
-              uid: playerUid.trim(),
-              server: serverRegion.trim(),
-              nickname: 'My Account'
-            },
-            ...uids
-          ]
-          localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(newSaved))
-        }
+      const backendOrder = await createOrder({ items: [{ productId: product.id, quantity: 1, playerId: playerUid.trim(), server: serverRegion.trim() }], customer: { name: customerName.trim(), email: customerEmail.trim(), phone: customerPhone.trim() } })
+      const orderData = { ...backendOrder, orderId: backendOrder.orderNumber, game: productName, item: `${productName} - ${selectedPack?.name || 'Recharge'}`, packageName: selectedPack?.name || 'Recharge', amount: Number(backendOrder.totalAmount), uid: playerUid.trim(), server: serverRegion.trim(), paymentMethod, image: product?.image || getCoverImage(product) }
+      if (saveThisUid) {
+        await apiRequest('/api/player-ids', { method: 'POST', body: JSON.stringify({ game: productName, playerId: playerUid.trim(), server: serverRegion.trim() || undefined, nickname: 'My Account' }) })
       }
-    } catch (err) {
-      console.error(err)
-    }
-
-    setSubmittedOrder(orderData)
-    if (onConfirmRecharge) {
-      onConfirmRecharge(orderData)
+      setSubmittedOrder(orderData)
+      if (onConfirmRecharge) onConfirmRecharge(orderData)
+    } catch (requestError) {
+      setError(requestError.message || 'Could not create the top-up order.')
     }
   }
 
@@ -211,9 +132,9 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
               <CheckCircle2 size={36} />
             </div>
             <span className="text-xs font-bold text-emerald-400 tracking-wider uppercase bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30 mb-2">
-              Recharge Confirmed
+              Order Created
             </span>
-            <h3 className="text-2xl font-black text-white mb-1">Instant Top-Up Placed!</h3>
+            <h3 className="text-2xl font-black text-white mb-1">Top-Up Order Created</h3>
             <p className="text-slate-300 text-xs sm:text-sm max-w-md mb-6">
               Instant Digital Delivery: Voucher/UC will be delivered via Email &amp; In-Game UID within 5-15 mins.
             </p>
@@ -242,7 +163,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
                 </div>
               )}
               <div className="flex justify-between items-center pt-2 border-t border-slate-800/60 text-base">
-                <span className="font-semibold text-slate-300">Total Paid</span>
+                <span className="font-semibold text-slate-300">Amount Due</span>
                 <span className="font-black text-cyan-300">Rs. {submittedOrder.amount.toLocaleString()}</span>
               </div>
             </div>
@@ -268,6 +189,13 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
         ) : (
           /* Normal Multi-Step Form */
           <form onSubmit={handleConfirm} className="overflow-y-auto p-5 sm:p-6 space-y-6">
+            {error && <p className="rounded-xl border border-rose-500/30 bg-rose-950/20 px-3 py-2 text-xs text-rose-300">{error}</p>}
+            <div className="space-y-3">
+              <label className="text-xs sm:text-sm font-bold text-slate-200">Delivery contact</label>
+              <input required value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Full name" className="w-full h-10 px-3 rounded-xl bg-[#090d18] border border-slate-700 text-white text-xs outline-none" />
+              <input required type="email" value={customerEmail} onChange={(event) => setCustomerEmail(event.target.value)} placeholder="Email address" className="w-full h-10 px-3 rounded-xl bg-[#090d18] border border-slate-700 text-white text-xs outline-none" />
+              <input required value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} placeholder="WhatsApp / mobile number" className="w-full h-10 px-3 rounded-xl bg-[#090d18] border border-slate-700 text-white text-xs outline-none" />
+            </div>
             {/* Step 1: Player ID & Server Region */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">

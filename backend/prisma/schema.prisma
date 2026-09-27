@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum ProductCategory {
+  GAME
+  GIFT_CARD
+  TOP_UP
+  SUBSCRIPTION
+}
+
+enum DeliveryType {
+  MANUAL
+  DIGITAL_CODE
+  TOP_UP
+}
+
+enum OrderStatus {
+  PENDING
+  PAYMENT_REVIEW
+  PAID
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PENDING
+  VERIFIED
+  REJECTED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  MANUAL
+  BANK_TRANSFER
+  KHALTI
+  ESEWA
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String
+  email         String          @unique
+  passwordHash  String
+  phone         String?
+  role          UserRole        @default(CUSTOMER)
+  orders        Order[]
+  savedPlayerIds SavedPlayerId[]
+  verifiedPayments Payment[]     @relation("PaymentVerifier")
+  deliveries    Delivery[]      @relation("DeliveryCreator")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Product {
+  id           String          @id @default(cuid())
+  name         String
+  slug         String          @unique
+  description  String?
+  category     ProductCategory
+  price        Decimal         @db.Decimal(12, 2)
+  imageUrl     String?
+  deliveryType DeliveryType
+  isActive     Boolean         @default(true)
+  orderItems   OrderItem[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model Order {
+  id             String         @id @default(cuid())
+  orderNumber    String         @unique
+  userId         String?
+  user           User?          @relation(fields: [userId], references: [id])
+  customerName   String
+  customerEmail  String
+  customerPhone  String
+  totalAmount    Decimal        @db.Decimal(12, 2)
+  status         OrderStatus    @default(PENDING)
+  paymentStatus  PaymentStatus  @default(UNPAID)
+  items          OrderItem[]
+  payments       Payment[]
+  delivery       Delivery?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  productName String
+  quantity    Int
+  unitPrice   Decimal  @db.Decimal(12, 2)
+  subtotal    Decimal  @db.Decimal(12, 2)
+  playerId    String?
+  server      String?
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  orderId       String
+  order         Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  method        PaymentMethod
+  amount        Decimal       @db.Decimal(12, 2)
+  status        PaymentStatus @default(PENDING)
+  transactionId String?
+  proofUrl      String?
+  verifiedAt    DateTime?
+  verifiedBy    String?
+  verifier      User?         @relation("PaymentVerifier", fields: [verifiedBy], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model SavedPlayerId {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      String
+  playerId  String
+  nickname  String?
+  server    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Delivery {
+  id           String       @id @default(cuid())
+  orderId      String       @unique
+  order        Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  deliveryType DeliveryType
+  code         String?
+  message      String?
+  deliveredAt  DateTime?
+  deliveredBy  String?
+  creator      User?        @relation("DeliveryCreator", fields: [deliveredBy], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}

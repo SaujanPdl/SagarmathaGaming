@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useMemo, useState } from 'react'
-import { parse } from 'csv-parse/browser/esm/sync'
 import {
   ArrowDownRight,
   ArrowLeft,
@@ -31,12 +30,13 @@ import {
   X,
   Zap,
 } from 'lucide-react'
-import productsCleanData from './data/products_clean.json'
-import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
 import getCoverImage, { getCoverImage as namedGetCoverImage, DEFAULT_FALLBACK_COVER, FALLBACK_POSTER, getGameCover, getDynamicPlaceholder } from './utils/gameImages'
 import GiftCardModal from './components/GiftCardModal'
 import TopUpModal from './components/TopUpModal'
 import Profile from './components/Profile'
+import { createOrder as createBackendOrder, getMe, getProducts, logout, submitPayment } from './api'
+import AuthModal from './components/AuthModal'
+import AdminDashboard from './components/AdminDashboard'
 import './App.css'
 
 class ErrorBoundary extends Component {
@@ -64,40 +64,6 @@ class ErrorBoundary extends Component {
       )
     }
     return this.props.children
-  }
-}
-
-// Resilient product data initialization: prefer validated JSON, fallback to CSV parsing
-let rawProductList = []
-
-if (Array.isArray(productsCleanData) && productsCleanData.length > 0) {
-  rawProductList = productsCleanData.map((row) => ({
-    sku: row?.sku || '',
-    name: row?.name || '',
-    price: typeof row?.price === 'number' ? row.price : Number(row?.price) || 0,
-    category: row?.category || 'Game Keys',
-    deliveryType: row?.deliveryType || 'Digital',
-    status: row?.status || 'Available',
-    image: row?.image || '',
-  }))
-} else {
-  try {
-    rawProductList = parse(productCsv, {
-      columns: true,
-      skip_empty_lines: true,
-      trim: true,
-    }).map((row) => ({
-      sku: row?.SKU || '',
-      name: row?.['Product Name'] || '',
-      price: Number(row?.['Sagarmatha Selling Price (NPR)']) || 0,
-      category: row?.Category || 'Game Keys',
-      deliveryType: row?.['Delivery Type'] || 'Digital',
-      status: row?.['HGS Status'] || 'Available',
-      image: '',
-    }))
-  } catch (err) {
-    console.error("Failed to parse fallback CSV:", err)
-    rawProductList = []
   }
 }
 
@@ -155,29 +121,14 @@ function getDeliveryBadge(product) {
   return 'DIGITAL'
 }
 
-const products = (Array.isArray(rawProductList) ? rawProductList : [])
-  .filter((product) => Boolean(product && typeof product === 'object'))
-  .map((product) => ({
-    ...product,
-    id: product?.sku || `prod-${Math.random()}`,
-    sku: product?.sku || '',
-    name: product?.name || 'Untitled Game',
-    price: typeof product?.price === 'number' && !isNaN(product?.price) ? product.price : 0,
-    category: product?.category || 'Game Keys',
-    deliveryType: product?.deliveryType || 'Digital',
-    status: product?.status || 'Available',
-    oldPrice: null,
-    badge: getDeliveryBadge(product),
-    platform: getProductPlatform(product),
-    image: getCoverImage(product),
-    imageAlt: `${product?.name || 'Game'} artwork`,
-    description: product?.deliveryType || 'Digital',
-    delivery: product?.deliveryType || 'Digital',
-    instructions: `Delivery method: ${product?.deliveryType || 'Digital'}. Follow the instructions provided with your order.`,
-    credentials: 'Product details are provided after payment confirmation.',
-  }))
+function normaliseBackendProduct(product) {
+  const categoryMap = { GAME: 'Game Keys', GIFT_CARD: 'Gift Cards', TOP_UP: 'Game Top-Up', SUBSCRIPTION: 'AI & Subscription' }
+  const category = categoryMap[product?.category] || product?.category || 'Game Keys'
+  const item = { ...product, sku: product?.slug || product?.id, category, price: Number(product?.price) || 0, status: product?.isActive === false ? 'Unavailable' : 'Available', deliveryType: product?.deliveryType || 'Digital', image: product?.imageUrl || '' }
+  return { ...item, id: product?.id || item.sku, oldPrice: null, badge: getDeliveryBadge(item), platform: getProductPlatform(item), image: getCoverImage(item), imageAlt: `${item.name || 'Game'} artwork`, description: item.description || item.deliveryType || 'Digital', delivery: item.deliveryType || 'Digital', instructions: `Delivery method: ${item.deliveryType || 'Digital'}. Follow the instructions provided with your order.`, credentials: 'Product details are provided after payment confirmation.' }
+}
 
-const platformOptions = ['All platforms', ...new Set(products.map((product) => product?.platform).filter(Boolean))]
+const platformOptions = ['All platforms', 'Steam', 'PlayStation', 'Mobile', 'Gift Cards', 'Microsoft', 'Xbox', 'Digital Services', 'PC Games']
 
 const formatPrice = (amount) => `Rs. ${(amount ?? 0).toLocaleString('en-IN')}`
 
@@ -200,9 +151,9 @@ const categoryDisplayNames = {
   'PlayStation Physical Disc': 'Playstation Disc',
 }
 
-function getCategoryCover(category) {
+function getCategoryCover(category, availableProducts = []) {
   if (category === 'Steam Private Account') {
-    return products.find((product) => product?.name?.toLowerCase().includes('red dead redemption 2'))?.image
+    return availableProducts.find((product) => product?.name?.toLowerCase().includes('red dead redemption 2'))?.image
   }
   if (category === 'Steam Offline Games') {
     return 'https://cdn.zalient.shop/media/1788443952480_7d49bc4763bf71d1.webp'
@@ -553,11 +504,36 @@ function App() {
   const [email, setEmail] = useState('')
   const [deliveryZone, setDeliveryZone] = useState('Inside Valley')
   const [order, setOrder] = useState(null)
+  const [products, setProducts] = useState([])
+  const [catalogLoading, setCatalogLoading] = useState(true)
+  const [catalogError, setCatalogError] = useState('')
+  const [paymentProof, setPaymentProof] = useState(null)
+  const [transactionId, setTransactionId] = useState('')
+  const [paymentStatus, setPaymentStatus] = useState('UNPAID')
+  const [paymentError, setPaymentError] = useState('')
+  const [user, setUser] = useState(null)
+  const [authOpen, setAuthOpen] = useState(false)
 
   useEffect(() => {
     const syncHash = () => setCurrentPage(getPageFromHash())
     window.addEventListener('hashchange', syncHash)
     return () => window.removeEventListener('hashchange', syncHash)
+  }, [])
+
+  useEffect(() => {
+    if (import.meta.env.VITE_API_URL) getMe().then(setUser).catch(() => setUser(null))
+  }, [])
+
+  useEffect(() => {
+    if (!import.meta.env.VITE_API_URL) {
+      setCatalogLoading(false)
+      setCatalogError('Connect the frontend to the backend API to load the live catalog.')
+      return
+    }
+    getProducts()
+      .then((items) => setProducts(Array.isArray(items) ? items.map(normaliseBackendProduct) : []))
+      .catch((error) => setCatalogError(error.message || 'The live catalog is temporarily unavailable.'))
+      .finally(() => setCatalogLoading(false))
   }, [])
 
   const allFilteredProducts = useMemo(() => {
@@ -687,10 +663,13 @@ function App() {
     setCartOpen(true)
   }
 
-  function submitOrder(event) {
+  async function submitOrder(event) {
     event.preventDefault()
-    setOrder({
-      orderNumber: `SGS-${Math.floor(10000 + Math.random() * 90000)}`,
+    if (!import.meta.env.VITE_API_URL) {
+      setCatalogError('Connect the frontend to the backend API before placing an order.')
+      return
+    }
+    const orderDetails = {
       items: [...cart],
       paymentMethod,
       playerUid: hasTopUp ? playerUid : '',
@@ -700,7 +679,25 @@ function App() {
       customerName,
       phoneNumber,
       email,
-    })
+    }
+    let confirmedOrder
+    try {
+      confirmedOrder = {
+        ...orderDetails,
+        ...(await createBackendOrder({
+          items: cart.map((item) => ({ productId: item.id, quantity: item.quantity, playerId: hasTopUp ? playerUid : undefined, server: hasTopUp ? serverId : undefined })),
+          customer: { name: customerName, email, phone: phoneNumber },
+        })),
+      }
+    } catch (error) {
+      setCatalogError(error.message || 'Could not create the order.')
+      return
+    }
+    setOrder(confirmedOrder)
+    setPaymentStatus('UNPAID')
+    setPaymentProof(null)
+    setTransactionId('')
+    setPaymentError('')
     setCart([])
     setPlayerUid('')
     setServerId('')
@@ -710,6 +707,18 @@ function App() {
     setCheckoutOpen(false)
     setCartOpen(false)
     setConfirmationOpen(true)
+  }
+
+  async function handlePaymentSubmit(event) {
+    event.preventDefault()
+    if (!import.meta.env.VITE_API_URL || !order || !paymentProof) return
+    setPaymentError('')
+    try {
+      await submitPayment(order.orderNumber, { method: paymentMethod === 'eSewa' ? 'ESEWA' : paymentMethod === 'Khalti' ? 'KHALTI' : 'BANK_TRANSFER', amount: Number(order.totalAmount || subtotal), transactionId, proof: paymentProof, accessToken: order.accessToken })
+      setPaymentStatus('PENDING')
+    } catch (error) {
+      setPaymentError(error.message)
+    }
   }
 
   return (
@@ -839,6 +848,10 @@ function App() {
           <button
             type="button"
             onClick={() => {
+              if (import.meta.env.VITE_API_URL && !user) {
+                setAuthOpen(true)
+                return
+              }
               window.location.hash = 'profile'
               setCurrentPage('profile')
               window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -863,6 +876,10 @@ function App() {
           </a>
         </div>
       </header>
+
+      {catalogLoading && <div className="px-6 py-4 text-center text-sm text-slate-400">Loading live catalog...</div>}
+      {!catalogLoading && catalogError && <div className="mx-6 my-4 rounded-xl border border-amber-500/30 bg-amber-950/20 px-4 py-3 text-center text-sm text-amber-300">{catalogError}</div>}
+      {!catalogLoading && !catalogError && products.length === 0 && <div className="mx-6 my-4 rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-8 text-center text-sm text-slate-400">The live catalog is empty. Add active products from the admin dashboard.</div>}
 
       {/* Featured Hero Banner Carousel */}
       {currentPage === 'home' && <HeroCarousel onNavigateShop={openShop} setCurrentPage={setCurrentPage} />}
@@ -902,7 +919,7 @@ function App() {
             return (
               <button
                 className="quick-category"
-                style={{ backgroundImage: `linear-gradient(90deg, rgba(11,15,25,.96), rgba(11,15,25,.7)), url("${getCategoryCover(category)}")` }}
+                style={{ backgroundImage: `linear-gradient(90deg, rgba(11,15,25,.96), rgba(11,15,25,.7)), url("${getCategoryCover(category, products)}")` }}
                 type="button"
                 key={category}
                 onClick={() => openShop(category)}
@@ -923,6 +940,8 @@ function App() {
       {/* Profile View */}
       {currentPage === 'profile' && (
         <Profile
+          user={user}
+          onLogout={async () => { if (import.meta.env.VITE_API_URL) await logout(); setUser(null) }}
           onClose={() => {
             window.location.hash = 'home'
             setCurrentPage('home')
@@ -932,6 +951,10 @@ function App() {
           onNavigateShop={openShop}
         />
       )}
+
+      {currentPage === 'admin' && <AdminDashboard />}
+
+      {authOpen && <AuthModal onClose={() => setAuthOpen(false)} onAuthenticated={(authenticatedUser) => { setUser(authenticatedUser); setAuthOpen(false); window.location.hash = 'profile'; setCurrentPage('profile') }} />}
 
       {/* Home View */}
       {currentPage === 'home' && (
@@ -996,8 +1019,8 @@ function App() {
             <aside className="reach-card">
               <span className="section-eyebrow">REACH US</span>
               <h2>We’re here to help.</h2>
-              <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer"><MessageCircle size={17} /><span><small>WHATSAPP / PHONE</small>+977 9700979030</span></a>
-              <a href="mailto:support@sagarmathagamingstore.com"><span className="reach-icon">@</span><span><small>SUPPORT EMAIL</small>support@sagarmathagamingstore.com</span></a>
+              <a href="https://wa.me/9779767377182" target="_blank" rel="noreferrer"><MessageCircle size={17} /><span><small>WHATSAPP / PHONE</small>+977 9767377182</span></a>
+              <a href="mailto:sagarmathagames@gmail.com"><span className="reach-icon">@</span><span><small>SUPPORT EMAIL</small>sagarmathagames@gmail.com</span></a>
               <div className="operating-hours"><small>OPERATING HOURS (NPT)</small><strong>10:00 AM – 11:00 PM</strong><span>Every day</span></div>
             </aside>
           </div>
@@ -1040,7 +1063,7 @@ function App() {
             </article>
             <article className="faq-card">
               <h3><HelpCircle size={18} /> What if I need assistance after purchasing?</h3>
-              <p>Our dedicated support team is available 24/7 on WhatsApp (+977 9700979030) and email to help with setup, activation, and troubleshooting.</p>
+              <p>Our dedicated support team is available 24/7 on WhatsApp (+977 9767377182) and email to help with setup, activation, and troubleshooting.</p>
             </article>
           </div>
         </section>
@@ -1064,13 +1087,13 @@ function App() {
             <aside className="reach-card">
               <span className="section-eyebrow">REACH US</span>
               <h2>Direct Support Channels</h2>
-              <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">
+              <a href="https://wa.me/9779767377182" target="_blank" rel="noreferrer">
                 <MessageCircle size={17} />
-                <span><small>WHATSAPP / PHONE</small>+977 9700979030</span>
+                <span><small>WHATSAPP / PHONE</small>+977 9767377182</span>
               </a>
-              <a href="mailto:support@sagarmathagamingstore.com">
+              <a href="mailto:sagarmathagames@gmail.com">
                 <span className="reach-icon">@</span>
-                <span><small>SUPPORT EMAIL</small>support@sagarmathagamingstore.com</span>
+                <span><small>SUPPORT EMAIL</small>sagarmathagames@gmail.com</span>
               </a>
               <div className="operating-hours">
                 <small>OPERATING HOURS (NPT)</small>
@@ -1336,16 +1359,16 @@ function App() {
         </div>
         <div className="footer-column">
           <strong>HELP &amp; POLICIES</strong>
-          <a href="tel:+9779700979030">+977 9700979030</a>
-          <a href="mailto:support@sagarmathagamingstore.com">support@sagarmathagamingstore.com</a>
+          <a href="tel:+9779767377182">+977 9767377182</a>
+          <a href="mailto:sagarmathagames@gmail.com">sagarmathagames@gmail.com</a>
           <a href="https://sagarmathagamingstore.com/return-policy">Return &amp; refund policy</a>
-          <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">WhatsApp Support</a>
+          <a href="https://wa.me/9779767377182" target="_blank" rel="noreferrer">WhatsApp Support</a>
         </div>
         <small className="footer-copyright">© 2026 Sagarmatha Gaming Store</small>
       </footer>
 
       {/* Floating WhatsApp Contact */}
-      <a className="whatsapp-float" href="https://wa.me/9779700979030" target="_blank" rel="noreferrer" aria-label="Chat with Sagarmatha Gaming Store on WhatsApp">
+      <a className="whatsapp-float" href="https://wa.me/9779767377182" target="_blank" rel="noreferrer" aria-label="Chat with Sagarmatha Gaming Store on WhatsApp">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.4 28.6l6.4-1.7A12.8 12.8 0 1 0 16 3.2Zm0 23.2a10.3 10.3 0 0 1-5.2-1.4l-.4-.2-3.8 1 1-3.7-.3-.4a10.2 10.2 0 1 1 8.7 4.7Zm5.6-7.6c-.3-.2-1.7-.9-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.1.2-.3.2-.6.1-1.7-.9-2.8-1.6-3.9-3.5-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.1.2 2.2 3.4 5.4 4.8 2 .9 2.8 1 3.8.8.6-.1 1.7-.7 1.9-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z" /></svg>
       </a>
 
@@ -1424,7 +1447,7 @@ function App() {
           product={topUpModalProduct}
           onClose={() => setTopUpModalProduct(null)}
           onConfirmRecharge={(orderData) => {
-            // Recharge saved in localStorage
+            setOrder(orderData)
           }}
           onOpenProfile={() => {
             setTopUpModalProduct(null)
@@ -1567,7 +1590,7 @@ function App() {
             </button>
             <div className="confirmation-mark"><Check size={30} /></div>
             <span className="eyebrow"><span className="eyebrow-line" /> ORDER RECEIVED</span>
-            <h2 id="confirmation-title">You’re all <span>set.</span></h2>
+            <h2 id="confirmation-title">{paymentStatus === 'PENDING' ? <>Payment <span>submitted.</span></> : <>Order <span>received.</span></>}</h2>
             <p className="confirmation-intro">Thanks, {order.customerName}. Your order <strong>{order.orderNumber}</strong> has been received.</p>
             <div className="confirmation-details">
               <div className="confirmation-row"><span>Payment Option</span><strong>{order.paymentMethod}</strong></div>
@@ -1577,6 +1600,16 @@ function App() {
               {order.shippingAddress && <div className="confirmation-row"><span>Delivery zone</span><strong>{order.deliveryZone}</strong></div>}
               {order.shippingAddress && <div className="confirmation-row address-row"><span>Delivery Address</span><strong>{order.shippingAddress}</strong></div>}
             </div>
+            {import.meta.env.VITE_API_URL && paymentStatus !== 'PENDING' && (
+              <form onSubmit={handlePaymentSubmit} className="confirmation-details">
+                <div className="confirmation-row"><span>Payment status</span><strong>Awaiting payment proof</strong></div>
+                <label className="form-field"><span>Transaction ID (optional)</span><input value={transactionId} onChange={(event) => setTransactionId(event.target.value)} /></label>
+                <label className="form-field"><span>Payment proof</span><input type="file" accept="image/jpeg,image/png,image/webp,application/pdf" required onChange={(event) => setPaymentProof(event.target.files?.[0] || null)} /></label>
+                {paymentError && <p className="text-rose-400 text-xs">{paymentError}</p>}
+                <button className="primary-button" type="submit">Submit payment proof <ArrowRight size={17} /></button>
+              </form>
+            )}
+            {import.meta.env.VITE_API_URL && paymentStatus === 'PENDING' && <p className="confirmation-intro text-amber-300">Payment submitted and awaiting verification.</p>}
             <div className="instruction-list">
               <h3>YOUR NEXT STEPS</h3>
               {order.items?.map((item, index) => (
