@@ -225,12 +225,16 @@ const navItems = [
   { label: 'Shop', page: 'shop' },
   { label: 'Categories', page: 'categories' },
   { label: 'About', page: 'about' },
-  { label: 'FAQ', page: 'faq' },
-  { label: 'Contact', page: 'contact' },
+  { label: 'Blogs', page: 'blogs' },
 ]
 
+const getPageFromHash = () => {
+  const hash = window.location.hash.replace('#', '').trim().toLowerCase()
+  return hash || 'home'
+}
+
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
+  const [currentPage, setCurrentPage] = useState(getPageFromHash)
   const [activeCategory, setActiveCategory] = useState('All products')
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState('date')
@@ -260,15 +264,10 @@ function App() {
   const [deliveryZone, setDeliveryZone] = useState('Inside Valley')
   const [order, setOrder] = useState(null)
 
-  // Two-Way Sync with React State via hashchange listener
   useEffect(() => {
-    const syncWithHash = () => {
-      const hash = window.location.hash.replace('#', '').trim().toLowerCase()
-      setCurrentPage(hash || 'home')
-    }
-    window.addEventListener('hashchange', syncWithHash)
-    syncWithHash()
-    return () => window.removeEventListener('hashchange', syncWithHash)
+    const syncHash = () => setCurrentPage(getPageFromHash())
+    window.addEventListener('hashchange', syncHash)
+    return () => window.removeEventListener('hashchange', syncHash)
   }, [])
 
   const allFilteredProducts = useMemo(() => {
@@ -422,48 +421,51 @@ function App() {
         </div>
       </div>
 
-      <header className="site-header">
-        <a
-          className="brand"
-          href="#home"
-          aria-label="Sagarmatha Gaming Store home"
-          onClick={() => {
-            window.location.hash = 'home'
-            setCurrentPage('home')
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-          }}
+      <header className="bg-[#0b0f19]/90 backdrop-blur-md border-b border-cyan-500/20 px-6 py-3.5 flex items-center justify-between gap-4 sticky top-0 z-50">
+        <a 
+          href="#home" 
+          onClick={() => { window.location.hash = 'home'; setCurrentPage('home'); }}
+          className="flex items-center gap-3 group transition-transform hover:scale-105"
         >
-          <span className="brand-symbol"><b>S</b><b>G</b><b>S</b></span>
-          <span className="brand-name">SAGARMATHA<span>GAMING STORE</span></span>
+          <img 
+            src="/sagarmatha-games-logo.svg" 
+            alt="Sagarmatha Gaming Store" 
+            className="h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
+          />
+          <div className="flex flex-col">
+            <span className="font-extrabold text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
+              Sagarmatha
+            </span>
+            <span className="text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
+              Gaming Store
+            </span>
+          </div>
         </a>
 
-        <nav className="main-nav" aria-label="Main navigation">
-          {navItems.map(({ label, page }) => (
-            <a
-              key={page}
-              href={`#${page}`}
-              className={currentPage === page ? 'nav-current' : ''}
-              onClick={() => {
-                window.location.hash = page
-                setCurrentPage(page)
-                if (page === 'shop') {
-                  openShop()
-                } else if (page === 'categories') {
-                  setActiveCategory('All products')
-                  setWishlistOnly(false)
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                } else {
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                }
-              }}
-            >
-              {label}
-            </a>
-          ))}
+        <nav
+          className="hidden md:flex bg-[#13192b]/80 border border-slate-800 rounded-full px-5 py-2 items-center gap-6 shrink-0"
+          aria-label="Main navigation"
+        >
+          {navItems.map(({ label, page }) => {
+            const isActive = currentPage === page
+            return (
+              <a
+                key={page}
+                href={`#${page}`}
+                className={`text-sm font-medium transition-colors hover:text-cyan-400 cursor-pointer no-underline ${
+                  isActive
+                    ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]'
+                    : 'text-slate-300'
+                }`}
+              >
+                {label}
+              </a>
+            )
+          })}
         </nav>
 
-        <label className="nav-search">
-          <Search size={17} aria-hidden="true" />
+        <div className="relative flex-1 max-w-xl mx-2">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none" size={17} />
           <input
             type="search"
             value={searchTerm}
@@ -472,15 +474,18 @@ function App() {
               setActiveCategory('All products')
               setWishlistOnly(false)
               setCatalogPage(1)
-              window.location.hash = 'shop'
-              setCurrentPage('shop')
+              if (window.location.hash !== '#shop') {
+                window.location.hash = 'shop'
+              }
             }}
-            placeholder="Search gift cards, top-ups, subscriptions..."
-            aria-label="Search 119 products"
+            placeholder="Search games, gift cards, subscriptions..."
+            className="w-full bg-[#13192b]/70 border border-slate-800/90 rounded-full py-2.5 pl-10 pr-9 text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:border-cyan-500/50"
+            aria-label="Search games, gift cards, subscriptions..."
           />
           {searchTerm && (
             <button
               type="button"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer"
               aria-label="Clear search"
               onClick={() => {
                 setSearchTerm('')
@@ -490,12 +495,12 @@ function App() {
               <X size={15} />
             </button>
           )}
-        </label>
+        </div>
 
-        <div className="nav-actions">
+        <div className="flex items-center gap-2.5 shrink-0">
           <button
-            className={wishlistOnly ? 'nav-icon active' : 'nav-icon'}
             type="button"
+            className="w-10 h-10 rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-slate-700 cursor-pointer transition-colors"
             aria-label="Toggle wishlist"
             aria-pressed={wishlistOnly}
             onClick={() => {
@@ -504,41 +509,38 @@ function App() {
               setWishlistOnly(nextValue)
             }}
           >
-            <Heart size={19} />
+            <Heart size={18} fill={wishlistOnly ? 'currentColor' : 'none'} className={wishlistOnly ? 'text-rose-500' : ''} />
           </button>
+
           <button
-            className="cart-trigger"
             type="button"
+            className="px-4 h-10 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
             aria-label={`Open cart, ${cartCount} items`}
             onClick={() => setCartOpen(true)}
           >
             <ShoppingCart size={17} />
-            <span>Cart</span>
-            <b>{cartCount}</b>
+            <span className="hidden sm:inline">Cart</span>
+            <span className="bg-slate-950 text-cyan-300 text-xs px-2 py-0.5 rounded-full font-extrabold min-w-[20px] text-center">
+              {cartCount}
+            </span>
           </button>
+
           <a
-            className="nav-icon profile-icon"
             href="#about"
-            aria-label="About"
-            onClick={() => {
-              window.location.hash = 'about'
-              setCurrentPage('about')
-            }}
+            className="w-10 h-10 rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-slate-700 cursor-pointer transition-colors no-underline"
+            aria-label="Profile and store details"
           >
             <CircleUserRound size={20} />
           </a>
+
+          <a
+            href="#categories"
+            className="md:hidden w-10 h-10 rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white no-underline"
+            aria-label="Browse categories"
+          >
+            <Menu size={18} />
+          </a>
         </div>
-        <a
-          className="mobile-menu"
-          href="#categories"
-          aria-label="Browse categories"
-          onClick={() => {
-            window.location.hash = 'categories'
-            setCurrentPage('categories')
-          }}
-        >
-          <Menu size={22} />
-        </a>
       </header>
 
       {/* Featured Hero Banner */}
@@ -808,6 +810,86 @@ function App() {
         </section>
       )}
 
+      {/* Blogs View */}
+      {currentPage === 'blogs' && (
+        <section className="blogs-page">
+          <header className="blogs-heading">
+            <span className="section-eyebrow">GUIDES &amp; NEWS</span>
+            <h1>Gaming <span>News &amp; Tips</span></h1>
+            <p>Expert guides on game activations, account setup, top-ups, and the latest releases in Nepal.</p>
+          </header>
+
+          <article className="featured-article">
+            <div className="article-art">
+              <span>SAGARMATHA</span>
+              <strong>PC</strong>
+              <i>STEAM GUIDE</i>
+            </div>
+            <div className="featured-article-copy">
+              <span className="article-label">FEATURED TUTORIAL</span>
+              <h2>How to Play Steam Offline Games Without Interruption</h2>
+              <p>
+                Step-by-step setup guide for Steam Offline accounts in Nepal. Learn how to switch offline mode safely, preserve save data, and update games without losing account access.
+              </p>
+              <button type="button" onClick={() => openShop('Steam Offline Games')}>
+                Explore Steam Offline Games <ArrowRight size={15} />
+              </button>
+            </div>
+          </article>
+
+          <div className="blog-card-grid">
+            <article className="blog-card">
+              <div
+                className="blog-card-art"
+                style={{
+                  backgroundImage: 'linear-gradient(180deg, rgba(11,15,25,.3), rgba(11,15,25,.9)), url("https://cdn.zalient.shop/media/1780094018222_25f1307ad1884db0.webp")',
+                }}
+              >
+                <span>FOOTBALL &amp; ESPORTS</span>
+              </div>
+              <div>
+                <h2>EA Sports FC 26: What to Expect &amp; Pre-Order Perks</h2>
+                <p>Everything you need to know about the upcoming football season, Ultimate Team changes, and getting your pre-order early in Nepal.</p>
+                <button type="button" onClick={() => openShop('Steam Private Account')}>Read more <ArrowRight size={14} /></button>
+              </div>
+            </article>
+
+            <article className="blog-card">
+              <div
+                className="blog-card-art"
+                style={{
+                  backgroundImage: 'linear-gradient(180deg, rgba(11,15,25,.3), rgba(11,15,25,.9)), url("https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=600&q=80")',
+                }}
+              >
+                <span>PAYMENT METHODS</span>
+              </div>
+              <div>
+                <h2>Fast Game Top-Ups with eSewa &amp; Khalti</h2>
+                <p>Learn how to safely top up Free Fire diamonds, PUBG UC, Mobile Legends, and Valorant Points instantly using local Nepali wallets.</p>
+                <button type="button" onClick={() => openShop('Game Top-Up')}>Read more <ArrowRight size={14} /></button>
+              </div>
+            </article>
+
+            <article className="blog-card">
+              <div
+                className="blog-card-art"
+                style={{
+                  backgroundImage: 'linear-gradient(180deg, rgba(11,15,25,.3), rgba(11,15,25,.9)), url("https://images.unsplash.com/photo-1605901309584-818e25960a8f?auto=format&fit=crop&w=600&q=80")',
+                }}
+              >
+                <span>PLAYSTATION</span>
+              </div>
+              <div>
+                <h2>PlayStation Physical Discs vs Digital Keys in Nepal</h2>
+                <p>Comparing disc delivery across Nepal’s 77 districts with instant digital account activation. Which is the best choice for you?</p>
+                <button type="button" onClick={() => openShop('PlayStation Physical Disc')}>Read more <ArrowRight size={14} /></button>
+              </div>
+            </article>
+          </div>
+        </section>
+      )}
+
+
       {/* Catalog / Shop Section */}
       <section className="catalog-section" id="shop">
         <div className="shop-layout">
@@ -934,7 +1016,7 @@ function App() {
       <footer className="site-footer" id="contact">
         <div className="footer-about">
           <a
-            className="footer-logo"
+            className="flex items-center gap-3 no-underline group mb-4 transition-transform hover:scale-105"
             href="#home"
             onClick={() => {
               window.location.hash = 'home'
@@ -942,7 +1024,19 @@ function App() {
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
           >
-            SAGARMATHA <span>GAMING STORE</span>
+            <img 
+              src="/sagarmatha-games-logo.svg" 
+              alt="Sagarmatha Gaming Store" 
+              className="h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
+            />
+            <div className="flex flex-col">
+              <span className="font-extrabold text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
+                Sagarmatha
+              </span>
+              <span className="text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
+                Gaming Store
+              </span>
+            </div>
           </a>
           <p>Nepal’s trusted gaming store for genuine games, top-ups, and digital codes.</p>
           <strong className="footer-label">PAYMENT METHODS</strong>
