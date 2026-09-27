@@ -30,7 +30,7 @@ import {
   X,
 } from 'lucide-react'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
-import { getGameCover, getGameCoverFallback } from './utils/gameImages'
+import { getGameCover } from './utils/gameImages'
 import './App.css'
 
 const productData = parse(productCsv, {
@@ -182,18 +182,15 @@ export function ProductCard({
       key={product.sku}
       style={{ '--card-index': index }}
     >
-      <div
-        className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726] flex-shrink-0"
-        style={{ aspectRatio: '2 / 3' }}
-      >
+      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726]">
         <img
           src={getGameCover(product.name)}
           alt={product.name}
-          className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+          className="absolute inset-0 h-full w-full object-cover"
           loading="lazy"
-          onError={(event) => {
-            event.currentTarget.onerror = null
-            event.currentTarget.src = getGameCoverFallback(product.name)
+          onError={(e) => {
+            e.currentTarget.onerror = null
+            e.currentTarget.src = "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
           }}
         />
         {toggleWishlist && (
@@ -210,9 +207,11 @@ export function ProductCard({
       <div className="product-info-tight flex flex-col flex-grow justify-between">
         <div>
           <span className="product-category-micro">{product.category}</span>
-          <h3 className="product-title-micro line-clamp-2 min-h-[2.5rem]" title={product.name}>
-            {product.name}
-          </h3>
+          <div className="min-h-[2.5rem] line-clamp-2">
+            <h3 className="product-title-micro" title={product.name}>
+              {product.name}
+            </h3>
+          </div>
         </div>
         <div className="product-actions-micro mt-auto">
           <span className="product-price-micro">{formatPrice(product.price)}</span>
@@ -234,7 +233,6 @@ function getViewFromHash(hash) {
   const clean = (hash || '').replace(/^#\/?/, '').toLowerCase().trim()
   if (clean === 'about') return 'about'
   if (clean === 'contact' || clean === 'reach') return 'contact'
-  if (clean === 'faq' || clean === 'help') return 'faq'
   if (clean === 'shop' || clean === 'products' || clean === 'catalog') return 'shop'
   if (clean === 'categories' || clean === 'category') return 'categories'
   if (clean === 'blogs' || clean === 'blog' || clean === 'news') return 'blogs'
@@ -275,9 +273,12 @@ function App() {
   const [email, setEmail] = useState('')
   const [order, setOrder] = useState(null)
 
-  function applyView(view) {
-    setCurrentView(view)
-    if (view === 'categories') {
+  function navigateTo(targetPage) {
+    if (typeof window !== 'undefined') {
+      window.location.hash = targetPage
+    }
+    setCurrentView(targetPage)
+    if (targetPage === 'categories') {
       setActiveCategory('All products')
       setWishlistOnly(false)
     }
@@ -286,23 +287,15 @@ function App() {
     }
   }
 
-  function navigateTo(view) {
-    if (typeof window !== 'undefined') {
-      const targetHash = `#${view}`
-      if (window.location.hash !== targetHash) {
-        window.location.hash = targetHash
-      } else {
-        applyView(view)
-      }
-    } else {
-      applyView(view)
-    }
-  }
-
   useEffect(() => {
     const handleHashChange = () => {
-      const view = getViewFromHash(window.location.hash)
-      applyView(view)
+      const page = getViewFromHash(window.location.hash)
+      setCurrentView(page)
+      if (page === 'categories') {
+        setActiveCategory('All products')
+        setWishlistOnly(false)
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
     window.addEventListener('hashchange', handleHashChange)
@@ -371,7 +364,11 @@ function App() {
     setAppliedMinPrice(0)
     setAppliedMaxPrice(15000)
     setDraftMaxPrice(15000)
-    navigateTo('shop')
+    if (typeof window !== 'undefined') {
+      window.location.hash = 'shop'
+    }
+    setCurrentView('shop')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   function applyShopFilters() {
@@ -448,7 +445,7 @@ function App() {
         <span className="currency-mark">Rs <b>NPR</b></span>
         <span className="delivery-notice">Instant digital delivery <i /> pay your way <i /> 100% authentic codes</span>
         <div>
-          <a href="#faq" onClick={(event) => { event.preventDefault(); navigateTo('faq'); }}>Help &amp; FAQ</a>
+          <a href="#about" onClick={(event) => { event.preventDefault(); navigateTo('about'); }}>About</a>
           <button type="button" onClick={() => { openShop(); setWishlistOnly(true); }}>Wishlist</button>
         </div>
       </div>
@@ -463,7 +460,6 @@ function App() {
             { label: 'Shop', hash: 'shop' },
             { label: 'About', hash: 'about' },
             { label: 'Contact', hash: 'contact' },
-            { label: 'FAQ', hash: 'faq' },
           ].map(({ label, hash }) => (
             <a
               key={hash}
@@ -471,8 +467,10 @@ function App() {
               href={`#${hash}`}
               onClick={(event) => {
                 event.preventDefault()
+                window.location.hash = hash
+                setCurrentView(hash)
                 if (hash === 'shop') openShop()
-                else navigateTo(hash)
+                else window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
             >
               {label}
@@ -489,11 +487,8 @@ function App() {
               setActiveCategory('All products')
               setWishlistOnly(false)
               setCurrentPage(1)
-              if (typeof window !== 'undefined' && window.location.hash !== '#shop') {
-                window.location.hash = '#shop'
-              } else {
-                setCurrentView('shop')
-              }
+              window.location.hash = 'shop'
+              setCurrentView('shop')
             }}
             placeholder="Search gift cards, top-ups, games..."
             aria-label="Search 119 products"
@@ -752,57 +747,6 @@ function App() {
         </section>
       )}
 
-      {currentView === 'faq' && (
-        <section className="faq-page">
-          <header className="about-hero">
-            <span className="section-eyebrow">FREQUENTLY ASKED QUESTIONS</span>
-            <h1>Help &amp; FAQ <span>— Instant Digital Delivery</span></h1>
-            <p>Everything you need to know about buying games, gift cards, and top-ups in Nepal.</p>
-          </header>
-          <div style={{ marginTop: '28px', display: 'grid', gap: '16px' }}>
-            {[
-              {
-                q: 'How does instant digital delivery work?',
-                a: 'Once your eSewa, Khalti, or Bank Transfer payment is confirmed, your game license key, Steam account credentials, or voucher code is sent immediately via WhatsApp and Email.',
-              },
-              {
-                q: 'Which payment methods do you accept?',
-                a: 'We accept eSewa, Khalti, and direct Mobile Banking / Bank Transfer with zero hidden fees.',
-              },
-              {
-                q: 'Are these game codes and accounts authentic?',
-                a: 'Yes! 100% of our keys and accounts are authentic, genuine, region-compatible, and backed by our replacement guarantee.',
-              },
-              {
-                q: 'How do Game Top-Ups (Free Fire, PUBG, Valorant) work?',
-                a: 'Simply enter your Player UID and Server ID during checkout. The diamonds, UC, or points will be credited straight into your in-game profile without needing your password.',
-              },
-              {
-                q: 'What should I do if I need support?',
-                a: 'Our support team is available from 10:00 AM to 11:00 PM every day via WhatsApp (+977 9700979030) or email (support@hamrogamingstore.com). We will assist you immediately.',
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                style={{
-                  background: '#111726',
-                  border: '1px solid #233044',
-                  borderRadius: '6px',
-                  padding: '20px 24px',
-                }}
-              >
-                <h3 style={{ margin: '0 0 8px', color: '#00e5ff', fontSize: '15px', fontWeight: '750' }}>
-                  {faq.q}
-                </h3>
-                <p style={{ margin: 0, color: '#b9c7dc', fontSize: '13px', lineHeight: '1.6' }}>
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
       {currentView === 'blogs' && (
         <section className="blogs-page">
           <header className="blogs-heading">
@@ -875,7 +819,7 @@ function App() {
             <div className="catalog-controls shop-sort-summary">Sorted by {sortBy} · {sortOrder === 'desc' ? 'descending' : 'ascending'}</div>
             <div className="results-line"><span>{allFilteredProducts.length} RESULTS</span><span>SKU · SELLING PRICE · DIGITAL DELIVERY</span></div>
             {filteredProducts.length > 0 ? (
-              <div className="product-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 items-stretch">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 items-start">
                 {filteredProducts.map((product, index) => (
                   <ProductCard
                     key={product.sku}
@@ -923,7 +867,7 @@ function App() {
 
       <footer className="site-footer" id="about">
         <div className="footer-about">
-          <a className="footer-logo" href="#home" onClick={(event) => { event.preventDefault(); navigateTo('home'); }}>
+          <a className="footer-logo" href="#home" onClick={(event) => { event.preventDefault(); window.location.hash = 'home'; setCurrentView('home'); }}>
             HAMRO <span>GAMING STORE</span>
           </a>
           <p>Nepal’s trusted gaming store for authentic digital games, gift cards, and instant top-ups.</p>
@@ -937,9 +881,8 @@ function App() {
         </div>
         <div className="footer-column">
           <strong>COMPANY</strong>
-          <a href="#about" onClick={(event) => { event.preventDefault(); navigateTo('about'); }}>About Us</a>
-          <a href="#contact" onClick={(event) => { event.preventDefault(); navigateTo('contact'); }}>Contact Us</a>
-          <a href="#faq" onClick={(event) => { event.preventDefault(); navigateTo('faq'); }}>Help &amp; FAQ</a>
+          <a href="#about" onClick={(event) => { event.preventDefault(); window.location.hash = 'about'; setCurrentView('about'); }}>About Us</a>
+          <a href="#contact" onClick={(event) => { event.preventDefault(); window.location.hash = 'contact'; setCurrentView('contact'); }}>Contact Us</a>
           <a href="#blogs" onClick={(event) => { event.preventDefault(); navigateTo('blogs'); }}>Blogs</a>
         </div>
         <div className="footer-column">
@@ -947,7 +890,6 @@ function App() {
           <a href="tel:+9779700979030">+977 9700979030</a>
           <a href="mailto:support@hamrogamingstore.com">support@hamrogamingstore.com</a>
           <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">WhatsApp 24/7 Support</a>
-          <a href="#faq" onClick={(event) => { event.preventDefault(); navigateTo('faq'); }}>Instant Delivery Policy</a>
         </div>
         <small className="footer-copyright">© 2026 Hamro Gaming Store · Instant Digital Delivery</small>
       </footer>
@@ -1181,7 +1123,7 @@ function App() {
                 </div>
               ))}
             </div>
-            <button type="button" className="primary-button confirmation-done" onClick={() => { setConfirmationOpen(false); navigateTo('home'); }}>
+            <button type="button" className="primary-button confirmation-done" onClick={() => { setConfirmationOpen(false); window.location.hash = 'home'; setCurrentView('home'); }}>
               Back to the store <ArrowRight size={17} />
             </button>
           </section>
