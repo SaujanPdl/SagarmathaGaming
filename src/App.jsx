@@ -373,12 +373,17 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
             className="relative h-full min-h-[340px] rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl group cursor-pointer"
           >
             <img 
-              src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2949.png" 
-              alt="Featured Game Left" 
+              src="/covers/god-of-war-ragnarok-ps5-disc-sealed.jpg" 
+              alt="God of War Ragnarök" 
+              onError={(e) => {
+                e.currentTarget.onerror = null
+                e.currentTarget.src = DEFAULT_FALLBACK_COVER
+              }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
-              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">Special Release</span>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-1">SPECIAL RELEASE</span>
+              <h3 className="text-white font-bold text-base leading-tight">God of War Ragnarök</h3>
             </div>
           </div>
         </div>
@@ -442,19 +447,24 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
           </div>
         </div>
 
-        {/* Right Side Featured Poster (e.g. GTA VI) */}
+        {/* Right Side Featured Poster */}
         <div className="hidden lg:block lg:col-span-3">
           <div 
             onClick={handleNavigate}
             className="relative h-full min-h-[340px] rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl group cursor-pointer"
           >
             <img 
-              src="https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png" 
-              alt="Grand Theft Auto VI" 
+              src="/covers/gta-v-premium-edition-ps4-disc-sealed.jpg" 
+              alt="Grand Theft Auto V" 
+              onError={(e) => {
+                e.currentTarget.onerror = null
+                e.currentTarget.src = DEFAULT_FALLBACK_COVER
+              }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
-              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">Ultimate Edition</span>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-1">BESTSELLER</span>
+              <h3 className="text-white font-bold text-base leading-tight">Grand Theft Auto V</h3>
             </div>
           </div>
         </div>
