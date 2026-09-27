@@ -76,7 +76,7 @@ function getProductPlatform(product) {
 
 const categoryImages = {
   'Steam Private Account': 'photo-1511512578047-dfb367046420',
-  'Steam Offline Games': 'photo-1542751371-adc38448a05e',
+  'Steam Offline Games': 'photo-1550745165-9bc0b252726f',
   'Game Top-Up': 'photo-1560253023-3ec5d502959f',
   'Gift Cards': 'photo-1493711662062-fa541adb3fc8',
   'PlayStation Physical Disc': 'photo-1605901309584-818e25960a8f',

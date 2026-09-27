@@ -17,7 +17,7 @@
     "category": "Steam Private Account",
     "deliveryType": "Digital account delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20900%22%20width%3D%22600%22%20height%3D%22900%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22bgGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230b0f19%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%230d1322%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22accentGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20stop-color%3D%22%233b82f6%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23a855f7%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22glowGrad%22%20cx%3D%2250%25%22%20cy%3D%2245%25%22%20r%3D%2250%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20stop-opacity%3D%220.18%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22%238b5cf6%22%20stop-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b0f19%22%20stop-opacity%3D%220%22%20%2F%3E%0A%20%20%20%20%3C%2FradialGradient%3E%0A%20%20%20%20%3Cpattern%20id%3D%22gridPattern%22%20width%3D%2240%22%20height%3D%2240%22%20patternUnits%3D%22userSpaceOnUse%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M%2040%200%20L%200%200%200%2040%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%220.75%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%3C%2Fpattern%3E%0A%20%20%3C%2Fdefs%3E%0A%0A%20%20%3C!--%20Background%20Layer%20--%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23bgGrad)%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%22300%22%20cy%3D%22420%22%20r%3D%22300%22%20fill%3D%22url(%23glowGrad)%22%20%2F%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23gridPattern)%22%20%2F%3E%0A%0A%20%20%3C!--%20Mountain%20Peak%20Geometry%20(Sagarmatha)%20--%3E%0A%20%20%3Cpolygon%20points%3D%22100%2C640%20300%2C340%20500%2C640%22%20fill%3D%22none%22%20stroke%3D%22%2306b6d4%22%20stroke-width%3D%222%22%20stroke-opacity%3D%220.12%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22200%2C640%20300%2C480%20400%2C640%22%20fill%3D%22none%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.1%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%2230%2C680%20180%2C450%20330%2C680%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22270%2C680%20420%2C450%20570%2C680%22%20fill%3D%22none%22%20stroke%3D%22%23818cf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%0A%20%20%3C!--%20Gamepad%20Watermark%20--%3E%0A%20%20%3Cg%20transform%3D%22translate(230%2C%20250)%20scale(0.7)%22%20opacity%3D%220.09%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%226%22%20fill%3D%22none%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%2230%22%20width%3D%22200%22%20height%3D%22120%22%20rx%3D%2240%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2250%22%20cy%3D%2290%22%20r%3D%2222%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M%2050%2078%20L%2050%20102%20M%2038%2090%20L%2062%2090%22%20stroke-width%3D%225%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%2275%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22130%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22170%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%22115%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3C!--%20Top%20Brand%20Header%20--%3E%0A%20%20%3Crect%20x%3D%22175%22%20y%3D%2280%22%20width%3D%22250%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22%2313192b%22%20stroke%3D%22%2338bdf8%22%20stroke-opacity%3D%220.35%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22102%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2211%22%20font-weight%3D%22700%22%20letter-spacing%3D%223%22%20text-anchor%3D%22middle%22%3ESAGARMATHA%20GAMES%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Centered%20Clean%20Product%20Title%20--%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22441%22%20text-anchor%3D%22middle%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20font-size%3D%2228%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20%3Ctspan%20x%3D%22300%22%20dy%3D%220%22%3EMECCHA%20CHAMELEON%3C%2Ftspan%3E%0A%20%20%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Glowing%20Accent%20Divider%20Line%20--%3E%0A%20%20%3Crect%20x%3D%22220%22%20y%3D%22494%22%20width%3D%22160%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22url(%23accentGrad)%22%20%2F%3E%0A%0A%20%20%3C!--%20Bottom%20Badge%20--%3E%0A%20%20%3Crect%20x%3D%22200%22%20y%3D%22785%22%20width%3D%22200%22%20height%3D%2232%22%20rx%3D%2216%22%20fill%3D%22%23111827%22%20fill-opacity%3D%220.9%22%20stroke%3D%22%23334155%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22806%22%20fill%3D%22%2394a3b8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2210%22%20font-weight%3D%22600%22%20letter-spacing%3D%222.5%22%20text-anchor%3D%22middle%22%3EVERIFIED%20PRODUCT%3C%2Ftext%3E%0A%3C%2Fsvg%3E"
   },
   {
     "sku": "SG-003",
@@ -117,7 +117,7 @@
     "category": "Steam Private Account",
     "deliveryType": "Digital account delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20900%22%20width%3D%22600%22%20height%3D%22900%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22bgGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230b0f19%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%230d1322%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22accentGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20stop-color%3D%22%233b82f6%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23a855f7%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22glowGrad%22%20cx%3D%2250%25%22%20cy%3D%2245%25%22%20r%3D%2250%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20stop-opacity%3D%220.18%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22%238b5cf6%22%20stop-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b0f19%22%20stop-opacity%3D%220%22%20%2F%3E%0A%20%20%20%20%3C%2FradialGradient%3E%0A%20%20%20%20%3Cpattern%20id%3D%22gridPattern%22%20width%3D%2240%22%20height%3D%2240%22%20patternUnits%3D%22userSpaceOnUse%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M%2040%200%20L%200%200%200%2040%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%220.75%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%3C%2Fpattern%3E%0A%20%20%3C%2Fdefs%3E%0A%0A%20%20%3C!--%20Background%20Layer%20--%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23bgGrad)%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%22300%22%20cy%3D%22420%22%20r%3D%22300%22%20fill%3D%22url(%23glowGrad)%22%20%2F%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23gridPattern)%22%20%2F%3E%0A%0A%20%20%3C!--%20Mountain%20Peak%20Geometry%20(Sagarmatha)%20--%3E%0A%20%20%3Cpolygon%20points%3D%22100%2C640%20300%2C340%20500%2C640%22%20fill%3D%22none%22%20stroke%3D%22%2306b6d4%22%20stroke-width%3D%222%22%20stroke-opacity%3D%220.12%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22200%2C640%20300%2C480%20400%2C640%22%20fill%3D%22none%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.1%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%2230%2C680%20180%2C450%20330%2C680%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22270%2C680%20420%2C450%20570%2C680%22%20fill%3D%22none%22%20stroke%3D%22%23818cf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%0A%20%20%3C!--%20Gamepad%20Watermark%20--%3E%0A%20%20%3Cg%20transform%3D%22translate(230%2C%20250)%20scale(0.7)%22%20opacity%3D%220.09%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%226%22%20fill%3D%22none%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%2230%22%20width%3D%22200%22%20height%3D%22120%22%20rx%3D%2240%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2250%22%20cy%3D%2290%22%20r%3D%2222%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M%2050%2078%20L%2050%20102%20M%2038%2090%20L%2062%2090%22%20stroke-width%3D%225%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%2275%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22130%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22170%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%22115%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3C!--%20Top%20Brand%20Header%20--%3E%0A%20%20%3Crect%20x%3D%22175%22%20y%3D%2280%22%20width%3D%22250%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22%2313192b%22%20stroke%3D%22%2338bdf8%22%20stroke-opacity%3D%220.35%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22102%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2211%22%20font-weight%3D%22700%22%20letter-spacing%3D%223%22%20text-anchor%3D%22middle%22%3ESAGARMATHA%20GAMES%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Centered%20Clean%20Product%20Title%20--%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22441%22%20text-anchor%3D%22middle%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20font-size%3D%2228%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20%3Ctspan%20x%3D%22300%22%20dy%3D%220%22%3EHYTALE%3C%2Ftspan%3E%0A%20%20%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Glowing%20Accent%20Divider%20Line%20--%3E%0A%20%20%3Crect%20x%3D%22220%22%20y%3D%22494%22%20width%3D%22160%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22url(%23accentGrad)%22%20%2F%3E%0A%0A%20%20%3C!--%20Bottom%20Badge%20--%3E%0A%20%20%3Crect%20x%3D%22200%22%20y%3D%22785%22%20width%3D%22200%22%20height%3D%2232%22%20rx%3D%2216%22%20fill%3D%22%23111827%22%20fill-opacity%3D%220.9%22%20stroke%3D%22%23334155%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22806%22%20fill%3D%22%2394a3b8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2210%22%20font-weight%3D%22600%22%20letter-spacing%3D%222.5%22%20text-anchor%3D%22middle%22%3EVERIFIED%20PRODUCT%3C%2Ftext%3E%0A%3C%2Fsvg%3E"
   },
   {
     "sku": "SG-013",
@@ -247,7 +247,7 @@
     "category": "Steam Offline Games",
     "deliveryType": "Digital account/login delivery",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/1015830/library_600x900_2x.jpg"
+    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/1015140/library_600x900_2x.jpg"
   },
   {
     "sku": "SG-026",
@@ -337,7 +337,7 @@
     "category": "Steam Offline Games",
     "deliveryType": "Digital account/login delivery",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png"
   },
   {
     "sku": "SG-035",
@@ -347,7 +347,7 @@
     "category": "Steam Offline Games",
     "deliveryType": "Digital account/login delivery",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg"
+    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/1547000/library_600x900_2x.jpg"
   },
   {
     "sku": "SG-036",
@@ -417,7 +417,7 @@
     "category": "Steam Offline Games",
     "deliveryType": "Digital account/login delivery",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/242050/library_600x900_2x.jpg"
+    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/2851900/library_600x900_2x.jpg"
   },
   {
     "sku": "SG-043",
@@ -437,7 +437,7 @@
     "category": "Steam Offline Games",
     "deliveryType": "Digital account/login delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20900%22%20width%3D%22600%22%20height%3D%22900%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22bgGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230b0f19%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%230d1322%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22accentGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20stop-color%3D%22%233b82f6%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23a855f7%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22glowGrad%22%20cx%3D%2250%25%22%20cy%3D%2245%25%22%20r%3D%2250%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20stop-opacity%3D%220.18%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22%238b5cf6%22%20stop-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b0f19%22%20stop-opacity%3D%220%22%20%2F%3E%0A%20%20%20%20%3C%2FradialGradient%3E%0A%20%20%20%20%3Cpattern%20id%3D%22gridPattern%22%20width%3D%2240%22%20height%3D%2240%22%20patternUnits%3D%22userSpaceOnUse%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M%2040%200%20L%200%200%200%2040%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%220.75%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%3C%2Fpattern%3E%0A%20%20%3C%2Fdefs%3E%0A%0A%20%20%3C!--%20Background%20Layer%20--%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23bgGrad)%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%22300%22%20cy%3D%22420%22%20r%3D%22300%22%20fill%3D%22url(%23glowGrad)%22%20%2F%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23gridPattern)%22%20%2F%3E%0A%0A%20%20%3C!--%20Mountain%20Peak%20Geometry%20(Sagarmatha)%20--%3E%0A%20%20%3Cpolygon%20points%3D%22100%2C640%20300%2C340%20500%2C640%22%20fill%3D%22none%22%20stroke%3D%22%2306b6d4%22%20stroke-width%3D%222%22%20stroke-opacity%3D%220.12%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22200%2C640%20300%2C480%20400%2C640%22%20fill%3D%22none%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.1%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%2230%2C680%20180%2C450%20330%2C680%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22270%2C680%20420%2C450%20570%2C680%22%20fill%3D%22none%22%20stroke%3D%22%23818cf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%0A%20%20%3C!--%20Gamepad%20Watermark%20--%3E%0A%20%20%3Cg%20transform%3D%22translate(230%2C%20250)%20scale(0.7)%22%20opacity%3D%220.09%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%226%22%20fill%3D%22none%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%2230%22%20width%3D%22200%22%20height%3D%22120%22%20rx%3D%2240%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2250%22%20cy%3D%2290%22%20r%3D%2222%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M%2050%2078%20L%2050%20102%20M%2038%2090%20L%2062%2090%22%20stroke-width%3D%225%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%2275%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22130%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22170%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%22115%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3C!--%20Top%20Brand%20Header%20--%3E%0A%20%20%3Crect%20x%3D%22175%22%20y%3D%2280%22%20width%3D%22250%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22%2313192b%22%20stroke%3D%22%2338bdf8%22%20stroke-opacity%3D%220.35%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22102%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2211%22%20font-weight%3D%22700%22%20letter-spacing%3D%223%22%20text-anchor%3D%22middle%22%3ESAGARMATHA%20GAMES%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Centered%20Clean%20Product%20Title%20--%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22422%22%20text-anchor%3D%22middle%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20font-size%3D%2228%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20%3Ctspan%20x%3D%22300%22%20dy%3D%220%22%3E007%20FIRST%20LIGHT%3C%2Ftspan%3E%3Ctspan%20x%3D%22300%22%20dy%3D%2238%22%3E%2B%20ALL%20DLCS%3C%2Ftspan%3E%0A%20%20%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Glowing%20Accent%20Divider%20Line%20--%3E%0A%20%20%3Crect%20x%3D%22220%22%20y%3D%22513%22%20width%3D%22160%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22url(%23accentGrad)%22%20%2F%3E%0A%0A%20%20%3C!--%20Bottom%20Badge%20--%3E%0A%20%20%3Crect%20x%3D%22200%22%20y%3D%22785%22%20width%3D%22200%22%20height%3D%2232%22%20rx%3D%2216%22%20fill%3D%22%23111827%22%20fill-opacity%3D%220.9%22%20stroke%3D%22%23334155%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22806%22%20fill%3D%22%2394a3b8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2210%22%20font-weight%3D%22600%22%20letter-spacing%3D%222.5%22%20text-anchor%3D%22middle%22%3EVERIFIED%20PRODUCT%3C%2Ftext%3E%0A%3C%2Fsvg%3E"
   },
   {
     "sku": "SG-045",
@@ -467,7 +467,7 @@
     "category": "Steam Offline Games",
     "deliveryType": "Digital account/login delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/349040/library_600x900_2x.jpg"
   },
   {
     "sku": "SG-048",
@@ -537,7 +537,7 @@
     "category": "Game Top-Up",
     "deliveryType": "UID/Player ID digital top-up",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1y7a.png"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r3k.png"
   },
   {
     "sku": "SG-055",
@@ -547,7 +547,7 @@
     "category": "Game Top-Up",
     "deliveryType": "UID/Player ID digital top-up",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2y2j.png"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x18.png"
   },
   {
     "sku": "SG-056",
@@ -557,7 +557,7 @@
     "category": "Game Top-Up",
     "deliveryType": "UID/Player ID digital top-up",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co876v.png"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co843a.png"
   },
   {
     "sku": "SG-057",
@@ -567,7 +567,7 @@
     "category": "Game Top-Up",
     "deliveryType": "UID/Player ID digital top-up",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r42.png"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x17.png"
   },
   {
     "sku": "SG-058",
@@ -577,7 +577,7 @@
     "category": "Game Top-Up",
     "deliveryType": "UID/Player ID digital top-up",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co52b1.png"
+    "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20900%22%20width%3D%22600%22%20height%3D%22900%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22bgGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230b0f19%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%230d1322%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22accentGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20stop-color%3D%22%233b82f6%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23a855f7%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22glowGrad%22%20cx%3D%2250%25%22%20cy%3D%2245%25%22%20r%3D%2250%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20stop-opacity%3D%220.18%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22%238b5cf6%22%20stop-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b0f19%22%20stop-opacity%3D%220%22%20%2F%3E%0A%20%20%20%20%3C%2FradialGradient%3E%0A%20%20%20%20%3Cpattern%20id%3D%22gridPattern%22%20width%3D%2240%22%20height%3D%2240%22%20patternUnits%3D%22userSpaceOnUse%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M%2040%200%20L%200%200%200%2040%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%220.75%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%3C%2Fpattern%3E%0A%20%20%3C%2Fdefs%3E%0A%0A%20%20%3C!--%20Background%20Layer%20--%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23bgGrad)%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%22300%22%20cy%3D%22420%22%20r%3D%22300%22%20fill%3D%22url(%23glowGrad)%22%20%2F%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23gridPattern)%22%20%2F%3E%0A%0A%20%20%3C!--%20Mountain%20Peak%20Geometry%20(Sagarmatha)%20--%3E%0A%20%20%3Cpolygon%20points%3D%22100%2C640%20300%2C340%20500%2C640%22%20fill%3D%22none%22%20stroke%3D%22%2306b6d4%22%20stroke-width%3D%222%22%20stroke-opacity%3D%220.12%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22200%2C640%20300%2C480%20400%2C640%22%20fill%3D%22none%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.1%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%2230%2C680%20180%2C450%20330%2C680%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22270%2C680%20420%2C450%20570%2C680%22%20fill%3D%22none%22%20stroke%3D%22%23818cf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%0A%20%20%3C!--%20Gamepad%20Watermark%20--%3E%0A%20%20%3Cg%20transform%3D%22translate(230%2C%20250)%20scale(0.7)%22%20opacity%3D%220.09%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%226%22%20fill%3D%22none%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%2230%22%20width%3D%22200%22%20height%3D%22120%22%20rx%3D%2240%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2250%22%20cy%3D%2290%22%20r%3D%2222%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M%2050%2078%20L%2050%20102%20M%2038%2090%20L%2062%2090%22%20stroke-width%3D%225%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%2275%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22130%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22170%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%22115%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3C!--%20Top%20Brand%20Header%20--%3E%0A%20%20%3Crect%20x%3D%22175%22%20y%3D%2280%22%20width%3D%22250%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22%2313192b%22%20stroke%3D%22%2338bdf8%22%20stroke-opacity%3D%220.35%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22102%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2211%22%20font-weight%3D%22700%22%20letter-spacing%3D%223%22%20text-anchor%3D%22middle%22%3ESAGARMATHA%20GAMES%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Centered%20Clean%20Product%20Title%20--%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22441%22%20text-anchor%3D%22middle%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20font-size%3D%2228%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20%3Ctspan%20x%3D%22300%22%20dy%3D%220%22%3EWHERE%20WINDS%20MEET%3C%2Ftspan%3E%0A%20%20%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Glowing%20Accent%20Divider%20Line%20--%3E%0A%20%20%3Crect%20x%3D%22220%22%20y%3D%22494%22%20width%3D%22160%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22url(%23accentGrad)%22%20%2F%3E%0A%0A%20%20%3C!--%20Bottom%20Badge%20--%3E%0A%20%20%3Crect%20x%3D%22200%22%20y%3D%22785%22%20width%3D%22200%22%20height%3D%2232%22%20rx%3D%2216%22%20fill%3D%22%23111827%22%20fill-opacity%3D%220.9%22%20stroke%3D%22%23334155%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22806%22%20fill%3D%22%2394a3b8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2210%22%20font-weight%3D%22600%22%20letter-spacing%3D%222.5%22%20text-anchor%3D%22middle%22%3EVERIFIED%20PRODUCT%3C%2Ftext%3E%0A%3C%2Fsvg%3E"
   },
   {
     "sku": "SG-059",
@@ -587,7 +587,7 @@
     "category": "Game Top-Up",
     "deliveryType": "UID/Player ID digital top-up",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co294f.png"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2949.png"
   },
   {
     "sku": "SG-060",
@@ -607,7 +607,7 @@
     "category": "Game Top-Up",
     "deliveryType": "UID/Player ID digital top-up",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7dps.png"
+    "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20900%22%20width%3D%22600%22%20height%3D%22900%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22bgGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230b0f19%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%230d1322%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22accentGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%220%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20stop-color%3D%22%233b82f6%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23a855f7%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22glowGrad%22%20cx%3D%2250%25%22%20cy%3D%2245%25%22%20r%3D%2250%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2306b6d4%22%20stop-opacity%3D%220.18%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22%238b5cf6%22%20stop-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b0f19%22%20stop-opacity%3D%220%22%20%2F%3E%0A%20%20%20%20%3C%2FradialGradient%3E%0A%20%20%20%20%3Cpattern%20id%3D%22gridPattern%22%20width%3D%2240%22%20height%3D%2240%22%20patternUnits%3D%22userSpaceOnUse%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M%2040%200%20L%200%200%200%2040%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%220.75%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%20%20%3C%2Fpattern%3E%0A%20%20%3C%2Fdefs%3E%0A%0A%20%20%3C!--%20Background%20Layer%20--%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23bgGrad)%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%22300%22%20cy%3D%22420%22%20r%3D%22300%22%20fill%3D%22url(%23glowGrad)%22%20%2F%3E%0A%20%20%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22url(%23gridPattern)%22%20%2F%3E%0A%0A%20%20%3C!--%20Mountain%20Peak%20Geometry%20(Sagarmatha)%20--%3E%0A%20%20%3Cpolygon%20points%3D%22100%2C640%20300%2C340%20500%2C640%22%20fill%3D%22none%22%20stroke%3D%22%2306b6d4%22%20stroke-width%3D%222%22%20stroke-opacity%3D%220.12%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22200%2C640%20300%2C480%20400%2C640%22%20fill%3D%22none%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.1%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%2230%2C680%20180%2C450%20330%2C680%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%20%20%3Cpolygon%20points%3D%22270%2C680%20420%2C450%20570%2C680%22%20fill%3D%22none%22%20stroke%3D%22%23818cf8%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.06%22%20%2F%3E%0A%0A%20%20%3C!--%20Gamepad%20Watermark%20--%3E%0A%20%20%3Cg%20transform%3D%22translate(230%2C%20250)%20scale(0.7)%22%20opacity%3D%220.09%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%226%22%20fill%3D%22none%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%2230%22%20width%3D%22200%22%20height%3D%22120%22%20rx%3D%2240%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2250%22%20cy%3D%2290%22%20r%3D%2222%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M%2050%2078%20L%2050%20102%20M%2038%2090%20L%2062%2090%22%20stroke-width%3D%225%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%2275%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22130%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22170%22%20cy%3D%2295%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22150%22%20cy%3D%22115%22%20r%3D%229%22%20fill%3D%22%2338bdf8%22%20%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3C!--%20Top%20Brand%20Header%20--%3E%0A%20%20%3Crect%20x%3D%22175%22%20y%3D%2280%22%20width%3D%22250%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22%2313192b%22%20stroke%3D%22%2338bdf8%22%20stroke-opacity%3D%220.35%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22102%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2211%22%20font-weight%3D%22700%22%20letter-spacing%3D%223%22%20text-anchor%3D%22middle%22%3ESAGARMATHA%20GAMES%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Centered%20Clean%20Product%20Title%20--%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22441%22%20text-anchor%3D%22middle%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20font-size%3D%2228%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20%3Ctspan%20x%3D%22300%22%20dy%3D%220%22%3EBLOOD%20STRIKE%3C%2Ftspan%3E%0A%20%20%3C%2Ftext%3E%0A%0A%20%20%3C!--%20Glowing%20Accent%20Divider%20Line%20--%3E%0A%20%20%3Crect%20x%3D%22220%22%20y%3D%22494%22%20width%3D%22160%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22url(%23accentGrad)%22%20%2F%3E%0A%0A%20%20%3C!--%20Bottom%20Badge%20--%3E%0A%20%20%3Crect%20x%3D%22200%22%20y%3D%22785%22%20width%3D%22200%22%20height%3D%2232%22%20rx%3D%2216%22%20fill%3D%22%23111827%22%20fill-opacity%3D%220.9%22%20stroke%3D%22%23334155%22%20stroke-width%3D%221%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%22300%22%20y%3D%22806%22%20fill%3D%22%2394a3b8%22%20font-family%3D%22-apple-system%2C%20BlinkMacSystemFont%2C%20'Segoe%20UI'%2C%20Roboto%2C%20sans-serif%22%20font-size%3D%2210%22%20font-weight%3D%22600%22%20letter-spacing%3D%222.5%22%20text-anchor%3D%22middle%22%3EVERIFIED%20PRODUCT%3C%2Ftext%3E%0A%3C%2Fsvg%3E"
   },
   {
     "sku": "SG-062",
@@ -617,7 +617,7 @@
     "category": "Game Top-Up",
     "deliveryType": "UID/Player ID digital top-up",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2m4e.png"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2044.png"
   },
   {
     "sku": "SG-063",
@@ -637,7 +637,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-065",
@@ -647,7 +647,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2083.png"
+    "image": "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-066",
@@ -667,7 +667,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-068",
@@ -677,7 +677,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Sold Out",
-    "image": "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-069",
@@ -687,7 +687,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-070",
@@ -707,7 +707,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-072",
@@ -717,7 +717,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-073",
@@ -737,7 +737,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-075",
@@ -757,7 +757,7 @@
     "category": "Gift Cards",
     "deliveryType": "Digital code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-077",
@@ -767,7 +767,7 @@
     "category": "Xbox",
     "deliveryType": "Digital account/code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-078",
@@ -787,7 +787,7 @@
     "category": "PlayStation Digital",
     "deliveryType": "Digital account/code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3v9w.png"
   },
   {
     "sku": "SG-080",
@@ -797,7 +797,7 @@
     "category": "PlayStation Digital",
     "deliveryType": "Digital account/code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png"
   },
   {
     "sku": "SG-081",
@@ -807,7 +807,7 @@
     "category": "PlayStation Digital",
     "deliveryType": "Digital account/code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png"
   },
   {
     "sku": "SG-082",
@@ -937,7 +937,7 @@
     "category": "Microsoft Online Games",
     "deliveryType": "Digital account/code delivery",
     "status": "Available",
-    "image": "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-095",
@@ -957,7 +957,7 @@
     "category": "Game Keys",
     "deliveryType": "Digital key/code delivery",
     "status": "Sold Out",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-097",
@@ -967,7 +967,7 @@
     "category": "Game Keys",
     "deliveryType": "Digital key/code delivery",
     "status": "Sold Out",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-098",
@@ -977,7 +977,7 @@
     "category": "Game Keys",
     "deliveryType": "Digital key/code delivery",
     "status": "Sold Out",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-099",
@@ -987,7 +987,7 @@
     "category": "Game Keys",
     "deliveryType": "Digital key/code delivery",
     "status": "Sold Out",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "sku": "SG-100",
@@ -1007,7 +1007,7 @@
     "category": "PlayStation Physical Disc",
     "deliveryType": "Physical delivery (shipping)",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7i.png"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co204b.png"
   },
   {
     "sku": "SG-102",
@@ -1017,7 +1017,7 @@
     "category": "PlayStation Physical Disc",
     "deliveryType": "Physical delivery (shipping)",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/1225580/library_600x900_2x.jpg"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qsf.png"
   },
   {
     "sku": "SG-103",
@@ -1027,7 +1027,7 @@
     "category": "PlayStation Physical Disc",
     "deliveryType": "Physical delivery (shipping)",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/976310/library_600x900_2x.jpg"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qse.png"
   },
   {
     "sku": "SG-104",
@@ -1037,7 +1037,7 @@
     "category": "PlayStation Physical Disc",
     "deliveryType": "Physical delivery (shipping)",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/782330/library_600x900_2x.jpg"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7i.png"
   },
   {
     "sku": "SG-105",
@@ -1057,7 +1057,7 @@
     "category": "PlayStation Physical Disc",
     "deliveryType": "Physical delivery (shipping)",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/640450/library_600x900_2x.jpg"
+    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/664430/library_600x900_2x.jpg"
   },
   {
     "sku": "SG-107",
@@ -1117,7 +1117,7 @@
     "category": "PlayStation Physical Disc",
     "deliveryType": "Physical delivery (shipping)",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/2315690/library_600x900_2x.jpg"
+    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/1812440/library_600x900_2x.jpg"
   },
   {
     "sku": "SG-113",
@@ -1127,7 +1127,7 @@
     "category": "PlayStation Physical Disc",
     "deliveryType": "Physical delivery (shipping)",
     "status": "Available",
-    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/1015830/library_600x900_2x.jpg"
+    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/1015140/library_600x900_2x.jpg"
   },
   {
     "sku": "SG-114",
@@ -1137,7 +1137,7 @@
     "category": "PlayStation Physical Disc",
     "deliveryType": "Physical delivery (shipping)",
     "status": "Available",
-    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2124.png"
+    "image": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r0o.png"
   },
   {
     "sku": "SG-115",

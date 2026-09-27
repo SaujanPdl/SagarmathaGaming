@@ -141,7 +141,7 @@ const COVERS_MAP = {
   "game pass": "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&auto=format&fit=crop&q=80"
 };
 
-const FALLBACK_POSTER = "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80";
+const FALLBACK_POSTER = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80";
 
 function cleanTitle(name) {
   if (!name) return "";
