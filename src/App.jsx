@@ -985,12 +985,12 @@ function App() {
       )}
 
       <header className="w-full flex items-center justify-between px-3 py-2.5 max-w-full overflow-hidden bg-[#0b0f19]/90 backdrop-blur-md border-b border-cyan-500/20 sticky top-0 z-50">
-        {/* Left side: Hamburger + Logo + SAGARMATHA */}
+        {/* Left side: Hamburger + Logo + SAGARMATHA (hidden on mobile) */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/70 border border-slate-700/50 text-slate-200 hover:text-white shrink-0 cursor-pointer"
+            className="md:hidden w-9 h-9 min-w-[36px] flex items-center justify-center rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 hover:text-white shrink-0 cursor-pointer"
             aria-label="Open mobile menu"
           >
             <Menu size={18} />
@@ -1004,16 +1004,11 @@ function App() {
             <img 
               src="/sagarmatha-games-logo.svg" 
               alt="Sagarmatha Gaming Store" 
-              className="h-7 sm:h-9 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
+              className="w-8 h-8 object-contain shrink-0 drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
             />
-            <div className="flex flex-col">
-              <span className="font-extrabold text-sm sm:text-base tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
-                Sagarmatha
-              </span>
-              <span className="hidden xs:inline text-[9px] sm:text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
-                Gaming Store
-              </span>
-            </div>
+            <span className="hidden sm:inline font-bold tracking-wider text-white text-base leading-none">
+              SAGARMATHA
+            </span>
           </a>
         </div>
 
@@ -1075,11 +1070,11 @@ function App() {
         </div>
 
         {/* Right side: Search, Wishlist, Discord/Profile, and Cart (desktop only) */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 ml-auto">
           {/* Mobile search button */}
           <button
             type="button"
-            className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/70 border border-slate-700/50 text-slate-200 hover:text-white shrink-0 cursor-pointer transition-colors"
+            className="md:hidden w-9 h-9 min-w-[36px] flex items-center justify-center rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 hover:text-white shrink-0 cursor-pointer transition-colors"
             aria-label="Search products"
             onClick={() => {
               setMobileSearchOpen((prev) => !prev)
@@ -1095,7 +1090,7 @@ function App() {
           {/* Wishlist button */}
           <button
             type="button"
-            className="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/70 border border-slate-700/50 text-slate-200 hover:text-white hover:border-slate-700 shrink-0 cursor-pointer transition-colors"
+            className="w-9 h-9 min-w-[36px] flex items-center justify-center rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 hover:text-white hover:border-slate-700 shrink-0 cursor-pointer transition-colors"
             aria-label="Toggle wishlist"
             aria-pressed={wishlistOnly}
             onClick={() => {
@@ -1107,7 +1102,7 @@ function App() {
             <Heart size={16} fill={wishlistOnly ? 'currentColor' : 'none'} className={wishlistOnly ? 'text-rose-500' : ''} />
           </button>
 
-          {/* Profile control */}
+          {/* Profile / Discord button */}
           {currentUser ? (
             <button
               type="button"
@@ -1116,7 +1111,7 @@ function App() {
                 setCurrentPage('profile')
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
-              className={`relative w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/70 border border-slate-700/50 text-slate-200 overflow-hidden transition-all cursor-pointer shrink-0 ${
+              className={`relative w-9 h-9 min-w-[36px] flex items-center justify-center rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 shrink-0 overflow-hidden transition-all cursor-pointer ${
                 currentPage === 'profile'
                   ? '!border-cyan-400 ring-2 ring-cyan-400/40'
                   : 'hover:border-cyan-400'
@@ -1138,13 +1133,15 @@ function App() {
           ) : (
             <button
               type="button"
-              onClick={() => setAuthModalOpen(true)}
-              className="w-9 h-9 sm:w-auto sm:px-3 sm:py-2 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800/70 hover:bg-[#5865F2] border border-slate-700/50 text-slate-200 hover:text-white font-bold text-xs transition-all cursor-pointer shrink-0"
+              onClick={() => {
+                setAuthNotice("Please log in with Discord to access your profile and order history.")
+                setAuthModalOpen(true)
+              }}
+              className="w-9 h-9 min-w-[36px] flex items-center justify-center rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 hover:text-white shrink-0 overflow-hidden transition-all cursor-pointer"
               aria-label="Sign in with Discord"
               title="Sign in with Discord"
             >
               <DiscordIcon size={16} />
-              <span className="hidden sm:inline">Sign In</span>
             </button>
           )}
 
