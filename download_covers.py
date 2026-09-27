@@ -1,39 +1,64 @@
-import requests
-import os
 import json
+import re
+import time
+from pathlib import Path
+import requests
 
-# SteamGridDB API key
-API_KEY = 'e8d35acb5ae61659d00f4f2da8487efe'
+API_KEY = "e8d35acb5ae61659d00f4f2da8487efe"
+headers = {"Authorization": f"Bearer {API_KEY}"}
 
-# Path to the products file
-PRODUCTS_FILE = 'src/products_clean.json'
+# Create public/covers folder if missing
+out_dir = Path("public/covers")
+out_dir.mkdir(parents=True, exist_ok=True)
 
-# Path to the covers directory
-COVERS_DIR = 'public/covers'
+# Note: Check both potential paths for products_clean.json
+json_path = Path("src/data/products_clean.json")
+if not json_path.exists():
+    json_path = Path("src/products_clean.json")
 
-# Ensure the covers directory exists
-os.makedirs(COVERS_DIR, exist_ok=True)
+with open(json_path, "r", encoding="utf-8") as f:
+    products = json.load(f)
 
-# Function to fetch the vertical poster from SteamGridDB
-def fetch_vertical_poster(game_name):
-    url = f'https://api.steamingriddb.com/v1/cover?game={game_name}&size=vertical&apikey={API_KEY}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json().get('url')
-    return None
+print(f"Loaded {len(products)} products from {json_path}")
 
-# Read the products file
-with open(PRODUCTS_FILE, 'r') as file:
-    products = json.load(file)
+for item in products:
+    name = item.get("name")
+    if not name:
+        continue
 
-# Fetch and save the vertical posters
-for product in products:
-    game_name = product['name']
-    vertical_poster_url = fetch_vertical_poster(game_name)
-    if vertical_poster_url:
-        poster_filename = os.path.join(COVERS_DIR, f'{product["sku"]}.jpg')
-        with open(poster_filename, 'wb') as poster_file:
-            poster_file.write(requests.get(vertical_poster_url).content)
-        print(f'Saved {poster_filename}')
-    else:
-        print(f'No vertical poster found for {game_name}')
+    slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+    target = out_dir / f"{slug}.jpg"
+
+    if target.exists() and target.stat().st_size > 0:
+        print(f"[SKIP] {name} already exists.")
+        continue
+
+    print(f"[FETCH] Querying cover for {name}...")
+    try:
+        search_res = requests.get(
+            f"https://www.steamgriddb.com/api/v2/search/autocomplete/{requests.utils.quote(name)}",
+            headers=headers,
+            timeout=10,
+        )
+        if search_res.ok and search_res.json().get("data"):
+            game_id = search_res.json()["data"][0]["id"]
+            grid_res = requests.get(
+                f"https://www.steamgriddb.com/api/v2/grids/game/{game_id}?dimensions=600x900",
+                headers=headers,
+                timeout=10,
+            )
+            if grid_res.ok and grid_res.json().get("data"):
+                img_url = grid_res.json()["data"][0]["url"]
+                img_data = requests.get(img_url, timeout=15).content
+                target.write_bytes(img_data)
+                print(f"[SUCCESS] Saved -> {target}")
+            else:
+                print(f"[WARN] No 600x900 grid found for {name}")
+        else:
+            print(f"[WARN] No search match for {name}")
+    except Exception as e:
+        print(f"[ERROR] Failed {name}: {e}")
+
+    time.sleep(0.4)
+
+print("\nFinished downloading covers!")

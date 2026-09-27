@@ -1,17 +1,53 @@
 // Direct local image resolver - Sagarmatha Gaming Store
 
-export const FALLBACK_POSTER = "/covers/default_poster.jpg";
+export const DEFAULT_FALLBACK_COVER = "/covers/default_poster.jpg";
+export const FALLBACK_POSTER = DEFAULT_FALLBACK_COVER;
+
+/**
+ * Safely resolves the local cover image URL for a product or title.
+ * Completely null-safe against undefined, null, or malformed product objects.
+ * 
+ * @param {Object|string} product - Product object or game title string
+ * @returns {string} Relative URL to local cover image or fallback cover
+ */
+function getCoverImage(product) {
+  if (!product) return DEFAULT_FALLBACK_COVER;
+
+  // If product.image is already present, return product.image
+  if (typeof product === 'object' && product !== null && product.image) {
+    return product.image;
+  }
+
+  // Safely retrieve product name
+  const rawName = typeof product === 'string' ? product : product?.name;
+  if (!rawName || typeof rawName !== 'string' || !rawName.trim()) {
+    return DEFAULT_FALLBACK_COVER;
+  }
+
+  // Safely generate the kebab-case slug from product.name
+  const slug = rawName
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  if (!slug) {
+    return DEFAULT_FALLBACK_COVER;
+  }
+
+  return `/covers/${slug}.jpg`;
+}
 
 export function getGameCover(nameOrProduct) {
-  if (!nameOrProduct) return FALLBACK_POSTER;
+  if (!nameOrProduct) return DEFAULT_FALLBACK_COVER;
   
   // If product object is passed and has a baked local cover, use it directly
-  if (typeof nameOrProduct === 'object') {
+  if (typeof nameOrProduct === 'object' && nameOrProduct !== null) {
     if (nameOrProduct.image) return nameOrProduct.image;
     nameOrProduct = nameOrProduct.name || '';
   }
 
-  const t = String(nameOrProduct).toLowerCase();
+  const t = String(nameOrProduct || '').toLowerCase();
 
   // Direct local mappings
   if (t.includes('gta 6') || t.includes('gta vi')) return '/covers/gta_6.jpg';
@@ -48,14 +84,12 @@ export function getGameCover(nameOrProduct) {
   if (t.includes('grand random')) return '/covers/grand_random_key.jpg';
   if (t.includes('random key')) return '/covers/steam_random_key.jpg';
 
-  return FALLBACK_POSTER;
+  return getCoverImage(nameOrProduct);
 }
 
 export function getDynamicPlaceholder(name) {
-  return getGameCover(name);
+  return getCoverImage(name);
 }
 
-export function getCoverImage(product) {
-  const slug = product.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
-  return product.image || `/covers/${slug}.jpg`;
-}
+export { getCoverImage };
+export default getCoverImage;

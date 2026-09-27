@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import React, { Component, useEffect, useMemo, useState } from 'react'
 import { parse } from 'csv-parse/browser/esm/sync'
 import {
   ArrowDownRight,
@@ -30,22 +30,72 @@ import {
   Trash2,
   X,
 } from 'lucide-react'
+import productsCleanData from './data/products_clean.json'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
-import { getGameCover, FALLBACK_POSTER, getDynamicPlaceholder, getCoverImage } from './utils/gameImages'
+import getCoverImage, { getCoverImage as namedGetCoverImage, DEFAULT_FALLBACK_COVER, FALLBACK_POSTER, getGameCover, getDynamicPlaceholder } from './utils/gameImages'
 import './App.css'
 
-const productData = parse(productCsv, {
-  columns: true,
-  skip_empty_lines: true,
-  trim: true,
-}).map((row) => ({
-  sku: row.SKU,
-  name: row['Product Name'],
-  price: Number(row['Sagarmatha Selling Price (NPR)']),
-  category: row.Category,
-  deliveryType: row['Delivery Type'],
-  status: row['HGS Status'],
-}))
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false, error: null }
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error }
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        this.props.fallback || (
+          <div className="p-4 text-center text-slate-400 border border-slate-800 rounded-xl my-2">
+            <p className="text-rose-400 text-xs font-semibold mb-1">Item could not be displayed.</p>
+          </div>
+        )
+      )
+    }
+    return this.props.children
+  }
+}
+
+// Resilient product data initialization: prefer validated JSON, fallback to CSV parsing
+let rawProductList = []
+
+if (Array.isArray(productsCleanData) && productsCleanData.length > 0) {
+  rawProductList = productsCleanData.map((row) => ({
+    sku: row?.sku || '',
+    name: row?.name || '',
+    price: typeof row?.price === 'number' ? row.price : Number(row?.price) || 0,
+    category: row?.category || 'Game Keys',
+    deliveryType: row?.deliveryType || 'Digital',
+    status: row?.status || 'Available',
+    image: row?.image || '',
+  }))
+} else {
+  try {
+    rawProductList = parse(productCsv, {
+      columns: true,
+      skip_empty_lines: true,
+      trim: true,
+    }).map((row) => ({
+      sku: row?.SKU || '',
+      name: row?.['Product Name'] || '',
+      price: Number(row?.['Sagarmatha Selling Price (NPR)']) || 0,
+      category: row?.Category || 'Game Keys',
+      deliveryType: row?.['Delivery Type'] || 'Digital',
+      status: row?.['HGS Status'] || 'Available',
+      image: '',
+    }))
+  } catch (err) {
+    console.error("Failed to parse fallback CSV:", err)
+    rawProductList = []
+  }
+}
 
 const categoryOrder = [
   'Steam Private Account',
@@ -64,13 +114,14 @@ const categoryOrder = [
 const categories = ['All products', ...categoryOrder]
 
 function getProductPlatform(product) {
-  if (product.category.startsWith('Steam')) return 'Steam'
-  if (product.category.startsWith('PlayStation')) return 'PlayStation'
-  if (product.category === 'Game Top-Up') return 'Mobile'
-  if (product.category === 'Gift Cards') return 'Gift Cards'
-  if (product.category === 'Microsoft Online Games') return 'Microsoft'
-  if (product.category === 'Xbox') return 'Xbox'
-  if (product.category === 'AI & Subscription') return 'Digital Services'
+  const cat = product?.category || ''
+  if (cat.startsWith('Steam')) return 'Steam'
+  if (cat.startsWith('PlayStation')) return 'PlayStation'
+  if (cat === 'Game Top-Up') return 'Mobile'
+  if (cat === 'Gift Cards') return 'Gift Cards'
+  if (cat === 'Microsoft Online Games') return 'Microsoft'
+  if (cat === 'Xbox') return 'Xbox'
+  if (cat === 'AI & Subscription') return 'Digital Services'
   return 'PC Games'
 }
 
@@ -89,32 +140,42 @@ const categoryImages = {
 }
 
 function getDeliveryBadge(product) {
-  if (product.category === 'Steam Offline Games') return 'OFFLINE'
-  if (product.category === 'Steam Private Account') return 'PRIVATE ACCOUNT'
-  if (product.category === 'Game Top-Up') return 'TOP-UP'
-  if (product.category === 'PlayStation Physical Disc') return 'PHYSICAL'
-  if (product.deliveryType.includes('code')) return 'DIGITAL CODE'
-  if (product.category === 'Game Keys') return 'GAME KEY'
+  const cat = product?.category || ''
+  const del = product?.deliveryType || ''
+  if (cat === 'Steam Offline Games') return 'OFFLINE'
+  if (cat === 'Steam Private Account') return 'PRIVATE ACCOUNT'
+  if (cat === 'Game Top-Up') return 'TOP-UP'
+  if (cat === 'PlayStation Physical Disc') return 'PHYSICAL'
+  if (del.includes('code')) return 'DIGITAL CODE'
+  if (cat === 'Game Keys') return 'GAME KEY'
   return 'DIGITAL'
 }
 
-const products = productData.map((product) => ({
-  ...product,
-  id: product.sku,
-  oldPrice: null,
-  badge: getDeliveryBadge(product),
-  platform: getProductPlatform(product),
-  image: getCoverImage(product),
-  imageAlt: `${product.name} artwork`,
-  description: product.deliveryType,
-  delivery: product.deliveryType,
-  instructions: `Delivery method: ${product.deliveryType}. Follow the instructions provided with your order.`,
-  credentials: 'Product details are provided after payment confirmation.',
-}))
+const products = (Array.isArray(rawProductList) ? rawProductList : [])
+  .filter((product) => Boolean(product && typeof product === 'object'))
+  .map((product) => ({
+    ...product,
+    id: product?.sku || `prod-${Math.random()}`,
+    sku: product?.sku || '',
+    name: product?.name || 'Untitled Game',
+    price: typeof product?.price === 'number' && !isNaN(product?.price) ? product.price : 0,
+    category: product?.category || 'Game Keys',
+    deliveryType: product?.deliveryType || 'Digital',
+    status: product?.status || 'Available',
+    oldPrice: null,
+    badge: getDeliveryBadge(product),
+    platform: getProductPlatform(product),
+    image: getCoverImage(product),
+    imageAlt: `${product?.name || 'Game'} artwork`,
+    description: product?.deliveryType || 'Digital',
+    delivery: product?.deliveryType || 'Digital',
+    instructions: `Delivery method: ${product?.deliveryType || 'Digital'}. Follow the instructions provided with your order.`,
+    credentials: 'Product details are provided after payment confirmation.',
+  }))
 
-const platformOptions = ['All platforms', ...new Set(products.map((product) => product.platform))]
+const platformOptions = ['All platforms', ...new Set(products.map((product) => product?.platform).filter(Boolean))]
 
-const formatPrice = (amount) => `Rs. ${amount.toLocaleString('en-IN')}`
+const formatPrice = (amount) => `Rs. ${(amount ?? 0).toLocaleString('en-IN')}`
 
 const categoryIcons = {
   'Steam Private Account': CircleUserRound,
@@ -137,7 +198,7 @@ const categoryDisplayNames = {
 
 function getCategoryCover(category) {
   if (category === 'Steam Private Account') {
-    return products.find((product) => product.name.toLowerCase().includes('red dead redemption 2'))?.image
+    return products.find((product) => product?.name?.toLowerCase().includes('red dead redemption 2'))?.image
   }
   if (category === 'Steam Offline Games') {
     return 'https://cdn.zalient.shop/media/1788443952480_7d49bc4763bf71d1.webp'
@@ -146,47 +207,49 @@ function getCategoryCover(category) {
 }
 
 function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCart }) {
+  if (!product || typeof product !== 'object') return null
+  const isSoldOut = product?.status === 'Sold Out'
   return (
-    <article className={`product-card group ${product.status === 'Sold Out' ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
-      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726]">
+    <article className={`product-card group ${isSoldOut ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
+      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-[#111726]">
         <img
           src={getCoverImage(product)}
-          alt={product.name}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity ${product.status === 'Sold Out' ? 'grayscale-[40%] opacity-90' : ''}`}
+          alt={product?.name || 'Game Cover'}
+          className={`aspect-[2/3] object-cover w-full rounded-xl transition-opacity ${isSoldOut ? 'grayscale-[40%] opacity-90' : ''}`}
           loading="lazy"
           onError={(e) => {
-            e.currentTarget.onerror = null
-            e.currentTarget.src = getDynamicPlaceholder(product.name) || FALLBACK_POSTER
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = DEFAULT_FALLBACK_COVER;
           }}
         />
-        {product.status === 'Sold Out' && (
+        {isSoldOut && (
           <span className="absolute top-2 right-2 bg-rose-600/90 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider z-10">
             Sold Out
           </span>
         )}
         <button
-          className={`${isWishlisted ? 'quick-add saved' : 'quick-add'} ${product.status === 'Sold Out' ? '!left-2 !right-auto' : ''}`}
+          className={`${isWishlisted ? 'quick-add saved' : 'quick-add'} ${isSoldOut ? '!left-2 !right-auto' : ''}`}
           type="button"
-          aria-label={`${isWishlisted ? 'Remove' : 'Add'} ${product.name} to wishlist`}
-          onClick={() => onToggleWishlist(product.id)}
+          aria-label={`${isWishlisted ? 'Remove' : 'Add'} ${product?.name || 'item'} to wishlist`}
+          onClick={() => onToggleWishlist?.(product?.id)}
         >
           <Heart size={17} fill={isWishlisted ? 'currentColor' : 'none'} />
         </button>
       </div>
       <div className="product-info-tight">
-        <span className="product-category-micro">{product.category}</span>
-        <h3 className="product-title-micro min-h-[2.5rem] line-clamp-2" title={product.name}>
-          {product.name}
+        <span className="product-category-micro">{product?.category || ''}</span>
+        <h3 className="product-title-micro min-h-[2.5rem] line-clamp-2" title={product?.name || ''}>
+          {product?.name || 'Untitled Product'}
         </h3>
         <div className="product-actions-micro">
-          <span className="product-price-micro">{formatPrice(product.price)}</span>
+          <span className="product-price-micro">{formatPrice(product?.price)}</span>
           <button
             type="button"
             className="add-to-cart-cyan"
-            disabled={product.status !== 'Available'}
-            onClick={() => onAddToCart(product)}
+            disabled={product?.status !== 'Available'}
+            onClick={() => onAddToCart?.(product)}
           >
-            {product.status === 'Available' ? <><Plus size={14} /> Add</> : 'Sold out'}
+            {product?.status === 'Available' ? <><Plus size={14} /> Add</> : 'Sold out'}
           </button>
         </div>
       </div>
@@ -195,33 +258,36 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
 }
 
 function ProductRail({ title, category, items, onAdd, onSeeAll }) {
-  if (!items.length) return null
+  if (!items || !items.length) return null
 
   return (
     <section className="home-product-row">
       <div className="row-heading">
         <div><span className="section-eyebrow">CURATED FOR YOU</span><h2>{title}</h2></div>
-        <button type="button" onClick={() => onSeeAll(category)}>See all <ArrowRight size={15} /></button>
+        <button type="button" onClick={() => onSeeAll?.(category)}>See all <ArrowRight size={15} /></button>
       </div>
       <div className="product-rail">
-        {items.map((product) => (
-          <article className={`rail-product ${product.status === 'Sold Out' ? 'sold-out' : ''}`} key={product.sku}>
-            <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${product.image}")` }}>
-              <span className="product-badge">{product.badge}</span>
-              <span className="rail-number">{product.sku}</span>
-            </div>
-            <div className="rail-product-info">
-              <span>{product.category}</span>
-              <h3>{product.name}</h3>
-              <div>
-                <strong>{formatPrice(product.price)}</strong>
-                <button type="button" disabled={product.status !== 'Available'} aria-label={`Add ${product.name} to cart`} onClick={() => onAdd(product)}>
-                  {product.status === 'Available' ? <Plus size={16} /> : 'Sold out'}
-                </button>
+        {Array.isArray(items) && items.map((product, index) => {
+          if (!product) return null
+          return (
+            <article className={`rail-product ${product?.status === 'Sold Out' ? 'sold-out' : ''}`} key={product?.sku || product?.id || index}>
+              <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${getCoverImage(product)}")` }}>
+                <span className="product-badge">{product?.badge || 'DIGITAL'}</span>
+                <span className="rail-number">{product?.sku || ''}</span>
               </div>
-            </div>
-          </article>
-        ))}
+              <div className="rail-product-info">
+                <span>{product?.category || ''}</span>
+                <h3>{product?.name || 'Untitled'}</h3>
+                <div>
+                  <strong>{formatPrice(product?.price)}</strong>
+                  <button type="button" disabled={product?.status !== 'Available'} aria-label={`Add ${product?.name || 'item'} to cart`} onClick={() => onAdd?.(product)}>
+                    {product?.status === 'Available' ? <Plus size={16} /> : 'Sold out'}
+                  </button>
+                </div>
+              </div>
+            </article>
+          )
+        })}
       </div>
     </section>
   )
@@ -435,19 +501,34 @@ function App() {
   }, [])
 
   const allFilteredProducts = useMemo(() => {
-    const query = searchTerm.trim().toLowerCase()
-    const results = products.filter((product) => {
-      const matchesCategory = (activeCategory === 'All products' || product.category === activeCategory)
-        && (appliedCategory === 'All products' || product.category === appliedCategory)
-      const matchesQuery = !query || `${product.name} ${product.sku} ${product.category} ${product.deliveryType}`.toLowerCase().includes(query)
-      const matchesWishlist = !wishlistOnly || wishlist.includes(product.id)
-      const matchesPlatform = appliedPlatform === 'All platforms' || product.platform === appliedPlatform
-      const matchesPrice = product.price >= appliedMinPrice && product.price <= appliedMaxPrice
+    const query = (searchTerm || '').trim().toLowerCase()
+    const results = (Array.isArray(products) ? products : []).filter((product) => {
+      if (!product) return false
+      const pCategory = product?.category || ''
+      const pName = product?.name || ''
+      const pSku = product?.sku || ''
+      const pDelivery = product?.deliveryType || ''
+      const pPlatform = product?.platform || ''
+      const pPrice = typeof product?.price === 'number' ? product.price : 0
+
+      const matchesCategory = (activeCategory === 'All products' || pCategory === activeCategory)
+        && (appliedCategory === 'All products' || pCategory === appliedCategory)
+      const matchesQuery = !query || `${pName} ${pSku} ${pCategory} ${pDelivery}`.toLowerCase().includes(query)
+      const matchesWishlist = !wishlistOnly || (Array.isArray(wishlist) && wishlist.includes(product?.id))
+      const matchesPlatform = appliedPlatform === 'All platforms' || pPlatform === appliedPlatform
+      const matchesPrice = pPrice >= appliedMinPrice && pPrice <= appliedMaxPrice
       return matchesCategory && matchesQuery && matchesWishlist && matchesPlatform && matchesPrice
     })
     const direction = sortOrder === 'asc' ? 1 : -1
-    if (sortBy === 'price') results.sort((first, second) => (first.price - second.price) * direction)
-    else results.sort((first, second) => (Number(first.sku.slice(3)) - Number(second.sku.slice(3))) * direction)
+    if (sortBy === 'price') {
+      results.sort((first, second) => ((first?.price ?? 0) - (second?.price ?? 0)) * direction)
+    } else {
+      results.sort((first, second) => {
+        const sku1 = Number(String(first?.sku || '').replace(/\D/g, '')) || 0
+        const sku2 = Number(String(second?.sku || '').replace(/\D/g, '')) || 0
+        return (sku1 - sku2) * direction
+      })
+    }
     return results
   }, [activeCategory, appliedCategory, appliedMaxPrice, appliedMinPrice, appliedPlatform, searchTerm, sortBy, sortOrder, wishlist, wishlistOnly])
 
@@ -459,15 +540,15 @@ function App() {
     (_, index) => Math.min(Math.max(catalogPage - 1, 1), Math.max(pageCount - 2, 1)) + index,
   )
 
-  const cartCount = cart.reduce((total, item) => total + item.quantity, 0)
-  const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0)
-  const hasTopUp = cart.some((item) => item.category === 'Game Top-Up')
-  const hasPhysicalDisc = cart.some((item) => item.category === 'PlayStation Physical Disc')
+  const cartCount = cart.reduce((total, item) => total + (item?.quantity ?? 0), 0)
+  const subtotal = cart.reduce((total, item) => total + (item?.price ?? 0) * (item?.quantity ?? 0), 0)
+  const hasTopUp = cart.some((item) => item?.category === 'Game Top-Up')
+  const hasPhysicalDisc = cart.some((item) => item?.category === 'PlayStation Physical Disc')
   const homeRows = [
-    { title: 'Best Selling', category: 'Steam Private Account', items: products.filter((product) => product.category === 'Steam Private Account').slice(0, 6) },
-    { title: 'Steam Offline Games', category: 'Steam Offline Games', items: products.filter((product) => product.category === 'Steam Offline Games').slice(0, 4) },
-    { title: 'Giftcards', category: 'Gift Cards', items: products.filter((product) => product.category === 'Gift Cards').slice(0, 4) },
-    { title: 'Topup', category: 'Game Top-Up', items: products.filter((product) => product.category === 'Game Top-Up').slice(0, 4) },
+    { title: 'Best Selling', category: 'Steam Private Account', items: products.filter((product) => product?.category === 'Steam Private Account').slice(0, 6) },
+    { title: 'Steam Offline Games', category: 'Steam Offline Games', items: products.filter((product) => product?.category === 'Steam Offline Games').slice(0, 4) },
+    { title: 'Giftcards', category: 'Gift Cards', items: products.filter((product) => product?.category === 'Gift Cards').slice(0, 4) },
+    { title: 'Topup', category: 'Game Top-Up', items: products.filter((product) => product?.category === 'Game Top-Up').slice(0, 4) },
     { title: 'Newly Added', category: 'All products', items: [...products].reverse().slice(0, 4) },
   ]
 
@@ -522,19 +603,19 @@ function App() {
 
   function updateQuantity(productId, change) {
     setCart((currentCart) => currentCart
-      .map((item) => item.id === productId ? { ...item, quantity: item.quantity + change } : item)
-      .filter((item) => item.quantity > 0))
+      .map((item) => item?.id === productId ? { ...item, quantity: (item?.quantity || 1) + change } : item)
+      .filter((item) => (item?.quantity || 0) > 0))
   }
 
   function removeFromCart(productId) {
-    setCart((currentCart) => currentCart.filter((item) => item.id !== productId))
+    setCart((currentCart) => currentCart.filter((item) => item?.id !== productId))
   }
 
   function addToCart(product) {
-    if (product.status !== 'Available') return
+    if (product?.status !== 'Available') return
     setCart((currentCart) => {
-      const existing = currentCart.find((item) => item.id === product.id)
-      if (existing) return currentCart.map((item) => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item)
+      const existing = currentCart.find((item) => item?.id === product?.id)
+      if (existing) return currentCart.map((item) => item?.id === product?.id ? { ...item, quantity: (item?.quantity || 1) + 1 } : item)
       return [...currentCart, { ...product, quantity: 1 }]
     })
     setCartOpen(true)
@@ -740,7 +821,7 @@ function App() {
         <div className="quick-categories">
           {categoryOrder.map((category) => {
             const Icon = categoryIcons[category] || Gamepad2
-            const count = products.filter((product) => product.category === category).length
+            const count = products.filter((product) => product?.category === category).length
             return (
               <button
                 className="quick-category"
@@ -778,8 +859,8 @@ function App() {
             </div>
             <div className="bundle-art">
               <div className="bundle-cover-stack" aria-label="Featured games in the collection">
-                {products.filter((product) => product.category === 'Steam Offline Games').slice(0, 4).map((product) => (
-                  <div key={product.sku} title={product.name} style={{ backgroundImage: `url("${product.image}")` }} />
+                {products.filter((product) => product?.category === 'Steam Offline Games').slice(0, 4).map((product, index) => (
+                  <div key={product?.sku || product?.id || index} title={product?.name || ''} style={{ backgroundImage: `url("${getCoverImage(product)}")` }} />
                 ))}
               </div>
               <div className="bundle-art-type"><span>220+</span><b>GAMES</b><i>STEAM COLLECTION</i></div>
@@ -989,6 +1070,190 @@ function App() {
         </section>
       )}
 
+      {/* Catalog / Shop Section */}
+      <section className="catalog-section" id="shop">
+        <div className="shop-layout">
+          <aside className="shop-sidebar" aria-label="Product filters">
+            <div className="shop-sidebar-heading"><h2>Filters</h2><button type="button" onClick={resetShopFilters}>Reset</button></div>
+            <label className="shop-sidebar-search">
+              <span>Search</span>
+              <div>
+                <Search size={14} />
+                <input
+                  type="search"
+                  value={searchTerm}
+                  onChange={(event) => {
+                    setSearchTerm(event.target.value)
+                    setCatalogPage(1)
+                  }}
+                  placeholder="Search products"
+                  aria-label="Search products in Shop"
+                />
+              </div>
+            </label>
+            <label className="shop-select"><span>Category</span><select value={draftCategory} onChange={(event) => setDraftCategory(event.target.value)}>{categories.map((category) => <option key={category}>{category}</option>)}</select></label>
+            <label className="shop-select"><span>Brand / Platform</span><select value={draftPlatform} onChange={(event) => setDraftPlatform(event.target.value)}>{platformOptions.map((platform) => <option key={platform}>{platform}</option>)}</select></label>
+            <div className="shop-sort-fields">
+              <label className="shop-select"><span>Sort By</span><select value={sortBy} onChange={(event) => setSortBy(event.target.value)}><option value="date">Date</option><option value="price">Price</option></select></label>
+              <label className="shop-select"><span>Order</span><select value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}><option value="desc">Descending</option><option value="asc">Ascending</option></select></label>
+            </div>
+            <div className="price-filter">
+              <div className="price-filter-heading"><span>Price Range</span><strong>{formatPrice(draftMinPrice)} – {formatPrice(draftMaxPrice)}</strong></div>
+              <input aria-label="Minimum price slider" type="range" min="0" max={draftMaxPrice} step="250" value={draftMinPrice} onChange={(event) => setDraftMinPrice(Math.min(Number(event.target.value), draftMaxPrice))} />
+              <input aria-label="Maximum price slider" type="range" min={draftMinPrice} max="15000" step="250" value={draftMaxPrice} onChange={(event) => setDraftMaxPrice(Math.max(Number(event.target.value), draftMinPrice))} />
+              <div className="price-range-inputs">
+                <label><span>Min</span><input type="number" min="0" max={draftMaxPrice} step="250" value={draftMinPrice} onChange={(event) => setDraftMinPrice(Math.min(Number(event.target.value), draftMaxPrice))} /></label>
+                <label><span>Max</span><input type="number" min={draftMinPrice} max="15000" step="250" value={draftMaxPrice} onChange={(event) => setDraftMaxPrice(Math.max(Number(event.target.value), draftMinPrice))} /></label>
+              </div>
+            </div>
+            <div className="filter-actions">
+              <button className="reset-filters" type="button" onClick={resetShopFilters}>Clear all</button>
+              <button className="apply-filters" type="button" onClick={applyShopFilters}>Apply Filters</button>
+            </div>
+          </aside>
+
+          <div className="shop-results">
+            <div className="catalog-heading">
+              <div>
+                <p className="section-eyebrow">THE FULL LINEUP</p>
+                <h2>{searchTerm ? `Results for '${searchTerm}'` : wishlistOnly ? 'Your wishlist' : activeCategory === 'All products' ? 'All products' : activeCategory}<span>.</span></h2>
+                <p>{allFilteredProducts.length} products · prices in NPR</p>
+              </div>
+              <label className="search-box">
+                <Search size={18} aria-hidden="true" />
+                <input
+                  type="search"
+                  value={searchTerm}
+                  onChange={(event) => {
+                    setSearchTerm(event.target.value)
+                    setCatalogPage(1)
+                  }}
+                  placeholder="Search name, SKU or category"
+                  aria-label="Search products"
+                />
+                <kbd>/</kbd>
+              </label>
+            </div>
+
+            <div className="catalog-controls shop-sort-summary">
+              Sorted by {sortBy} · {sortOrder === 'desc' ? 'descending' : 'ascending'}
+            </div>
+            <div className="results-line">
+              <span>{allFilteredProducts.length} RESULTS</span>
+              <span>SKU · SELLING PRICE · DELIVERY TYPE</span>
+            </div>
+
+            {/* Strict CSS Grid Catalog without Masonry Columns */}
+            <ErrorBoundary>
+              {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
+                  {filteredProducts.map((product, index) => {
+                    if (!product || typeof product !== 'object') return null
+                    return (
+                      <ErrorBoundary key={product?.sku || product?.id || index}>
+                        <ProductCard
+                          product={product}
+                          index={index}
+                          isWishlisted={Array.isArray(wishlist) && wishlist.includes(product?.id)}
+                          onToggleWishlist={toggleWishlist}
+                          onAddToCart={addToCart}
+                        />
+                      </ErrorBoundary>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="empty-results">
+                  <Search size={27} />
+                  <h3>No products found.</h3>
+                  <p>Try another title or clear your filters.</p>
+                  <button type="button" onClick={() => { setSearchTerm(''); setActiveCategory('All products'); setWishlistOnly(false) }}>
+                    Show all products <ArrowRight size={15} />
+                  </button>
+                </div>
+              )}
+            </ErrorBoundary>
+
+            <nav className="pagination" aria-label="Product pagination">
+              <button type="button" aria-label="Previous page" disabled={catalogPage === 1} onClick={() => setCatalogPage((page) => Math.max(1, page - 1))}>
+                <ArrowLeft size={15} />
+              </button>
+              {paginationPages.map((page) => (
+                <button
+                  className={page === catalogPage ? 'page-current' : ''}
+                  type="button"
+                  key={page}
+                  aria-current={page === catalogPage ? 'page' : undefined}
+                  onClick={() => setCatalogPage(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button type="button" aria-label="Next page" disabled={catalogPage === pageCount} onClick={() => setCatalogPage((page) => Math.min(pageCount, page + 1))}>
+                <ArrowRight size={15} />
+              </button>
+              <span>Page {catalogPage} of {pageCount}</span>
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="site-footer" id="contact">
+        <div className="footer-about">
+          <a
+            className="flex items-center gap-3 no-underline group mb-4 transition-transform hover:scale-105"
+            href="#home"
+            onClick={() => {
+              window.location.hash = 'home'
+              setCurrentPage('home')
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+          >
+            <img 
+              src="/sagarmatha-games-logo.svg" 
+              alt="Sagarmatha Gaming Store" 
+              className="h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
+            />
+            <div className="flex flex-col">
+              <span className="font-extrabold text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
+                Sagarmatha
+              </span>
+              <span className="text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
+                Gaming Store
+              </span>
+            </div>
+          </a>
+          <p>Nepal’s trusted gaming store for genuine games, top-ups, and digital codes.</p>
+          <strong className="footer-label">PAYMENT METHODS</strong>
+          <div className="payment-tags"><span>eSewa</span><span>Khalti</span><span>ConnectIPS</span></div>
+        </div>
+        <div className="footer-column">
+          <strong>SHOP</strong>
+          <a href="#shop" onClick={() => { window.location.hash = 'shop'; openShop(); }}>All products</a>
+          <a href="#categories" onClick={() => { window.location.hash = 'categories'; setCurrentPage('categories'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Categories</a>
+        </div>
+        <div className="footer-column">
+          <strong>COMPANY</strong>
+          <a href="#about" onClick={() => { window.location.hash = 'about'; setCurrentPage('about'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>About Us</a>
+          <a href="#faq" onClick={() => { window.location.hash = 'faq'; setCurrentPage('faq'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>FAQ</a>
+          <a href="#contact" onClick={() => { window.location.hash = 'contact'; setCurrentPage('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>Contact</a>
+        </div>
+        <div className="footer-column">
+          <strong>HELP &amp; POLICIES</strong>
+          <a href="tel:+9779700979030">+977 9700979030</a>
+          <a href="mailto:support@sagarmathagamingstore.com">support@sagarmathagamingstore.com</a>
+          <a href="https://sagarmathagamingstore.com/return-policy">Return &amp; refund policy</a>
+          <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">WhatsApp Support</a>
+        </div>
+        <small className="footer-copyright">© 2026 Sagarmatha Gaming Store</small>
+      </footer>
+
+      {/* Floating WhatsApp Contact */}
+      <a className="whatsapp-float" href="https://wa.me/9779700979030" target="_blank" rel="noreferrer" aria-label="Chat with Sagarmatha Gaming Store on WhatsApp">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.4 28.6l6.4-1.7A12.8 12.8 0 1 0 16 3.2Zm0 23.2a10.3 10.3 0 0 1-5.2-1.4l-.4-.2-3.8 1 1-3.7-.3-.4a10.2 10.2 0 1 1 8.7 4.7Zm5.6-7.6c-.3-.2-1.7-.9-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.1.2-.3.2-.6.1-1.7-.9-2.8-1.6-3.9-3.5-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.1.2 2.2 3.4 5.4 4.8 2 .9 2.8 1 3.8.8.6-.1 1.7-.7 1.9-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z" /></svg>
+      </a>
+
       {/* Cart Drawer */}
       {cartOpen && (
         <div className="overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false) }}>
@@ -1005,21 +1270,21 @@ function App() {
             {cart.length ? (
               <>
                 <div className="cart-items">
-                  {cart.map((item) => (
-                    <div className="cart-item" key={item.id}>
-                      <div className="cart-thumb" style={{ backgroundImage: `url("${item.image}")` }} />
+                  {cart.map((item, index) => (
+                    <div className="cart-item" key={item?.id || index}>
+                      <div className="cart-thumb" style={{ backgroundImage: `url("${getCoverImage(item)}")` }} />
                       <div className="cart-item-copy">
-                        <span>{item.category}</span>
-                        <h3>{item.name}</h3>
-                        <strong>{formatPrice(item.price)}</strong>
+                        <span>{item?.category || ''}</span>
+                        <h3>{item?.name || 'Untitled'}</h3>
+                        <strong>{formatPrice(item?.price)}</strong>
                         <div className="quantity-control">
-                          <button type="button" aria-label={`Decrease ${item.name} quantity`} onClick={() => updateQuantity(item.id, -1)}><Minus size={13} /></button>
-                          <span>{item.quantity}</span>
-                          <button type="button" aria-label={`Increase ${item.name} quantity`} onClick={() => updateQuantity(item.id, 1)}><Plus size={13} /></button>
+                          <button type="button" aria-label={`Decrease ${item?.name || 'item'} quantity`} onClick={() => updateQuantity(item?.id, -1)}><Minus size={13} /></button>
+                          <span>{item?.quantity || 1}</span>
+                          <button type="button" aria-label={`Increase ${item?.name || 'item'} quantity`} onClick={() => updateQuantity(item?.id, 1)}><Plus size={13} /></button>
                         </div>
                       </div>
-                      <strong className="line-total">{formatPrice(item.price * item.quantity)}</strong>
-                      <button className="remove-cart-item" type="button" aria-label={`Remove ${item.name}`} onClick={() => removeFromCart(item.id)}><Trash2 size={15} /></button>
+                      <strong className="line-total">{formatPrice((item?.price ?? 0) * (item?.quantity ?? 1))}</strong>
+                      <button className="remove-cart-item" type="button" aria-label={`Remove ${item?.name || 'item'}`} onClick={() => removeFromCart(item?.id)}><Trash2 size={15} /></button>
                     </div>
                   ))}
                 </div>
@@ -1129,10 +1394,10 @@ function App() {
                 <aside className="order-summary">
                   <h3>Order summary <span>{cartCount} items</span></h3>
                   <div className="summary-items">
-                    {cart.map((item) => (
-                      <div key={item.id}>
-                        <span>{item.name} <small>× {item.quantity}</small></span>
-                        <strong>{formatPrice(item.price * item.quantity)}</strong>
+                    {cart.map((item, index) => (
+                      <div key={item?.id || index}>
+                        <span>{item?.name || 'Item'} <small>× {item?.quantity || 1}</small></span>
+                        <strong>{formatPrice((item?.price ?? 0) * (item?.quantity ?? 1))}</strong>
                       </div>
                     ))}
                   </div>
@@ -1168,10 +1433,10 @@ function App() {
             </div>
             <div className="instruction-list">
               <h3>YOUR NEXT STEPS</h3>
-              {order.items.map((item) => (
-                <div className="instruction-item" key={item.id}>
-                  <div><strong>{item.name}</strong><span>{item.delivery}</span></div>
-                  <p>{item.credentials} {item.instructions}</p>
+              {order.items?.map((item, index) => (
+                <div className="instruction-item" key={item?.id || index}>
+                  <div><strong>{item?.name || 'Item'}</strong><span>{item?.delivery || 'DIGITAL'}</span></div>
+                  <p>{item?.credentials || ''} {item?.instructions || ''}</p>
                 </div>
               ))}
             </div>
