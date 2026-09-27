@@ -2932,7 +2932,7 @@
 
 .overlay {
   position: fixed;
-  z-index: 20;
+  z-index: 50;
   inset: 0;
   background: rgba(2, 4, 8, 0.76);
   backdrop-filter: blur(4px);
@@ -5660,18 +5660,6 @@
   body, html, #root, .store-shell {
     overflow-x: hidden !important;
     max-width: 100vw !important;
-    width: 100% !important;
-  }
-
-  /* Hide the static giant shop sidebar on mobile */
-  .shop-sidebar {
-    display: none !important;
-  }
-
-  .shop-layout {
-    grid-template-columns: 1fr !important;
-    margin-top: 10px !important;
-    gap: 0 !important;
   }
 
   /* Keep floating WhatsApp button above the bottom navigation bar */
@@ -5690,51 +5678,10 @@
     gap: 12px !important;
   }
 
-  /* Make promo banners full width and clean on mobile */
-  .bundle-promo,
-  .fc27-promo {
-    width: 100% !important;
-    min-height: auto !important;
-    margin: 14px 0 !important;
-    border-radius: 12px !important;
-  }
-
-  /* Product rail 2:3 cover */
-  .rail-cover {
-    height: auto !important;
-    aspect-ratio: 2/3 !important;
-  }
-
-  /* Touch-scrollable product rails on mobile */
-  .product-rail {
-    display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
-    gap: 14px !important;
-    padding-bottom: 8px !important;
-  }
-  .rail-product {
-    min-width: 155px !important;
-    max-width: 165px !important;
-    flex-shrink: 0 !important;
-    scroll-snap-align: start !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-  }
-
-  /* Scaled-down promo banner typography on mobile */
-  .bundle-copy h2,
-  .fc27-promo h2 {
-    font-size: 1.25rem !important;
-    line-height: 1.3 !important;
-  }
-
   /* Touch buttons inside rails */
   .rail-product-info > div > button {
-    min-width: 34px !important;
-    min-height: 34px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
   }
 
   /* Cart Drawer full width on phones */
@@ -5758,10 +5705,9 @@
     gap: 16px !important;
   }
 
-  /* Mini banner on small phones: avoid pushing width */
+  /* Hide mini banner on mobile screens */
   .mini-banner {
-    padding: 0 10px !important;
-    font-size: 11px !important;
+    display: none !important;
   }
   .mini-banner .delivery-notice {
     overflow: hidden !important;

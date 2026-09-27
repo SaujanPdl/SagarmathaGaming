@@ -528,6 +528,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(getPageFromHash)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileFilterDrawerOpen, setMobileFilterDrawerOpen] = useState(false)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState(getSavedUser)
   const [authModalOpen, setAuthModalOpen] = useState(false)
 
@@ -756,7 +757,7 @@ function App() {
 
   return (
     <main className={`store-shell view-${currentPage} overflow-x-hidden w-full max-w-full pb-20 md:pb-0`}>
-      <div className="mini-banner">
+      <div className="mini-banner hidden sm:flex">
         <span className="currency-mark">Rs <b>NPR</b></span>
         <span className="delivery-notice">Instant digital delivery <i /> pay your way <i /> 100% authentic codes</span>
         <div>
@@ -900,36 +901,40 @@ function App() {
         </div>
       )}
 
-      <header className="bg-[#0b0f19]/90 backdrop-blur-md border-b border-cyan-500/20 px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 sm:gap-4 sticky top-0 z-50">
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(true)}
-          className="md:hidden w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white shrink-0 cursor-pointer"
-          aria-label="Open mobile menu"
-        >
-          <Menu size={19} />
-        </button>
+      <header className="w-full flex items-center justify-between px-3 py-2.5 max-w-full overflow-hidden bg-[#0b0f19]/90 backdrop-blur-md border-b border-cyan-500/20 sticky top-0 z-50">
+        {/* Left side: Hamburger + Logo + SAGARMATHA */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800/60 text-slate-300 hover:text-white shrink-0 cursor-pointer border border-slate-700/60"
+            aria-label="Open mobile menu"
+          >
+            <Menu size={18} />
+          </button>
 
-        <a 
-          href="#home" 
-          onClick={() => { window.location.hash = 'home'; setCurrentPage('home'); }}
-          className="flex items-center gap-2 sm:gap-3 group transition-transform hover:scale-105 shrink-0 no-underline"
-        >
-          <img 
-            src="/sagarmatha-games-logo.svg" 
-            alt="Sagarmatha Gaming Store" 
-            className="h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
-          />
-          <div className="flex flex-col">
-            <span className="font-extrabold text-sm sm:text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
-              Sagarmatha
-            </span>
-            <span className="hidden xs:inline text-[9px] sm:text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
-              Gaming Store
-            </span>
-          </div>
-        </a>
+          <a 
+            href="#home" 
+            onClick={() => { window.location.hash = 'home'; setCurrentPage('home'); }}
+            className="flex items-center gap-2 group shrink-0 no-underline"
+          >
+            <img 
+              src="/sagarmatha-games-logo.svg" 
+              alt="Sagarmatha Gaming Store" 
+              className="h-7 sm:h-9 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
+            />
+            <div className="flex flex-col">
+              <span className="font-extrabold text-sm sm:text-base tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
+                Sagarmatha
+              </span>
+              <span className="hidden xs:inline text-[9px] sm:text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
+                Gaming Store
+              </span>
+            </div>
+          </a>
+        </div>
 
+        {/* Desktop Navigation */}
         <nav
           className="hidden md:flex bg-[#13192b]/80 border border-slate-800 rounded-full px-5 py-2 items-center gap-6 shrink-0"
           aria-label="Main navigation"
@@ -952,7 +957,8 @@ function App() {
           })}
         </nav>
 
-        <div className="relative flex-1 max-w-xl mx-1 sm:mx-2 min-w-0">
+        {/* Desktop Search Bar */}
+        <div className="hidden md:flex relative flex-1 max-w-md mx-3 min-w-0">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none" size={15} />
           <input
             type="search"
@@ -967,7 +973,7 @@ function App() {
               }
             }}
             placeholder="Search games, top-ups..."
-            className="w-full bg-[#13192b]/70 border border-slate-800/90 rounded-full py-2 sm:py-2.5 pl-8 sm:pl-10 pr-7 sm:pr-9 text-xs sm:text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:border-cyan-500/50"
+            className="w-full bg-[#13192b]/70 border border-slate-800/90 rounded-full py-2 pl-9 pr-8 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-cyan-500/50"
             aria-label="Search games, gift cards, subscriptions..."
           />
           {searchTerm && (
@@ -985,10 +991,28 @@ function App() {
           )}
         </div>
 
-        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        {/* Right side: Search, Wishlist, Profile, and Cart controls */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Separate circular/rounded mobile search button */}
           <button
             type="button"
-            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-slate-700 cursor-pointer transition-colors"
+            className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800/60 text-slate-300 hover:text-white border border-slate-700/60 shrink-0 cursor-pointer transition-colors"
+            aria-label="Search products"
+            onClick={() => {
+              setMobileSearchOpen((prev) => !prev)
+              if (currentPage !== 'shop') {
+                window.location.hash = 'shop'
+                setCurrentPage('shop')
+              }
+            }}
+          >
+            <Search size={16} />
+          </button>
+
+          {/* Separate circular/rounded wishlist button */}
+          <button
+            type="button"
+            className="w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800/60 text-slate-300 hover:text-white hover:border-slate-700 border border-slate-700/60 shrink-0 cursor-pointer transition-colors"
             aria-label="Toggle wishlist"
             aria-pressed={wishlistOnly}
             onClick={() => {
@@ -997,22 +1021,10 @@ function App() {
               setWishlistOnly(nextValue)
             }}
           >
-            <Heart size={18} fill={wishlistOnly ? 'currentColor' : 'none'} className={wishlistOnly ? 'text-rose-500' : ''} />
+            <Heart size={16} fill={wishlistOnly ? 'currentColor' : 'none'} className={wishlistOnly ? 'text-rose-500' : ''} />
           </button>
 
-          <button
-            type="button"
-            className="px-3 sm:px-4 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
-            aria-label={`Open cart, ${cartCount} items`}
-            onClick={() => setCartOpen(true)}
-          >
-            <ShoppingCart size={17} />
-            <span className="hidden md:inline">Cart</span>
-            <span className="bg-slate-950 text-cyan-300 text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-extrabold min-w-[18px] text-center">
-              {cartCount}
-            </span>
-          </button>
-
+          {/* Profile control */}
           {currentUser ? (
             <button
               type="button"
@@ -1021,10 +1033,10 @@ function App() {
                 setCurrentPage('profile')
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
-              className={`hidden sm:flex relative w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl overflow-hidden border-2 items-center justify-center transition-all cursor-pointer group hover:scale-105 ${
+              className={`relative w-9 h-9 rounded-lg overflow-hidden border flex items-center justify-center transition-all cursor-pointer shrink-0 ${
                 currentPage === 'profile'
-                  ? 'border-cyan-400 shadow-lg shadow-cyan-500/30 ring-2 ring-cyan-400/40'
-                  : 'border-cyan-500/50 hover:border-cyan-400'
+                  ? 'border-cyan-400 ring-2 ring-cyan-400/40'
+                  : 'border-slate-700/60 hover:border-cyan-400'
               }`}
               aria-label={`Logged in as ${currentUser.global_name || currentUser.username}`}
               title={`${currentUser.global_name || currentUser.username} (View Profile)`}
@@ -1038,22 +1050,80 @@ function App() {
                   e.currentTarget.src = "https://cdn.discordapp.com/embed/avatars/0.png"
                 }}
               />
-              <span className="w-3 h-3 bg-emerald-500 border-2 border-[#0b0f19] rounded-full absolute -top-0.5 -right-0.5" title="Online" />
+              <span className="w-2 h-2 bg-emerald-500 border border-[#0b0f19] rounded-full absolute top-0.5 right-0.5" title="Online" />
             </button>
           ) : (
             <button
               type="button"
               onClick={() => setAuthModalOpen(true)}
-              className="hidden sm:flex items-center gap-2 px-3.5 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-xs transition-all shadow-md shadow-[#5865F2]/25 cursor-pointer border-0"
+              className="w-9 h-9 sm:w-auto sm:px-3 sm:py-2 rounded-lg bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border-0 shrink-0"
               aria-label="Sign in with Discord"
               title="Sign in with Discord"
             >
               <DiscordIcon size={16} />
-              <span>Sign In</span>
+              <span className="hidden sm:inline">Sign In</span>
             </button>
           )}
+
+          {/* Compact Cart Button on mobile */}
+          <button
+            type="button"
+            className="px-2.5 py-1.5 rounded-lg flex items-center gap-1 shrink-0 bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-xs transition-all shadow-md shadow-cyan-500/20 cursor-pointer border-0 h-9"
+            aria-label={`Open cart, ${cartCount} items`}
+            onClick={() => setCartOpen(true)}
+          >
+            <ShoppingCart size={15} />
+            <span className="hidden md:inline font-bold">Cart</span>
+            <span className="bg-slate-950 text-cyan-300 text-[10px] sm:text-xs px-1.5 py-0.2 rounded-full font-black min-w-[16px] text-center leading-tight">
+              {cartCount}
+            </span>
+          </button>
         </div>
       </header>
+
+      {/* Expandable Mobile Search Bar */}
+      {mobileSearchOpen && (
+        <div className="md:hidden bg-[#0c1220] border-b border-slate-800 px-3 py-2 flex items-center gap-2 animate-in slide-in-from-top-2 duration-150 sticky top-[57px] z-40">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none" size={14} />
+            <input
+              type="search"
+              autoFocus
+              value={searchTerm}
+              onChange={(event) => {
+                setSearchTerm(event.target.value)
+                setActiveCategory('All products')
+                setWishlistOnly(false)
+                setCatalogPage(1)
+                if (window.location.hash !== '#shop') {
+                  window.location.hash = 'shop'
+                }
+              }}
+              placeholder="Search games, gift cards, top-ups..."
+              className="w-full bg-[#13192b] border border-slate-700/80 rounded-lg py-1.5 pl-8 pr-7 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer p-0.5"
+                onClick={() => {
+                  setSearchTerm('')
+                  setCatalogPage(1)
+                }}
+              >
+                <X size={13} />
+              </button>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setMobileSearchOpen(false)}
+            className="text-xs text-slate-400 hover:text-white px-2 py-1.5 cursor-pointer"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
 
       {/* Featured Hero Banner Carousel */}
       {currentPage === 'home' && <HeroCarousel onNavigateShop={openShop} setCurrentPage={setCurrentPage} />}
@@ -1840,20 +1910,39 @@ function App() {
 
       {/* Cart Drawer */}
       {cartOpen && (
-        <div className="overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false) }}>
-          <aside className="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-            <div className="drawer-header">
-              <div>
-                <span className="eyebrow"><span className="eyebrow-line" /> YOUR BAG</span>
-                <h2 id="cart-title">Cart <span>({cartCount})</span></h2>
+        <div 
+          className="overlay z-50 fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-end" 
+          role="presentation" 
+          onClick={(event) => { if (event.target === event.currentTarget) setCartOpen(false) }}
+          onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false) }}
+        >
+          <aside 
+            className="cart-drawer z-50 max-h-[90vh] overflow-y-auto w-full md:max-w-md bg-[#0b0f19] border-l border-slate-800 flex flex-col justify-between shadow-2xl" 
+            role="dialog" 
+            aria-modal="true" 
+            aria-labelledby="cart-title"
+          >
+            {/* Sticky Header with Title and Distinct Close Button */}
+            <div className="sticky top-0 z-10 bg-[#0d1322] border-b border-slate-800/80 px-4 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ShoppingCart size={18} className="text-cyan-400" />
+                <h2 id="cart-title" className="text-base font-bold text-white tracking-wide">
+                  Your Cart <span className="text-cyan-400 text-sm font-semibold">({cartCount})</span>
+                </h2>
               </div>
-              <button type="button" className="icon-button" aria-label="Close cart" onClick={() => setCartOpen(false)}>
-                <X size={20} />
+              <button 
+                type="button"
+                onClick={() => setCartOpen(false)} 
+                className="p-2 rounded-full hover:bg-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer border-0 bg-transparent flex items-center justify-center min-w-[36px] min-h-[36px]"
+                aria-label="Close cart"
+              >
+                ✕
               </button>
             </div>
+
             {cart.length ? (
               <>
-                <div className="cart-items">
+                <div className="cart-items flex-1 overflow-y-auto p-4 space-y-3">
                   {cart.map((item, index) => (
                     <div className="cart-item" key={item?.id || index}>
                       <div className="cart-thumb" style={{ backgroundImage: `url("${getCoverImage(item)}")` }} />
@@ -1872,19 +1961,41 @@ function App() {
                     </div>
                   ))}
                 </div>
-                <div className="drawer-bottom">
-                  <div className="subtotal-line"><span>Grand total</span><strong>{formatPrice(subtotal)}</strong></div>
-                  <p>Fast digital delivery to your WhatsApp / Email upon checkout.</p>
-                  <button type="button" className="primary-button" onClick={() => { setCartOpen(false); setCheckoutOpen(true) }}>Continue to checkout <ArrowRight size={17} /></button>
-                  <button type="button" className="text-button" onClick={() => setCartOpen(false)}><ArrowLeft size={15} /> Keep browsing</button>
+                <div className="drawer-bottom p-4 border-t border-slate-800/80 bg-[#090d16]">
+                  <div className="subtotal-line flex items-center justify-between mb-2">
+                    <span className="text-sm text-slate-400">Grand total</span>
+                    <strong className="text-base font-extrabold text-white">{formatPrice(subtotal)}</strong>
+                  </div>
+                  <p className="text-xs text-slate-400 mb-3">Fast digital delivery to your WhatsApp / Email upon checkout.</p>
+                  <button type="button" className="primary-button w-full" onClick={() => { setCartOpen(false); setCheckoutOpen(true) }}>
+                    Continue to checkout <ArrowRight size={17} />
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => setCartOpen(false)} 
+                    className="w-full py-2.5 mt-2 rounded-lg border border-slate-700 hover:border-slate-600 bg-slate-800/40 hover:bg-slate-800 text-slate-300 text-sm font-medium transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    ← Continue Shopping
+                  </button>
                 </div>
               </>
             ) : (
-              <div className="empty-cart">
-                <ShoppingCart size={32} />
-                <h3>Your bag’s taking a breather.</h3>
-                <p>Find something good for your next session.</p>
-                <button type="button" className="primary-button" onClick={() => setCartOpen(false)}>Explore games <ArrowRight size={16} /></button>
+              <div className="empty-cart flex-1 flex flex-col items-center justify-center p-6 text-center space-y-4">
+                <ShoppingCart size={40} className="text-slate-600 mx-auto" />
+                <div>
+                  <h3 className="text-base font-bold text-white">Your bag’s taking a breather.</h3>
+                  <p className="text-xs text-slate-400 mt-1">Find something good for your next session.</p>
+                </div>
+                <button type="button" className="primary-button w-full" onClick={() => setCartOpen(false)}>
+                  Explore games <ArrowRight size={16} />
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => setCartOpen(false)} 
+                  className="w-full py-2.5 mt-2 rounded-lg border border-slate-700 hover:border-slate-600 bg-slate-800/40 hover:bg-slate-800 text-slate-300 text-sm font-medium transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  ← Continue Shopping
+                </button>
               </div>
             )}
           </aside>
