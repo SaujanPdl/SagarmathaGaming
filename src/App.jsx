@@ -29,11 +29,8 @@ import {
   X,
 } from 'lucide-react'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
-import cleanProducts from './products_clean.json'
 import { getGameCover, FALLBACK_POSTER } from './utils/gameImages'
 import './App.css'
-
-const cleanProductsMap = new Map(cleanProducts.map((p) => [p.sku, p.image]))
 
 const productData = parse(productCsv, {
   columns: true,
@@ -105,7 +102,7 @@ const products = productData.map((product) => ({
   oldPrice: null,
   badge: getDeliveryBadge(product),
   platform: getProductPlatform(product),
-  image: cleanProductsMap.get(product.sku) || getGameCover(product.name),
+  image: getGameCover(product.name),
   imageAlt: `${product.name} artwork`,
   description: product.deliveryType,
   delivery: product.deliveryType,
@@ -151,7 +148,7 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
     <article className={`product-card group ${product.status === 'Sold Out' ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
       <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726]">
         <img
-          src={product.image || getGameCover(product.name)}
+          src={getGameCover(product.name)}
           alt={product.name}
           className="absolute inset-0 h-full w-full object-cover"
           loading="lazy"
@@ -383,7 +380,7 @@ function App() {
   function submitOrder(event) {
     event.preventDefault()
     setOrder({
-      orderNumber: `HGS-${Math.floor(10000 + Math.random() * 90000)}`,
+      orderNumber: `SGS-${Math.floor(10000 + Math.random() * 90000)}`,
       items: [...cart],
       paymentMethod,
       playerUid: hasTopUp ? playerUid : '',
@@ -429,15 +426,15 @@ function App() {
         <a
           className="brand"
           href="#home"
-          aria-label="Hamro Gaming Store home"
+          aria-label="Sagarmatha Gaming Store home"
           onClick={() => {
             window.location.hash = 'home'
             setCurrentPage('home')
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
         >
-          <span className="brand-symbol"><b>H</b><b>G</b><b>S</b></span>
-          <span className="brand-name">HAMRO<span>GAMING STORE</span></span>
+          <span className="brand-symbol"><b>S</b><b>G</b><b>S</b></span>
+          <span className="brand-name">SAGARMATHA<span>GAMING STORE</span></span>
         </a>
 
         <nav className="main-nav" aria-label="Main navigation">
@@ -570,10 +567,10 @@ function App() {
           </article>
           <article className="feature-card feature-center" style={{ backgroundImage: 'linear-gradient(90deg, rgba(7,9,17,.96) 0%, rgba(7,9,17,.84) 47%, rgba(7,9,17,.08) 100%), url(https://cdn.zalient.shop/media/1780094018222_25f1307ad1884db0.webp)' }}>
             <div className="center-copy">
-              <span className="feature-tag cyan-tag">HAMRO EXCLUSIVE</span>
+              <span className="feature-tag cyan-tag">SAGARMATHA EXCLUSIVE</span>
               <p className="promo-overline">THE NEW SEASON STARTS NOW</p>
               <h1>EA FC 26</h1>
-              <p className="promo-subtitle">BUY AT HAMRO GAMING STORE</p>
+              <p className="promo-subtitle">BUY AT SAGARMATHA GAMING STORE</p>
               <div className="promo-benefits">
                 <span><Check size={14} /> World Cup Mode</span>
                 <span><Check size={14} /> Online &amp; Multiplayer</span>
@@ -712,21 +709,21 @@ function App() {
         <section className="about-page">
           <header className="about-hero">
             <span className="section-eyebrow">PLAY LOCAL. PLAY MORE.</span>
-            <h1>About Us <span>— Hamro Gaming Store</span></h1>
+            <h1>About Us <span>— Sagarmatha Gaming Store</span></h1>
             <p>Nepal’s verified gaming hub for PC, PlayStation, Xbox, and mobile top-ups with instant delivery.</p>
           </header>
           <div className="about-columns">
             <article className="about-mission">
               <span className="section-eyebrow">OUR MISSION</span>
               <h2>Make gaming easier to access across Nepal.</h2>
-              <p>Hamro Gaming Store brings players authentic games, gift cards, digital codes, and mobile top-ups in one place. We focus on clear product details, trusted local payment choices, and dependable delivery, so players can get into their next game with confidence.</p>
+              <p>Sagarmatha Gaming Store brings players authentic games, gift cards, digital codes, and mobile top-ups in one place. We focus on clear product details, trusted local payment choices, and dependable delivery, so players can get into their next game with confidence.</p>
               <p>From your first Steam Wallet code to a new PlayStation release, our team is here to help you choose, purchase, and get started.</p>
             </article>
             <aside className="reach-card">
               <span className="section-eyebrow">REACH US</span>
               <h2>We’re here to help.</h2>
               <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer"><MessageCircle size={17} /><span><small>WHATSAPP / PHONE</small>+977 9700979030</span></a>
-              <a href="mailto:support@hamrogamingstore.com"><span className="reach-icon">@</span><span><small>SUPPORT EMAIL</small>support@hamrogamingstore.com</span></a>
+              <a href="mailto:support@sagarmathagamingstore.com"><span className="reach-icon">@</span><span><small>SUPPORT EMAIL</small>support@sagarmathagamingstore.com</span></a>
               <div className="operating-hours"><small>OPERATING HOURS (NPT)</small><strong>10:00 AM – 11:00 PM</strong><span>Every day</span></div>
             </aside>
           </div>
@@ -744,7 +741,7 @@ function App() {
           <header className="faq-hero">
             <span className="section-eyebrow">HELP &amp; QUESTIONS</span>
             <h1>Frequently Asked <span>Questions</span></h1>
-            <p>Everything you need to know about purchasing games, gift cards, and top-ups at Hamro Gaming Store.</p>
+            <p>Everything you need to know about purchasing games, gift cards, and top-ups at Sagarmatha Gaming Store.</p>
           </header>
           <div className="faq-grid">
             <article className="faq-card">
@@ -780,7 +777,7 @@ function App() {
         <section className="about-page">
           <header className="about-hero">
             <span className="section-eyebrow">GET IN TOUCH</span>
-            <h1>Contact Us <span>— Hamro Gaming Store</span></h1>
+            <h1>Contact Us <span>— Sagarmatha Gaming Store</span></h1>
             <p>Have questions about your order or need instant gaming support? We’re always here to help.</p>
           </header>
           <div className="about-columns">
@@ -797,9 +794,9 @@ function App() {
                 <MessageCircle size={17} />
                 <span><small>WHATSAPP / PHONE</small>+977 9700979030</span>
               </a>
-              <a href="mailto:support@hamrogamingstore.com">
+              <a href="mailto:support@sagarmathagamingstore.com">
                 <span className="reach-icon">@</span>
-                <span><small>SUPPORT EMAIL</small>support@hamrogamingstore.com</span>
+                <span><small>SUPPORT EMAIL</small>support@sagarmathagamingstore.com</span>
               </a>
               <div className="operating-hours">
                 <small>OPERATING HOURS (NPT)</small>
@@ -945,7 +942,7 @@ function App() {
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
           >
-            HAMRO <span>GAMING STORE</span>
+            SAGARMATHA <span>GAMING STORE</span>
           </a>
           <p>Nepal’s trusted gaming store for genuine games, top-ups, and digital codes.</p>
           <strong className="footer-label">PAYMENT METHODS</strong>
@@ -965,15 +962,15 @@ function App() {
         <div className="footer-column">
           <strong>HELP &amp; POLICIES</strong>
           <a href="tel:+9779700979030">+977 9700979030</a>
-          <a href="mailto:support@hamrogamingstore.com">support@hamrogamingstore.com</a>
-          <a href="https://hamrogamingstore.com/return-policy">Return &amp; refund policy</a>
+          <a href="mailto:support@sagarmathagamingstore.com">support@sagarmathagamingstore.com</a>
+          <a href="https://sagarmathagamingstore.com/return-policy">Return &amp; refund policy</a>
           <a href="https://wa.me/9779700979030" target="_blank" rel="noreferrer">WhatsApp Support</a>
         </div>
-        <small className="footer-copyright">© 2026 Hamro Gaming Store</small>
+        <small className="footer-copyright">© 2026 Sagarmatha Gaming Store</small>
       </footer>
 
       {/* Floating WhatsApp Contact */}
-      <a className="whatsapp-float" href="https://wa.me/9779700979030" target="_blank" rel="noreferrer" aria-label="Chat with Hamro Gaming Store on WhatsApp">
+      <a className="whatsapp-float" href="https://wa.me/9779700979030" target="_blank" rel="noreferrer" aria-label="Chat with Sagarmatha Gaming Store on WhatsApp">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.4 28.6l6.4-1.7A12.8 12.8 0 1 0 16 3.2Zm0 23.2a10.3 10.3 0 0 1-5.2-1.4l-.4-.2-3.8 1 1-3.7-.3-.4a10.2 10.2 0 1 1 8.7 4.7Zm5.6-7.6c-.3-.2-1.7-.9-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.1.2-.3.2-.6.1-1.7-.9-2.8-1.6-3.9-3.5-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.1.2 2.2 3.4 5.4 4.8 2 .9 2.8 1 3.8.8.6-.1 1.7-.7 1.9-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z" /></svg>
       </a>
 
