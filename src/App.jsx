@@ -336,6 +336,19 @@ const slides = [
   }
 ]
 
+const heroSideCards = {
+  left: {
+    title: "God of War Ragnarök",
+    badge: "SPECIAL RELEASE",
+    image: "/covers/god-of-war-ragnarok-ps5-disc-sealed.jpg"
+  },
+  right: {
+    title: "Grand Theft Auto V",
+    badge: "BESTSELLER",
+    image: "/covers/gta-v-premium-edition-ps4-disc-sealed.jpg"
+  }
+}
+
 function HeroCarousel({ onNavigateShop, setCurrentPage }) {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0)
 
@@ -373,17 +386,14 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
             className="relative h-full min-h-[340px] rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl group cursor-pointer"
           >
             <img 
-              src="/covers/god-of-war-ragnarok-ps5-disc-sealed.jpg" 
-              alt="God of War Ragnarök" 
-              onError={(e) => {
-                e.currentTarget.onerror = null
-                e.currentTarget.src = DEFAULT_FALLBACK_COVER
-              }}
+              src={heroSideCards.left.image} 
+              alt={heroSideCards.left.title} 
+              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/covers/default_poster.jpg"; }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
-              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-1">SPECIAL RELEASE</span>
-              <h3 className="text-white font-bold text-base leading-tight">God of War Ragnarök</h3>
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-1">{heroSideCards.left.badge}</span>
+              <h3 className="text-white font-bold text-base leading-tight">{heroSideCards.left.title}</h3>
             </div>
           </div>
         </div>
@@ -454,17 +464,14 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
             className="relative h-full min-h-[340px] rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl group cursor-pointer"
           >
             <img 
-              src="/covers/gta-v-premium-edition-ps4-disc-sealed.jpg" 
-              alt="Grand Theft Auto V" 
-              onError={(e) => {
-                e.currentTarget.onerror = null
-                e.currentTarget.src = DEFAULT_FALLBACK_COVER
-              }}
+              src={heroSideCards.right.image} 
+              alt={heroSideCards.right.title} 
+              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/covers/default_poster.jpg"; }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
-              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-1">BESTSELLER</span>
-              <h3 className="text-white font-bold text-base leading-tight">Grand Theft Auto V</h3>
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-1">{heroSideCards.right.badge}</span>
+              <h3 className="text-white font-bold text-base leading-tight">{heroSideCards.right.title}</h3>
             </div>
           </div>
         </div>
