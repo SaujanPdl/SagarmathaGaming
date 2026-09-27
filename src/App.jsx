@@ -961,7 +961,7 @@ function App() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800/60 text-slate-300 hover:text-white shrink-0 cursor-pointer border border-slate-700/60"
+            className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/70 border border-slate-700/50 text-slate-200 hover:text-white shrink-0 cursor-pointer"
             aria-label="Open mobile menu"
           >
             <Menu size={18} />
@@ -1045,12 +1045,12 @@ function App() {
           )}
         </div>
 
-        {/* Right side: Search, Wishlist, Profile, and Cart controls */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Separate circular/rounded mobile search button */}
+        {/* Right side: Search, Wishlist, Discord/Profile, and Cart (desktop only) */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Mobile search button */}
           <button
             type="button"
-            className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800/60 text-slate-300 hover:text-white border border-slate-700/60 shrink-0 cursor-pointer transition-colors"
+            className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/70 border border-slate-700/50 text-slate-200 hover:text-white shrink-0 cursor-pointer transition-colors"
             aria-label="Search products"
             onClick={() => {
               setMobileSearchOpen((prev) => !prev)
@@ -1063,10 +1063,10 @@ function App() {
             <Search size={16} />
           </button>
 
-          {/* Separate circular/rounded wishlist button */}
+          {/* Wishlist button */}
           <button
             type="button"
-            className="w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800/60 text-slate-300 hover:text-white hover:border-slate-700 border border-slate-700/60 shrink-0 cursor-pointer transition-colors"
+            className="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/70 border border-slate-700/50 text-slate-200 hover:text-white hover:border-slate-700 shrink-0 cursor-pointer transition-colors"
             aria-label="Toggle wishlist"
             aria-pressed={wishlistOnly}
             onClick={() => {
@@ -1087,10 +1087,10 @@ function App() {
                 setCurrentPage('profile')
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
-              className={`relative w-9 h-9 rounded-lg overflow-hidden border flex items-center justify-center transition-all cursor-pointer shrink-0 ${
+              className={`relative w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/70 border border-slate-700/50 text-slate-200 overflow-hidden transition-all cursor-pointer shrink-0 ${
                 currentPage === 'profile'
-                  ? 'border-cyan-400 ring-2 ring-cyan-400/40'
-                  : 'border-slate-700/60 hover:border-cyan-400'
+                  ? '!border-cyan-400 ring-2 ring-cyan-400/40'
+                  : 'hover:border-cyan-400'
               }`}
               aria-label={`Logged in as ${currentUser.global_name || currentUser.username}`}
               title={`${currentUser.global_name || currentUser.username} (View Profile)`}
@@ -1110,7 +1110,7 @@ function App() {
             <button
               type="button"
               onClick={() => setAuthModalOpen(true)}
-              className="w-9 h-9 sm:w-auto sm:px-3 sm:py-2 rounded-lg bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border-0 shrink-0"
+              className="w-9 h-9 sm:w-auto sm:px-3 sm:py-2 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800/70 hover:bg-[#5865F2] border border-slate-700/50 text-slate-200 hover:text-white font-bold text-xs transition-all cursor-pointer shrink-0"
               aria-label="Sign in with Discord"
               title="Sign in with Discord"
             >
@@ -1119,16 +1119,16 @@ function App() {
             </button>
           )}
 
-          {/* Compact Cart Button on mobile */}
+          {/* Top Cart Button: hidden on mobile, only flex on desktop */}
           <button
             type="button"
-            className="px-2.5 py-1.5 rounded-lg flex items-center gap-1 shrink-0 bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-xs transition-all shadow-md shadow-cyan-500/20 cursor-pointer border-0 h-9"
+            className="hidden md:flex px-3.5 py-2 rounded-xl items-center gap-2 shrink-0 bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-xs transition-all shadow-md shadow-cyan-500/20 cursor-pointer border-0 h-9"
             aria-label={`Open cart, ${cartCount} items`}
             onClick={() => setCartOpen(true)}
           >
-            <ShoppingCart size={15} />
-            <span className="hidden md:inline font-bold">Cart</span>
-            <span className="bg-slate-950 text-cyan-300 text-[10px] sm:text-xs px-1.5 py-0.2 rounded-full font-black min-w-[16px] text-center leading-tight">
+            <ShoppingCart size={16} />
+            <span className="font-bold">Cart</span>
+            <span className="bg-slate-950 text-cyan-300 text-xs px-2 py-0.5 rounded-full font-black min-w-[18px] text-center leading-tight">
               {cartCount}
             </span>
           </button>
