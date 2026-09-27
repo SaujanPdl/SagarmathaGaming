@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "clsx": "^2.1.1",
     "csv-parse": "^7.0.3",
     "lucide-react": "^1.48.0",
