@@ -27,6 +27,7 @@ import {
   Search,
   ShieldCheck,
   ShoppingCart,
+  SlidersHorizontal,
   Sparkles,
   Trash2,
   X,
@@ -252,12 +253,12 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
         </div>
         <div className="pt-2">
           <span className="text-[10px] uppercase font-bold tracking-wider text-cyan-400 block truncate">{product?.category || ''}</span>
-          <h3 className="text-xs sm:text-sm font-semibold text-slate-100 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] leading-snug mt-0.5" title={product?.name || ''}>
+          <h3 className="text-xs sm:text-sm font-semibold text-slate-100 line-clamp-1 truncate leading-snug mt-0.5" title={product?.name || ''}>
             {product?.name || 'Untitled Product'}
           </h3>
         </div>
       </div>
-      <div className="pt-2 mt-auto border-t border-slate-800/40 flex items-center justify-between gap-1.5">
+      <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-800/40 gap-1.5">
         <span className="text-xs sm:text-sm font-extrabold text-white truncate">{formatPrice(product?.price)}</span>
         <button
           type="button"
@@ -297,20 +298,22 @@ function ProductRail({ title, category, items, onAdd, onSeeAll, onOpenTopUp, onO
         <div><span className="section-eyebrow">CURATED FOR YOU</span><h2>{title}</h2></div>
         <button type="button" onClick={() => onSeeAll?.(category)}>See all <ArrowRight size={15} /></button>
       </div>
-      <div className="product-rail">
+      <div className="product-rail flex overflow-x-auto space-x-3.5 pb-2 no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-4 lg:grid-cols-6 md:space-x-0 md:gap-4 md:overflow-visible">
         {Array.isArray(items) && items.map((product, index) => {
           if (!product) return null
           const isTopUp = product?.category === 'Game Top-Up' || product?.category === 'Topup' || product?.deliveryType === 'UID/Player ID digital top-up'
           const isGiftCard = product?.category === 'Gift Cards' || product?.name?.toLowerCase().includes('gift card')
           return (
-            <article className={`rail-product ${product?.status === 'Sold Out' ? 'sold-out' : ''}`} key={product?.sku || product?.id || index}>
+            <article className={`rail-product min-w-[155px] max-w-[165px] md:min-w-0 md:max-w-none flex-shrink-0 snap-start flex flex-col justify-between ${product?.status === 'Sold Out' ? 'sold-out' : ''}`} key={product?.sku || product?.id || index}>
               <div className="rail-cover" style={{ backgroundImage: `linear-gradient(180deg, rgba(7,9,14,.04), rgba(7,9,14,.72)), url("${getCoverImage(product)}")` }}>
                 <span className="product-badge">{product?.badge || 'DIGITAL'}</span>
                 <span className="rail-number">{product?.sku || ''}</span>
               </div>
-              <div className="rail-product-info">
-                <span>{product?.category || ''}</span>
-                <h3>{product?.name || 'Untitled'}</h3>
+              <div className="rail-product-info flex flex-col justify-between flex-1">
+                <div>
+                  <span>{product?.category || ''}</span>
+                  <h3 className="line-clamp-2">{product?.name || 'Untitled'}</h3>
+                </div>
                 <div>
                   <strong>{formatPrice(product?.price)}</strong>
                   <button
@@ -524,6 +527,7 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
 function App() {
   const [currentPage, setCurrentPage] = useState(getPageFromHash)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileFilterDrawerOpen, setMobileFilterDrawerOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState(getSavedUser)
   const [authModalOpen, setAuthModalOpen] = useState(false)
 
@@ -751,7 +755,7 @@ function App() {
   }
 
   return (
-    <main className={`store-shell view-${currentPage} overflow-x-hidden pb-20 md:pb-0`}>
+    <main className={`store-shell view-${currentPage} overflow-x-hidden w-full max-w-full pb-20 md:pb-0`}>
       <div className="mini-banner">
         <span className="currency-mark">Rs <b>NPR</b></span>
         <span className="delivery-notice">Instant digital delivery <i /> pay your way <i /> 100% authentic codes</span>
@@ -1129,10 +1133,10 @@ function App() {
           {homeRows.slice(0, 4).map((row) => (
             <ProductRail key={row.title} {...row} onAdd={addToCart} onSeeAll={openShop} onOpenTopUp={handleOpenTopUp} onOpenGiftCard={handleOpenGiftCard} />
           ))}
-          <section className="bundle-promo">
+          <section className="bundle-promo w-full rounded-xl p-4 sm:p-6 overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div className="bundle-copy">
               <span className="section-eyebrow">THE ULTIMATE LIBRARY</span>
-              <h2>Steam Bundle<br />220+ Games</h2>
+              <h2 className="text-lg sm:text-2xl font-bold">Steam Bundle<br />220+ Games</h2>
               <p>One massive collection. Hundreds of ways to play.</p>
               <button type="button" onClick={() => openShop('Steam Offline Games')}>
                 Explore Steam Offline <ArrowRight size={15} />
@@ -1147,10 +1151,10 @@ function App() {
               <div className="bundle-art-type"><span>220+</span><b>GAMES</b><i>STEAM COLLECTION</i></div>
             </div>
           </section>
-          <section className="fc27-promo">
+          <section className="fc27-promo w-full rounded-xl p-4 sm:p-6 overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div>
               <span className="section-eyebrow">NEXT SEASON. NEXT LEVEL.</span>
-              <h2>EA SPORTS FC 27 Standard Edition</h2>
+              <h2 className="text-lg sm:text-2xl font-bold">EA SPORTS FC 27 Standard Edition</h2>
               <p>New Steam account · Online &amp; Multiplayer · Instant delivery</p>
               <button type="button" onClick={() => { openShop(); setSearchTerm('EA SPORTS FC 27') }}>
                 Explore FC 27 <ArrowRight size={15} />
@@ -1354,8 +1358,211 @@ function App() {
       {/* Catalog / Shop Section */}
       {currentPage !== 'profile' && (
       <section className="catalog-section" id="shop">
+        {/* Mobile Sticky Filter & Sort Bar */}
+        <div className="md:hidden sticky top-[57px] z-30 bg-[#0b0f19]/95 backdrop-blur-md border-b border-slate-800/80 px-4 py-2.5 flex items-center justify-between shadow-lg">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-300">
+              {allFilteredProducts.length} <span className="text-slate-500 font-normal">products</span>
+            </span>
+            {(draftCategory !== 'All products' || appliedCategory !== 'All products' || searchTerm) && (
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setMobileFilterDrawerOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141d2f] hover:bg-slate-800 border border-cyan-500/30 text-cyan-300 text-xs font-bold transition-all cursor-pointer min-h-[36px]"
+          >
+            <SlidersHorizontal size={14} />
+            <span>Filters &amp; Sort</span>
+          </button>
+        </div>
+
+        {/* Mobile Slide-over Filter Drawer */}
+        {mobileFilterDrawerOpen && (
+          <div 
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm md:hidden flex justify-end"
+            onClick={() => setMobileFilterDrawerOpen(false)}
+          >
+            <div 
+              className="w-[85%] max-w-sm bg-[#0d121f] border-l border-slate-800 h-full flex flex-col justify-between p-5 overflow-y-auto shadow-2xl animate-in slide-in-from-right duration-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div>
+                <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <SlidersHorizontal size={16} className="text-cyan-400" />
+                    <h2 className="text-base font-bold text-white uppercase tracking-wide">Filters &amp; Sort</h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileFilterDrawerOpen(false)}
+                    className="w-9 h-9 rounded-lg bg-[#13192b] border border-slate-800 text-slate-300 hover:text-white flex items-center justify-center cursor-pointer"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+
+                <div className="py-4 space-y-4">
+                  {/* Search */}
+                  <div>
+                    <label className="text-xs font-semibold text-slate-300 block mb-1.5">Search</label>
+                    <div className="relative">
+                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="search"
+                        value={searchTerm}
+                        onChange={(e) => {
+                          setSearchTerm(e.target.value)
+                          setCatalogPage(1)
+                        }}
+                        placeholder="Search products..."
+                        className="w-full pl-8 pr-3 py-2 bg-[#12192a] border border-slate-700/80 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Category */}
+                  <div>
+                    <label className="text-xs font-semibold text-slate-300 block mb-1.5">Category</label>
+                    <select
+                      value={draftCategory}
+                      onChange={(e) => setDraftCategory(e.target.value)}
+                      className="w-full px-3 py-2 bg-[#12192a] border border-slate-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-400"
+                    >
+                      {categories.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Brand / Platform */}
+                  <div>
+                    <label className="text-xs font-semibold text-slate-300 block mb-1.5">Brand / Platform</label>
+                    <select
+                      value={draftPlatform}
+                      onChange={(e) => setDraftPlatform(e.target.value)}
+                      className="w-full px-3 py-2 bg-[#12192a] border border-slate-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-400"
+                    >
+                      {platformOptions.map((plat) => (
+                        <option key={plat} value={plat}>{plat}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Sort By & Order */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-xs font-semibold text-slate-300 block mb-1.5">Sort By</label>
+                      <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                        className="w-full px-2.5 py-2 bg-[#12192a] border border-slate-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-400"
+                      >
+                        <option value="date">Date</option>
+                        <option value="price">Price</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold text-slate-300 block mb-1.5">Order</label>
+                      <select
+                        value={sortOrder}
+                        onChange={(e) => setSortOrder(e.target.value)}
+                        className="w-full px-2.5 py-2 bg-[#12192a] border border-slate-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-400"
+                      >
+                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Price Range */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-xs font-semibold text-slate-300">Price Range</label>
+                      <span className="text-[11px] font-bold text-cyan-400">
+                        {formatPrice(draftMinPrice)} - {formatPrice(draftMaxPrice)}
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      <input
+                        type="range"
+                        min="0"
+                        max={draftMaxPrice}
+                        step="250"
+                        value={draftMinPrice}
+                        onChange={(e) => setDraftMinPrice(Math.min(Number(e.target.value), draftMaxPrice))}
+                        className="w-full accent-cyan-400"
+                      />
+                      <input
+                        type="range"
+                        min={draftMinPrice}
+                        max="15000"
+                        step="250"
+                        value={draftMaxPrice}
+                        onChange={(e) => setDraftMaxPrice(Math.max(Number(e.target.value), draftMinPrice))}
+                        className="w-full accent-cyan-400"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      <div>
+                        <span className="text-[10px] text-slate-400 block">Min (Rs.)</span>
+                        <input
+                          type="number"
+                          min="0"
+                          max={draftMaxPrice}
+                          step="250"
+                          value={draftMinPrice}
+                          onChange={(e) => setDraftMinPrice(Math.min(Number(e.target.value), draftMaxPrice))}
+                          className="w-full px-2.5 py-1.5 bg-[#12192a] border border-slate-700/80 rounded text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 block">Max (Rs.)</span>
+                        <input
+                          type="number"
+                          min={draftMinPrice}
+                          max="15000"
+                          step="250"
+                          value={draftMaxPrice}
+                          onChange={(e) => setDraftMaxPrice(Math.max(Number(e.target.value), draftMinPrice))}
+                          className="w-full px-2.5 py-1.5 bg-[#12192a] border border-slate-700/80 rounded text-xs text-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-4 border-t border-slate-800 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    applyShopFilters()
+                    setMobileFilterDrawerOpen(false)
+                  }}
+                  className="w-full py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-400/20 transition-all cursor-pointer border-0"
+                >
+                  Apply Filters ({allFilteredProducts.length} Results)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    resetShopFilters()
+                    setMobileFilterDrawerOpen(false)
+                  }}
+                  className="w-full py-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 text-slate-300 font-semibold text-xs transition-colors cursor-pointer border border-slate-700/60"
+                >
+                  Reset All Filters
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="shop-layout">
-          <aside className="shop-sidebar" aria-label="Product filters">
+          <aside className="hidden md:block shop-sidebar" aria-label="Product filters">
             <div className="shop-sidebar-heading"><h2>Filters</h2><button type="button" onClick={resetShopFilters}>Reset</button></div>
             <label className="shop-sidebar-search">
               <span>Search</span>
@@ -1428,7 +1635,7 @@ function App() {
             {/* Strict CSS Grid Catalog without Masonry Columns */}
             <ErrorBoundary>
               {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 p-2 sm:p-3 items-stretch">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 p-3 items-stretch">
                   {filteredProducts.map((product, index) => {
                     if (!product || typeof product !== 'object') return null
                     return (
