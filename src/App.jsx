@@ -29,8 +29,11 @@ import {
   X,
 } from 'lucide-react'
 import productCsv from '../sagarmatha_games_hgs_product_database.csv?raw'
+import cleanProducts from './products_clean.json'
 import { getGameCover, FALLBACK_POSTER } from './utils/gameImages'
 import './App.css'
+
+const cleanProductsMap = new Map(cleanProducts.map((p) => [p.sku, p.image]))
 
 const productData = parse(productCsv, {
   columns: true,
@@ -102,7 +105,7 @@ const products = productData.map((product) => ({
   oldPrice: null,
   badge: getDeliveryBadge(product),
   platform: getProductPlatform(product),
-  image: getGameCover(product.name),
+  image: cleanProductsMap.get(product.sku) || getGameCover(product.name),
   imageAlt: `${product.name} artwork`,
   description: product.deliveryType,
   delivery: product.deliveryType,
@@ -148,7 +151,7 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
     <article className={`product-card group ${product.status === 'Sold Out' ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
       <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726]">
         <img
-          src={getGameCover(product.name)}
+          src={product.image || getGameCover(product.name)}
           alt={product.name}
           className="absolute inset-0 h-full w-full object-cover"
           loading="lazy"
