@@ -146,7 +146,7 @@ function getCategoryCover(category) {
 function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCart }) {
   return (
     <article className={`product-card group ${product.status === 'Sold Out' ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
-      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-[#111726]">
+      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#111726]">
         <img
           src={getGameCover(product.name)}
           alt={product.name}
@@ -229,8 +229,10 @@ const navItems = [
   { label: 'Blogs', page: 'blogs' },
 ]
 
+const getInitialPage = () => window.location.hash.replace('#', '').trim().toLowerCase() || 'home'
+
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
+  const [currentPage, setCurrentPage] = useState(getInitialPage)
   const [activeCategory, setActiveCategory] = useState('All products')
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState('date')
@@ -260,14 +262,13 @@ function App() {
   const [deliveryZone, setDeliveryZone] = useState('Inside Valley')
   const [order, setOrder] = useState(null)
 
-  // URL Hash Sync Effect
+  // URL Hash Sync on Mount and hashchange
   useEffect(() => {
     const handleHash = () => {
-      const route = window.location.hash.replace('#', '') || 'home'
+      const route = window.location.hash.replace('#', '').trim().toLowerCase() || 'home'
       setCurrentPage(route)
     }
     window.addEventListener('hashchange', handleHash)
-    handleHash()
     return () => window.removeEventListener('hashchange', handleHash)
   }, [])
 
@@ -889,7 +890,7 @@ function App() {
 
             {/* Strict CSS Grid Catalog without Masonry Columns */}
             {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 items-stretch">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
                 {filteredProducts.map((product, index) => (
                   <ProductCard
                     key={product.sku}
