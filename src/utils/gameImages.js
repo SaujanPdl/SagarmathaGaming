@@ -2,39 +2,46 @@
 // Maps game names to direct high-resolution vertical box-art covers (Steam 600x900, IGDB 2:3 vertical covers, or dynamic SVG)
 
 export const DIRECT_ART = {
-  // Gift Cards & Wallets
-  "roblox": "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80",
-  "steam gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "steam wallet": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "playstation gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "psn card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "xbox gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "apple gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "google play": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
+  // Official Brand Posters & Subscription Logos
+  "xbox game pass": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
+  "xbox live": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
+  "xbox pass": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
+  "pc game pass": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
+  "xbox": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
+  "netflix": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80",
+  "spotify premium": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80",
+  "spotify": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80",
   "discord nitro": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80",
   "discord": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80",
-  "nintendo": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
+  "playstation plus": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
+  "ps plus": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
+  "psn card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
+  "psn": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
+  "playstation gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
+  "roblox": "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80",
+  "robux": "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80",
+  "steam wallet": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "steam gift card": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "steam random elite key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "grand random steam key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "steam random key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "steam random keys": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "steam keys": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "steam key": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "vip mystery bundle": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "mystery bundle": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
+  "apple gift card": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80",
+  "google play": "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=600&auto=format&fit=crop&q=80",
+  "nintendo": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&auto=format&fit=crop&q=80",
   "battle.net": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "exitlag": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "netflix": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80",
+  "exitlag": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
   "ea gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "epic gift card": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80",
-  "xbox game pass": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
-  "game pass": "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80",
+  "epic gift card": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80",
 
   // Minecraft Variants
   "minecraft": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80",
   "minecraft java": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80",
   "minecraft bedrock": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80",
-
-  // Mystery Keys & Bundles
-  "vip mystery bundle": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
-  "steam random elite key": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
-  "grand random steam key": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
-  "steam random key": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
-  "steam random keys": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
-  "mystery bundle": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
-  "steam key": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
 
   // EA Sports FC / FIFA (Every year maps to its own distinct cover)
   "fc 27": "https://cdn.cloudflare.steamstatic.com/steam/apps/2669320/library_600x900_2x.jpg",
@@ -362,35 +369,83 @@ export function getGameCover(name) {
   const clean = cleanGameTitle(name);
   const rawLower = name.toLowerCase();
 
-  // 1. Direct explicit keyword checks:
-  if (rawLower.includes("roblox") || clean.includes("roblox")) {
-    return "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80";
-  }
-  if (rawLower.includes("minecraft") || clean.includes("minecraft")) {
-    return "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80";
-  }
+  // 1. Dedicated Official Brand Subscriptions & Services Logos/Posters
+  // Xbox Game Pass / Xbox Live
   if (
-    rawLower.includes("steam key") ||
-    clean.includes("steam key") ||
-    rawLower.includes("random key") ||
-    clean.includes("random key") ||
-    rawLower.includes("mystery") ||
-    clean.includes("mystery")
+    clean.includes("xbox") ||
+    clean.includes("game pass") ||
+    clean.includes("pc game pass") ||
+    rawLower.includes("xbox") ||
+    rawLower.includes("game pass")
   ) {
-    return "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80";
+    return "https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=600&auto=format&fit=crop&q=80";
   }
+
+  // Netflix Subscription / Pass
+  if (clean.includes("netflix") || rawLower.includes("netflix")) {
+    return "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80";
+  }
+
+  // Spotify Premium
+  if (clean.includes("spotify") || rawLower.includes("spotify")) {
+    return "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80";
+  }
+
+  // Discord Nitro
+  if (clean.includes("discord") || rawLower.includes("discord")) {
+    return "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600&auto=format&fit=crop&q=80";
+  }
+
+  // PlayStation Plus / PSN
   if (
-    rawLower.includes("gift card") ||
-    clean.includes("gift card") ||
-    rawLower.includes("wallet") ||
-    clean.includes("wallet") ||
-    rawLower.includes("psn") ||
-    clean.includes("psn")
+    clean.includes("psn") ||
+    clean.includes("playstation plus") ||
+    clean.includes("ps plus") ||
+    clean.includes("playstation gift") ||
+    clean.includes("playstation network") ||
+    rawLower.includes("psn")
   ) {
     return "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80";
   }
 
-  // 2. Franchise Year Extraction (FIFA / EA Sports FC / WWE)
+  // Roblox / Robux
+  if (clean.includes("roblox") || clean.includes("robux") || rawLower.includes("roblox")) {
+    return "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format&fit=crop&q=80";
+  }
+
+  // Steam Wallet / Keys / Mystery
+  if (
+    clean.includes("steam wallet") ||
+    clean.includes("steam key") ||
+    clean.includes("steam keys") ||
+    clean.includes("random key") ||
+    clean.includes("mystery") ||
+    clean.includes("steam gift") ||
+    rawLower.includes("steam wallet") ||
+    rawLower.includes("steam key") ||
+    rawLower.includes("random key") ||
+    rawLower.includes("mystery")
+  ) {
+    return "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80";
+  }
+
+  // Minecraft
+  if (clean.includes("minecraft") || rawLower.includes("minecraft")) {
+    return "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80";
+  }
+
+  // Apple & Google Play
+  if (clean.includes("apple")) {
+    return "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80";
+  }
+  if (clean.includes("google play")) {
+    return "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=600&auto=format&fit=crop&q=80";
+  }
+  if (clean.includes("nintendo")) {
+    return "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&auto=format&fit=crop&q=80";
+  }
+
+  // 2. Franchise Year Extraction (FIFA 14-23, FC 24-26, WWE 2K16-24 strictly intact)
   const yearMatch = clean.match(/(1[2-9]|2[0-7])/);
   if (clean.includes("fifa") && yearMatch) {
     const key = `fifa ${yearMatch[1]}`;
@@ -405,7 +460,21 @@ export function getGameCover(name) {
     if (DIRECT_ART[key]) return DIRECT_ART[key];
   }
 
-  // 3. Match keys sorted by descending key length
+  // 3. GTA Series
+  if (clean.includes("gta 6") || clean.includes("gta vi") || clean.includes("grand theft auto vi")) {
+    return DIRECT_ART["gta 6"];
+  }
+  if (clean.includes("gta 5") || clean.includes("gta v") || clean.includes("grand theft auto v")) {
+    return DIRECT_ART["gta 5"];
+  }
+  if (clean.includes("gta 4") || clean.includes("gta iv") || clean.includes("grand theft auto iv")) {
+    return DIRECT_ART["gta 4"];
+  }
+  if (clean.includes("san andreas")) return DIRECT_ART["san andreas"];
+  if (clean.includes("vice city")) return DIRECT_ART["vice city"];
+  if (clean.includes("gta 3")) return DIRECT_ART["gta 3"];
+
+  // 4. Match keys sorted by descending key length
   const sortedKeys = Object.keys(DIRECT_ART).sort((a, b) => b.length - a.length);
   for (const key of sortedKeys) {
     if (clean.includes(key) || rawLower.includes(key)) {
@@ -413,7 +482,7 @@ export function getGameCover(name) {
     }
   }
 
-  // 4. Unmatched -> High-res styled Dynamic SVG Placeholder
+  // 5. Unmatched -> High-res styled Dynamic SVG Placeholder
   return getDynamicPlaceholder(name);
 }
 

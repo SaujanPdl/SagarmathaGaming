@@ -240,7 +240,7 @@ const getPageFromHash = () => {
   return hash || 'home'
 }
 
-const HERO_CAROUSEL_SLIDES = [
+const slides = [
   {
     id: 1,
     badge: "FIFA WORLD CUP 2026",
@@ -270,126 +270,130 @@ const HERO_CAROUSEL_SLIDES = [
   }
 ]
 
-function HeroCarousel({ onNavigateShop }) {
-  const [currentSlide, setCurrentSlide] = useState(0)
+function HeroCarousel({ onNavigateShop, setCurrentPage }) {
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0)
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prevIndex) => (prevIndex + 1) % HERO_CAROUSEL_SLIDES.length)
-    }, 5000)
+      setActiveSlideIndex((prevIndex) => (prevIndex + 1) % slides.length)
+    }, 4500)
     return () => clearInterval(timer)
-  }, [currentSlide])
+  }, [activeSlideIndex])
 
-  const handlePrev = () => {
-    setCurrentSlide((prevIndex) => (prevIndex - 1 + HERO_CAROUSEL_SLIDES.length) % HERO_CAROUSEL_SLIDES.length)
+  const handlePrevSlide = () => {
+    setActiveSlideIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length)
   }
 
-  const handleNext = () => {
-    setCurrentSlide((prevIndex) => (prevIndex + 1) % HERO_CAROUSEL_SLIDES.length)
+  const handleNextSlide = () => {
+    setActiveSlideIndex((prevIndex) => (prevIndex + 1) % slides.length)
   }
 
-  const handleDotClick = (index) => {
-    setCurrentSlide(index)
-  }
-
-  const handleActionClick = () => {
+  const handleNavigate = () => {
     window.location.hash = 'shop'
-    if (onNavigateShop) {
-      onNavigateShop()
-    }
+    if (setCurrentPage) setCurrentPage('shop')
+    if (onNavigateShop) onNavigateShop()
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const currentSlide = slides[activeSlideIndex]
+
   return (
-    <section className="relative w-full max-w-[1400px] mx-auto px-4 sm:px-6 pt-3 pb-6 select-none" aria-label="Hero Banner Carousel">
-      <div className="relative w-full h-[380px] sm:h-[440px] md:h-[480px] lg:h-[500px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-800/80 shadow-2xl bg-[#0b0f19]">
-        {HERO_CAROUSEL_SLIDES.map((slide, index) => {
-          const isActive = index === currentSlide
-          return (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
-              }`}
-            >
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className="absolute inset-0 w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#070911]/95 via-[#070911]/80 to-transparent sm:w-2/3" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#070911]/90 via-transparent to-black/30" />
-
-              <div className="relative h-full flex flex-col justify-center px-6 sm:px-12 md:px-16 max-w-2xl text-left z-10">
-                <span className="inline-flex items-center self-start px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-bold tracking-widest uppercase bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 backdrop-blur-md mb-3">
-                  {slide.badge}
-                </span>
-
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.1] mb-3 drop-shadow-md">
-                  {slide.title}
-                </h1>
-
-                <p className="text-sm sm:text-base md:text-lg text-slate-300 font-medium mb-6 leading-relaxed max-w-xl">
-                  {slide.subtitle}
-                </p>
-
-                <div>
-                  <a
-                    href={slide.link}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleActionClick()
-                    }}
-                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold text-sm sm:text-base transition-all transform hover:scale-105 shadow-lg shadow-cyan-500/25 cursor-pointer no-underline"
-                  >
-                    <span>{slide.buttonText}</span>
-                    <ArrowRight size={18} />
-                  </a>
-                </div>
-              </div>
+    <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+        {/* Left Side Featured Poster */}
+        <div className="hidden lg:block lg:col-span-3">
+          <div 
+            onClick={handleNavigate}
+            className="relative h-full min-h-[340px] rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl group cursor-pointer"
+          >
+            <img 
+              src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2949.png" 
+              alt="Featured Game Left" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">Special Release</span>
             </div>
-          )
-        })}
+          </div>
+        </div>
 
-        {/* Left Arrow Button */}
-        <button
-          type="button"
-          onClick={handlePrev}
-          aria-label="Previous slide"
-          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-900 shadow-lg p-2.5 rounded-full z-20 cursor-pointer transition-transform hover:scale-110 active:scale-95 flex items-center justify-center"
-        >
-          <ChevronLeft size={20} />
-        </button>
+        {/* Center Auto & Manual Carousel Banner */}
+        <div className="lg:col-span-6 relative rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl min-h-[340px] flex flex-col justify-between bg-[#121829]">
+          {/* Current Slide Display */}
+          <div className="relative w-full h-full min-h-[340px]">
+            <img 
+              key={currentSlide.id}
+              src={currentSlide.image} 
+              alt={currentSlide.title} 
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-transparent p-8 flex flex-col justify-center max-w-md">
+              <span className="text-cyan-400 text-xs font-black tracking-widest uppercase mb-1">{currentSlide.badge}</span>
+              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase mb-2">{currentSlide.title}</h2>
+              <p className="text-slate-300 text-xs sm:text-sm font-medium mb-4 leading-relaxed">{currentSlide.subtitle}</p>
+              <a 
+                href="#shop" 
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleNavigate()
+                }}
+                className="inline-flex items-center justify-center w-fit px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-sm transition-all shadow-lg shadow-cyan-500/25 cursor-pointer no-underline"
+              >
+                {currentSlide.buttonText || "Buy at Best Price"}
+              </a>
+            </div>
 
-        {/* Right Arrow Button */}
-        <button
-          type="button"
-          onClick={handleNext}
-          aria-label="Next slide"
-          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-900 shadow-lg p-2.5 rounded-full z-20 cursor-pointer transition-transform hover:scale-110 active:scale-95 flex items-center justify-center"
-        >
-          <ChevronRight size={20} />
-        </button>
+            {/* Prev / Next Manual Arrows */}
+            <button 
+              type="button"
+              onClick={handlePrevSlide}
+              aria-label="Previous slide"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-900 shadow-xl flex items-center justify-center font-bold text-lg z-20 transition-transform active:scale-95 cursor-pointer border-0"
+            >
+              ‹
+            </button>
+            <button 
+              type="button"
+              onClick={handleNextSlide}
+              aria-label="Next slide"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-900 shadow-xl flex items-center justify-center font-bold text-lg z-20 transition-transform active:scale-95 cursor-pointer border-0"
+            >
+              ›
+            </button>
 
-        {/* Bottom Indicator Pills */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
-          {HERO_CAROUSEL_SLIDES.map((_, index) => {
-            const isActive = index === currentSlide
-            return (
-              <button
-                key={index}
-                type="button"
-                aria-label={`Jump to slide ${index + 1}`}
-                onClick={() => handleDotClick(index)}
-                className={`transition-all duration-300 rounded-full h-2 cursor-pointer border-0 p-0 ${
-                  isActive ? 'w-8 bg-cyan-400' : 'w-2 bg-white/40 hover:bg-white/70'
-                }`}
-              />
-            )
-          })}
+            {/* Slide Indicator Pills */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={`Go to slide ${i + 1}`}
+                  onClick={() => setActiveSlideIndex(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer border-0 p-0 ${activeSlideIndex === i ? 'w-6 bg-cyan-400' : 'w-2 bg-white/40 hover:bg-white/70'}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side Featured Poster (e.g. GTA VI) */}
+        <div className="hidden lg:block lg:col-span-3">
+          <div 
+            onClick={handleNavigate}
+            className="relative h-full min-h-[340px] rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl group cursor-pointer"
+          >
+            <img 
+              src="https://images.igdb.com/igdb/image/upload/t_cover_big/co7927.png" 
+              alt="Grand Theft Auto VI" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">Ultimate Edition</span>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -704,7 +708,7 @@ function App() {
       </header>
 
       {/* Featured Hero Banner Carousel */}
-      {currentPage === 'home' && <HeroCarousel onNavigateShop={openShop} />}
+      {currentPage === 'home' && <HeroCarousel onNavigateShop={openShop} setCurrentPage={setCurrentPage} />}
 
       {/* Category Section */}
       <section className="category-section" id="categories">
