@@ -1,0 +1,1073 @@
+[
+  {
+    "sku": "SG-001",
+    "name": "ARK Survival Evolved",
+    "price": 600,
+    "originalPrice": 623,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-002",
+    "name": "Meccha Chameleon Nepal Region Steam",
+    "price": 900,
+    "originalPrice": 937,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-003",
+    "name": "Riders Republic",
+    "price": 1000,
+    "originalPrice": 998,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-004",
+    "name": "EA FC 26",
+    "price": 1100,
+    "originalPrice": 1125,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-005",
+    "name": "Euro Truck Simulator 2",
+    "price": 1200,
+    "originalPrice": 1248,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-006",
+    "name": "EA FC 25",
+    "price": 1800,
+    "originalPrice": 1873,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Sold Out"
+  },
+  {
+    "sku": "SG-007",
+    "name": "It Takes Two",
+    "price": 2000,
+    "originalPrice": 2125,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-008",
+    "name": "NBA 2K26",
+    "price": 2100,
+    "originalPrice": 2248,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-009",
+    "name": "Rust",
+    "price": 2200,
+    "originalPrice": 2373,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-010",
+    "name": "Red Dead Redemption 2",
+    "price": 2300,
+    "originalPrice": 2498,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-011",
+    "name": "GTA V Premium Edition",
+    "price": 2750,
+    "originalPrice": 2748,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-012",
+    "name": "Hytale",
+    "price": 2750,
+    "originalPrice": 2873,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-013",
+    "name": "Call of Duty: Modern Warfare",
+    "price": 3000,
+    "originalPrice": 3123,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-014",
+    "name": "Call of Duty: Modern Warfare 2",
+    "price": 3250,
+    "originalPrice": 3500,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-015",
+    "name": "Call of Duty: Modern Warfare III",
+    "price": 3750,
+    "originalPrice": 4000,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-016",
+    "name": "ARC Raiders",
+    "price": 4500,
+    "originalPrice": 4750,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-017",
+    "name": "Battlefield 6",
+    "price": 4750,
+    "originalPrice": 4998,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-018",
+    "name": "F1 25: 2026 Season Edition",
+    "price": 4750,
+    "originalPrice": 4998,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-019",
+    "name": "F1 25",
+    "price": 4750,
+    "originalPrice": 4998,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-020",
+    "name": "EA SPORTS FC 27 Ultimate Edition",
+    "price": 12500,
+    "originalPrice": 13500,
+    "category": "Steam Private Account",
+    "deliveryType": "Digital account delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-021",
+    "name": "Tekken 7",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-022",
+    "name": "Ranch Simulator",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-023",
+    "name": "It Takes Two",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-024",
+    "name": "Dying Light \u2013 Anniversary Edition",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-025",
+    "name": "WWE 2K20",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-026",
+    "name": "Detroit",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-027",
+    "name": "Hollow Knight",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-028",
+    "name": "The Forest",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-029",
+    "name": "WWE 2K24",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-030",
+    "name": "Microsoft Flight Simulator X",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-031",
+    "name": "Schedule I",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-032",
+    "name": "Sons of the Forest",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-033",
+    "name": "SnowRunner",
+    "price": 150,
+    "originalPrice": 125,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-034",
+    "name": "GTA Vice City",
+    "price": 250,
+    "originalPrice": 250,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-035",
+    "name": "Grand Theft Auto: San Andreas",
+    "price": 250,
+    "originalPrice": 250,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-036",
+    "name": "Horizon Forbidden West",
+    "price": 250,
+    "originalPrice": 250,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-037",
+    "name": "Hollow Knight: Silksong",
+    "price": 250,
+    "originalPrice": 250,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-038",
+    "name": "Clair Obscur: Expedition 33",
+    "price": 250,
+    "originalPrice": 250,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-039",
+    "name": "Split Fiction",
+    "price": 250,
+    "originalPrice": 250,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-040",
+    "name": "Cyberpunk 2077 Ultimate Edition",
+    "price": 250,
+    "originalPrice": 250,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-041",
+    "name": "Onimusha: Way of the Sword - Premium Deluxe Edition",
+    "price": 1000,
+    "originalPrice": 998,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-042",
+    "name": "Assassin's Creed IV: Black Flag Resynced Deluxe Edition + All DLCs",
+    "price": 1000,
+    "originalPrice": 998,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-043",
+    "name": "Crimson Desert Deluxe Edition",
+    "price": 700,
+    "originalPrice": 750,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-044",
+    "name": "007 First Light Deluxe Edition + All DLCs",
+    "price": 700,
+    "originalPrice": 750,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-045",
+    "name": "Black Myth: Wukong Deluxe Edition",
+    "price": 700,
+    "originalPrice": 750,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-046",
+    "name": "NARUTO Ultimate Ninja STORM Collection",
+    "price": 500,
+    "originalPrice": 500,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-047",
+    "name": "NARUTO X BORUTO Ultimate Ninja STORM CONNECTIONS Deluxe Edition",
+    "price": 600,
+    "originalPrice": 625,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-048",
+    "name": "Mafia: The Old Country Deluxe Edition + The Man of Honor DLC",
+    "price": 700,
+    "originalPrice": 750,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-049",
+    "name": "Assassin's Creed Shadows",
+    "price": 900,
+    "originalPrice": 873,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-050",
+    "name": "HITMAN World of Assassination Deluxe Edition + All DLCs",
+    "price": 500,
+    "originalPrice": 500,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-051",
+    "name": "NieR: Game of the YoRHa Edition",
+    "price": 500,
+    "originalPrice": 500,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-052",
+    "name": "The Walking Dead: The Telltale Definitive Series",
+    "price": 500,
+    "originalPrice": 500,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-053",
+    "name": "Farming Simulator 25",
+    "price": 500,
+    "originalPrice": 500,
+    "category": "Steam Offline Games",
+    "deliveryType": "Digital account/login delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-054",
+    "name": "Clash Royale",
+    "price": 100,
+    "originalPrice": 100,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-055",
+    "name": "Free Fire",
+    "price": 120,
+    "originalPrice": 125,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-056",
+    "name": "Wuthering Waves",
+    "price": 180,
+    "originalPrice": 187,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-057",
+    "name": "PUBG Mobile UID Topup",
+    "price": 190,
+    "originalPrice": 206,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-058",
+    "name": "Where Winds Meet",
+    "price": 210,
+    "originalPrice": 225,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-059",
+    "name": "Mobile Legends: Bang Bang Nepal",
+    "price": 210,
+    "originalPrice": 225,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-060",
+    "name": "Genshin Impact",
+    "price": 210,
+    "originalPrice": 225,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-061",
+    "name": "Blood Strike",
+    "price": 220,
+    "originalPrice": 231,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-062",
+    "name": "Clash of Clans",
+    "price": 290,
+    "originalPrice": 312,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-063",
+    "name": "Valorant PHP",
+    "price": 750,
+    "originalPrice": 812,
+    "category": "Game Top-Up",
+    "deliveryType": "UID/Player ID digital top-up",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-064",
+    "name": "Steam Gift Card (Global Region)",
+    "price": 300,
+    "originalPrice": 312,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-065",
+    "name": "Roblox Gift Card",
+    "price": 700,
+    "originalPrice": 750,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-066",
+    "name": "Valorant Gift Card",
+    "price": 1000,
+    "originalPrice": 1062,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-067",
+    "name": "PlayStation Gift Card US",
+    "price": 1100,
+    "originalPrice": 1087,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-068",
+    "name": "Apple Gift Card US",
+    "price": 1100,
+    "originalPrice": 1125,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Sold Out"
+  },
+  {
+    "sku": "SG-069",
+    "name": "Battle.net Gift Card US",
+    "price": 1800,
+    "originalPrice": 1937,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-070",
+    "name": "ExitLag Global Card",
+    "price": 1800,
+    "originalPrice": 1937,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-071",
+    "name": "Xbox Gift Card US",
+    "price": 2000,
+    "originalPrice": 2125,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-072",
+    "name": "Nintendo Gift Card US",
+    "price": 2000,
+    "originalPrice": 2125,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-073",
+    "name": "Discord Gift Card",
+    "price": 2200,
+    "originalPrice": 2373,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-074",
+    "name": "EA Gift Card US",
+    "price": 3250,
+    "originalPrice": 3437,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-075",
+    "name": "Netflix Gift Card",
+    "price": 3500,
+    "originalPrice": 3687,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-076",
+    "name": "Epic Gift Card US/Nepal",
+    "price": 3500,
+    "originalPrice": 3687,
+    "category": "Gift Cards",
+    "deliveryType": "Digital code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-077",
+    "name": "Xbox Game Pass Ultimate",
+    "price": 2750,
+    "originalPrice": 2937,
+    "category": "Xbox",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-078",
+    "name": "EA SPORTS FC 27 Standard Edition PS4/PS5",
+    "price": 4750,
+    "originalPrice": 4998,
+    "category": "PlayStation Digital",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-079",
+    "name": "Marvel's Wolverine PS5",
+    "price": 5250,
+    "originalPrice": 5437,
+    "category": "PlayStation Digital",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-080",
+    "name": "GTA 6 Standard Edition Pre-Order",
+    "price": 5750,
+    "originalPrice": 6248,
+    "category": "PlayStation Digital",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-081",
+    "name": "GTA 6 Ultimate Edition Pre-Order",
+    "price": 8500,
+    "originalPrice": 8748,
+    "category": "PlayStation Digital",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-082",
+    "name": "Sea of Thieves 2026 Deluxe Edition",
+    "price": 350,
+    "originalPrice": 375,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-083",
+    "name": "No Man's Sky",
+    "price": 350,
+    "originalPrice": 375,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-084",
+    "name": "Palworld",
+    "price": 350,
+    "originalPrice": 375,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-085",
+    "name": "Forza Horizon 4 Ultimate Edition",
+    "price": 500,
+    "originalPrice": 500,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-086",
+    "name": "Cities: Skylines II",
+    "price": 600,
+    "originalPrice": 625,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-087",
+    "name": "Cricket 24 International Edition",
+    "price": 600,
+    "originalPrice": 625,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-088",
+    "name": "ARC Raiders",
+    "price": 600,
+    "originalPrice": 625,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Sold Out"
+  },
+  {
+    "sku": "SG-089",
+    "name": "Microsoft Flight Simulator 2020 \u2013 40th Anniversary Edition",
+    "price": 600,
+    "originalPrice": 625,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-090",
+    "name": "Forza Horizon 5 Premium Edition",
+    "price": 600,
+    "originalPrice": 625,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-091",
+    "name": "Microsoft Flight Simulator 2024",
+    "price": 900,
+    "originalPrice": 875,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-092",
+    "name": "Forza Horizon 6 Premium Edition",
+    "price": 1200,
+    "originalPrice": 1248,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-093",
+    "name": "Cricket 26 Pro International Edition",
+    "price": 1200,
+    "originalPrice": 1250,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-094",
+    "name": "Lifetime PC Game Pass",
+    "price": 1200,
+    "originalPrice": 1250,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-095",
+    "name": "Forza Horizon 6 Standard Edition",
+    "price": 1200,
+    "originalPrice": 1250,
+    "category": "Microsoft Online Games",
+    "deliveryType": "Digital account/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-096",
+    "name": "Steam Random Keys",
+    "price": 250,
+    "originalPrice": 250,
+    "category": "Game Keys",
+    "deliveryType": "Digital key/code delivery",
+    "status": "Sold Out"
+  },
+  {
+    "sku": "SG-097",
+    "name": "Grand Random Steam Key",
+    "price": 500,
+    "originalPrice": 500,
+    "category": "Game Keys",
+    "deliveryType": "Digital key/code delivery",
+    "status": "Sold Out"
+  },
+  {
+    "sku": "SG-098",
+    "name": "Steam Random Elite Key",
+    "price": 600,
+    "originalPrice": 625,
+    "category": "Game Keys",
+    "deliveryType": "Digital key/code delivery",
+    "status": "Sold Out"
+  },
+  {
+    "sku": "SG-099",
+    "name": "VIP Mystery Bundle",
+    "price": 700,
+    "originalPrice": 750,
+    "category": "Game Keys",
+    "deliveryType": "Digital key/code delivery",
+    "status": "Sold Out"
+  },
+  {
+    "sku": "SG-100",
+    "name": "GTA V Premium Edition Enhanced Rockstar Key",
+    "price": 3250,
+    "originalPrice": 3375,
+    "category": "Game Keys",
+    "deliveryType": "Digital key/code delivery",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-101",
+    "name": "FIFA 16 PS4 (Sealed)",
+    "price": 2100,
+    "originalPrice": 2250,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-102",
+    "name": "FIFA 20 PS4 Disc (Pre-Owned)",
+    "price": 2300,
+    "originalPrice": 2500,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-103",
+    "name": "FIFA 19 (Sealed)",
+    "price": 2300,
+    "originalPrice": 2500,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-104",
+    "name": "FIFA 18 PS4 (Sealed)",
+    "price": 2300,
+    "originalPrice": 2500,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-105",
+    "name": "WWE 2K17 PS4 (Pre-Owned)",
+    "price": 2800,
+    "originalPrice": 3000,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-106",
+    "name": "WWE 2K18 PS4 (Pre-Owned)",
+    "price": 2900,
+    "originalPrice": 3125,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-107",
+    "name": "The Last of Us Remastered PS4 Disc (Sealed)",
+    "price": 3250,
+    "originalPrice": 3500,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-108",
+    "name": "God of War (2018) (Sealed)",
+    "price": 3250,
+    "originalPrice": 3500,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Sold Out"
+  },
+  {
+    "sku": "SG-109",
+    "name": "FIFA 23 PS5 (Sealed)",
+    "price": 3450,
+    "originalPrice": 3750,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-110",
+    "name": "Naruto Shippuden: Ultimate Ninja Storm 4 PS4 Disc (Sealed)",
+    "price": 3450,
+    "originalPrice": 3750,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-111",
+    "name": "FIFA 22 PS4 Disc (Pre-Owned)",
+    "price": 3950,
+    "originalPrice": 4250,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-112",
+    "name": "WWE 2K22 PS4 (Pre-Owned)",
+    "price": 4050,
+    "originalPrice": 4374,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-113",
+    "name": "WWE 2K20 PS4 (Sealed)",
+    "price": 4300,
+    "originalPrice": 4625,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-114",
+    "name": "The Last of Us Part II PS4 Disc (Sealed)",
+    "price": 4400,
+    "originalPrice": 4750,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-115",
+    "name": "GTA V Premium Edition PS4 Disc (Sealed)",
+    "price": 4750,
+    "originalPrice": 5125,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-116",
+    "name": "GTA V PS5 Disc (Sealed)",
+    "price": 5200,
+    "originalPrice": 5625,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-117",
+    "name": "Uncharted Legacy of Thieves Collection PS5 Disc (Sealed)",
+    "price": 5200,
+    "originalPrice": 5625,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-118",
+    "name": "God of War Ragnar\u00f6k PS5 Disc (Sealed)",
+    "price": 6000,
+    "originalPrice": 6500,
+    "category": "PlayStation Physical Disc",
+    "deliveryType": "Physical delivery (shipping)",
+    "status": "Available"
+  },
+  {
+    "sku": "SG-119",
+    "name": "Minecraft Java & Bedrock Edition Premium New Account",
+    "price": 3000,
+    "originalPrice": 3125,
+    "category": "Minecraft",
+    "deliveryType": "Digital account delivery",
+    "status": "Sold Out"
+  }
+]
