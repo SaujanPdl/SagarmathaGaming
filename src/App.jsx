@@ -17,6 +17,7 @@ import {
   Headphones,
   Heart,
   HelpCircle,
+  Home,
   KeyRound,
   Menu,
   MessageCircle,
@@ -217,64 +218,69 @@ function ProductCard({ product, index, isWishlisted, onToggleWishlist, onAddToCa
   const isGiftCard = product?.category === 'Gift Cards' || product?.name?.toLowerCase().includes('gift card')
 
   return (
-    <article className={`product-card group ${isSoldOut ? 'sold-out' : ''}`} style={{ '--card-index': index }}>
-      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-[#111726]">
-        <img
-          src={getCoverImage(product)}
-          alt={product?.name || 'Game Cover'}
-          className={`aspect-[2/3] object-cover w-full rounded-xl transition-opacity ${isSoldOut ? 'grayscale-[40%] opacity-90' : ''}`}
-          loading="lazy"
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = DEFAULT_FALLBACK_COVER;
-          }}
-        />
-        {isSoldOut && (
-          <span className="absolute top-2 right-2 bg-rose-600/90 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider z-10">
-            Sold Out
-          </span>
-        )}
-        <button
-          className={`${isWishlisted ? 'quick-add saved' : 'quick-add'} ${isSoldOut ? '!left-2 !right-auto' : ''}`}
-          type="button"
-          aria-label={`${isWishlisted ? 'Remove' : 'Add'} ${product?.name || 'item'} to wishlist`}
-          onClick={() => onToggleWishlist?.(product?.id)}
-        >
-          <Heart size={17} fill={isWishlisted ? 'currentColor' : 'none'} />
-        </button>
-      </div>
-      <div className="product-info-tight">
-        <span className="product-category-micro">{product?.category || ''}</span>
-        <h3 className="product-title-micro min-h-[2.5rem] line-clamp-2" title={product?.name || ''}>
-          {product?.name || 'Untitled Product'}
-        </h3>
-        <div className="product-actions-micro">
-          <span className="product-price-micro">{formatPrice(product?.price)}</span>
+    <article className={`product-card group flex flex-col justify-between h-full bg-[#111726]/70 border border-slate-800/80 hover:border-cyan-500/50 rounded-xl p-2 sm:p-2.5 transition-all ${isSoldOut ? 'sold-out opacity-75' : ''}`} style={{ '--card-index': index }}>
+      <div>
+        <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-[#0e1422] shadow-inner">
+          <img
+            src={getCoverImage(product)}
+            alt={product?.name || 'Game Cover'}
+            className={`aspect-[2/3] object-cover w-full rounded-lg transition-transform duration-300 group-hover:scale-105 ${isSoldOut ? 'grayscale-[40%] opacity-90' : ''}`}
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = DEFAULT_FALLBACK_COVER;
+            }}
+          />
+          {isSoldOut && (
+            <span className="absolute top-1.5 right-1.5 bg-rose-600/90 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider z-10">
+              Sold Out
+            </span>
+          )}
           <button
+            className={`absolute top-1.5 left-1.5 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer border-0 z-10 min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] ${isWishlisted ? '!text-rose-500 !bg-rose-950/80' : ''}`}
             type="button"
-            className="add-to-cart-cyan"
-            disabled={product?.status !== 'Available'}
-            onClick={() => {
-              if (isGiftCard && onOpenGiftCard) {
-                onOpenGiftCard(product)
-              } else if (isTopUp && onOpenTopUp) {
-                onOpenTopUp(product)
-              } else {
-                onAddToCart?.(product)
-              }
+            aria-label={`${isWishlisted ? 'Remove' : 'Add'} ${product?.name || 'item'} to wishlist`}
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggleWishlist?.(product?.id)
             }}
           >
-            {product?.status === 'Available' ? (
-              isGiftCard ? (
-                <><Sparkles size={14} className="fill-cyan-400/20" /> Select Value</>
-              ) : isTopUp ? (
-                <><Zap size={14} className="fill-slate-950" /> Top Up</>
-              ) : (
-                <><Plus size={14} /> Add</>
-              )
-            ) : 'Sold out'}
+            <Heart size={16} fill={isWishlisted ? 'currentColor' : 'none'} />
           </button>
         </div>
+        <div className="pt-2">
+          <span className="text-[10px] uppercase font-bold tracking-wider text-cyan-400 block truncate">{product?.category || ''}</span>
+          <h3 className="text-xs sm:text-sm font-semibold text-slate-100 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] leading-snug mt-0.5" title={product?.name || ''}>
+            {product?.name || 'Untitled Product'}
+          </h3>
+        </div>
+      </div>
+      <div className="pt-2 mt-auto border-t border-slate-800/40 flex items-center justify-between gap-1.5">
+        <span className="text-xs sm:text-sm font-extrabold text-white truncate">{formatPrice(product?.price)}</span>
+        <button
+          type="button"
+          className="px-2.5 py-1.5 rounded-lg bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-[11px] sm:text-xs flex items-center gap-1 transition-all shrink-0 cursor-pointer min-h-[36px] sm:min-h-[38px] disabled:opacity-40 disabled:cursor-not-allowed"
+          disabled={product?.status !== 'Available'}
+          onClick={() => {
+            if (isGiftCard && onOpenGiftCard) {
+              onOpenGiftCard(product)
+            } else if (isTopUp && onOpenTopUp) {
+              onOpenTopUp(product)
+            } else {
+              onAddToCart?.(product)
+            }
+          }}
+        >
+          {product?.status === 'Available' ? (
+            isGiftCard ? (
+              <><Sparkles size={12} className="fill-cyan-950" /> <span className="hidden xs:inline">Select</span></>
+            ) : isTopUp ? (
+              <><Zap size={12} className="fill-slate-950" /> Top Up</>
+            ) : (
+              <><Plus size={12} /> Add</>
+            )
+          ) : 'Sold'}
+        </button>
       </div>
     </article>
   )
@@ -410,7 +416,7 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
   const currentSlide = slides[activeSlideIndex]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-6">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
         {/* Left Side Featured Poster */}
         <div className="hidden lg:block lg:col-span-3">
@@ -432,26 +438,26 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
         </div>
 
         {/* Center Auto & Manual Carousel Banner */}
-        <div className="lg:col-span-6 relative rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl min-h-[340px] flex flex-col justify-between bg-[#121829]">
+        <div className="w-full lg:col-span-6 relative rounded-2xl overflow-hidden border border-slate-800/80 shadow-2xl min-h-[220px] sm:min-h-[320px] md:min-h-[340px] flex flex-col justify-between bg-[#121829]">
           {/* Current Slide Display */}
-          <div className="relative w-full h-full min-h-[340px]">
+          <div className="relative w-full h-full min-h-[220px] sm:min-h-[320px] md:min-h-[340px] flex items-center">
             <img 
               key={currentSlide.id}
               src={currentSlide.image} 
               alt={currentSlide.title} 
               className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700" 
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-transparent p-8 flex flex-col justify-center max-w-md">
-              <span className="text-cyan-400 text-xs font-black tracking-widest uppercase mb-1">{currentSlide.badge}</span>
-              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase mb-2">{currentSlide.title}</h2>
-              <p className="text-slate-300 text-xs sm:text-sm font-medium mb-4 leading-relaxed">{currentSlide.subtitle}</p>
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-transparent/40 p-4 sm:p-7 md:p-8 flex flex-col justify-center max-w-[85%] sm:max-w-md z-10">
+              <span className="text-cyan-400 text-[10px] sm:text-xs font-black tracking-widest uppercase mb-1">{currentSlide.badge}</span>
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-black text-white tracking-tight uppercase mb-1 sm:mb-2 line-clamp-2">{currentSlide.title}</h2>
+              <p className="text-slate-300 text-[11px] sm:text-xs md:text-sm font-medium mb-3 sm:mb-4 leading-snug line-clamp-2 sm:line-clamp-none">{currentSlide.subtitle}</p>
               <a 
                 href="#shop" 
                 onClick={(e) => {
                   e.preventDefault()
                   handleNavigate()
                 }}
-                className="inline-flex items-center justify-center w-fit px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-sm transition-all shadow-lg shadow-cyan-500/25 cursor-pointer no-underline"
+                className="inline-flex items-center justify-center w-fit px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs sm:text-sm transition-all shadow-lg shadow-cyan-500/25 cursor-pointer no-underline min-h-[38px] sm:min-h-[44px]"
               >
                 {currentSlide.buttonText || "Buy at Best Price"}
               </a>
@@ -462,7 +468,7 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
               type="button"
               onClick={handlePrevSlide}
               aria-label="Previous slide"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-900 shadow-xl flex items-center justify-center font-bold text-lg z-20 transition-transform active:scale-95 cursor-pointer border-0"
+              className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 min-w-[34px] min-h-[34px] rounded-full bg-slate-900/80 hover:bg-slate-900 text-white border border-slate-700 shadow-xl flex items-center justify-center font-bold text-base sm:text-lg z-20 transition-transform active:scale-95 cursor-pointer"
             >
               ‹
             </button>
@@ -470,13 +476,13 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
               type="button"
               onClick={handleNextSlide}
               aria-label="Next slide"
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-900 shadow-xl flex items-center justify-center font-bold text-lg z-20 transition-transform active:scale-95 cursor-pointer border-0"
+              className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 min-w-[34px] min-h-[34px] rounded-full bg-slate-900/80 hover:bg-slate-900 text-white border border-slate-700 shadow-xl flex items-center justify-center font-bold text-base sm:text-lg z-20 transition-transform active:scale-95 cursor-pointer"
             >
               ›
             </button>
 
             {/* Slide Indicator Pills */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
+            <div className="absolute bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
               {slides.map((_, i) => (
                 <button
                   key={i}
@@ -515,6 +521,7 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
 
 function App() {
   const [currentPage, setCurrentPage] = useState(getPageFromHash)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('All products')
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState('date')
@@ -713,7 +720,7 @@ function App() {
   }
 
   return (
-    <main className={`store-shell view-${currentPage}`}>
+    <main className={`store-shell view-${currentPage} overflow-x-hidden pb-20 md:pb-0`}>
       <div className="mini-banner">
         <span className="currency-mark">Rs <b>NPR</b></span>
         <span className="delivery-notice">Instant digital delivery <i /> pay your way <i /> 100% authentic codes</span>
@@ -732,22 +739,113 @@ function App() {
         </div>
       </div>
 
-      <header className="bg-[#0b0f19]/90 backdrop-blur-md border-b border-cyan-500/20 px-6 py-3.5 flex items-center justify-between gap-4 sticky top-0 z-50">
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm md:hidden flex"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <aside 
+            className="w-[82%] max-w-xs bg-[#0b0f19] border-r border-cyan-500/20 h-full flex flex-col justify-between p-5 overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div className="flex items-center gap-2.5">
+                  <img src="/sagarmatha-games-logo.svg" alt="Sagarmatha" className="h-8 w-auto" />
+                  <span className="font-extrabold text-base text-white tracking-wider uppercase">Sagarmatha</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#13192b] border border-slate-800 text-slate-300 hover:text-white flex items-center justify-center cursor-pointer"
+                  aria-label="Close mobile menu"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="py-4 space-y-1">
+                <span className="text-[10px] font-bold tracking-widest uppercase text-cyan-400/80 px-3">Navigation</span>
+                {navItems.map(({ label, page }) => (
+                  <a
+                    key={page}
+                    href={`#${page}`}
+                    onClick={() => {
+                      window.location.hash = page
+                      setCurrentPage(page)
+                      setMobileMenuOpen(false)
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }}
+                    className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors no-underline ${
+                      currentPage === page ? 'bg-cyan-500/15 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800/60'
+                    }`}
+                  >
+                    <span>{label}</span>
+                    <ArrowRight size={14} className="text-slate-500" />
+                  </a>
+                ))}
+              </div>
+
+              <div className="py-3 border-t border-slate-800/80 space-y-1">
+                <span className="text-[10px] font-bold tracking-widest uppercase text-cyan-400/80 px-3">Quick Platforms</span>
+                {['Game Top-Up', 'Gift Cards', 'Steam Private Account', 'PlayStation Digital'].map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => {
+                      openShop(cat)
+                      setMobileMenuOpen(false)
+                    }}
+                    className="w-full flex items-center justify-between px-3 py-2 text-xs text-slate-300 hover:text-white hover:bg-slate-800/40 rounded-lg transition-colors cursor-pointer text-left"
+                  >
+                    <span>{categoryDisplayNames[cat] || cat}</span>
+                    <span className="text-[10px] text-cyan-400">Shop →</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-800 space-y-2">
+              <a
+                href="https://wa.me/9779700979030"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs no-underline min-h-[44px]"
+              >
+                <MessageCircle size={15} /> WhatsApp Support
+              </a>
+              <p className="text-[10px] text-slate-500 text-center">© 2026 Sagarmatha Gaming Store</p>
+            </div>
+          </aside>
+        </div>
+      )}
+
+      <header className="bg-[#0b0f19]/90 backdrop-blur-md border-b border-cyan-500/20 px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 sm:gap-4 sticky top-0 z-50">
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(true)}
+          className="md:hidden w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white shrink-0 cursor-pointer"
+          aria-label="Open mobile menu"
+        >
+          <Menu size={19} />
+        </button>
+
         <a 
           href="#home" 
           onClick={() => { window.location.hash = 'home'; setCurrentPage('home'); }}
-          className="flex items-center gap-3 group transition-transform hover:scale-105"
+          className="flex items-center gap-2 sm:gap-3 group transition-transform hover:scale-105 shrink-0 no-underline"
         >
           <img 
             src="/sagarmatha-games-logo.svg" 
             alt="Sagarmatha Gaming Store" 
-            className="h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
+            className="h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.35)]" 
           />
           <div className="flex flex-col">
-            <span className="font-extrabold text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
+            <span className="font-extrabold text-sm sm:text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase leading-none">
               Sagarmatha
             </span>
-            <span className="text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
+            <span className="hidden xs:inline text-[9px] sm:text-[10px] tracking-[0.25em] text-cyan-400 font-semibold uppercase leading-tight">
               Gaming Store
             </span>
           </div>
@@ -775,8 +873,8 @@ function App() {
           })}
         </nav>
 
-        <div className="relative flex-1 max-w-xl mx-2">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none" size={17} />
+        <div className="relative flex-1 max-w-xl mx-1 sm:mx-2 min-w-0">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none" size={15} />
           <input
             type="search"
             value={searchTerm}
@@ -789,29 +887,29 @@ function App() {
                 window.location.hash = 'shop'
               }
             }}
-            placeholder="Search games, gift cards, subscriptions..."
-            className="w-full bg-[#13192b]/70 border border-slate-800/90 rounded-full py-2.5 pl-10 pr-9 text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:border-cyan-500/50"
+            placeholder="Search games, top-ups..."
+            className="w-full bg-[#13192b]/70 border border-slate-800/90 rounded-full py-2 sm:py-2.5 pl-8 sm:pl-10 pr-7 sm:pr-9 text-xs sm:text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:border-cyan-500/50"
             aria-label="Search games, gift cards, subscriptions..."
           />
           {searchTerm && (
             <button
               type="button"
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer p-1"
               aria-label="Clear search"
               onClick={() => {
                 setSearchTerm('')
                 setCatalogPage(1)
               }}
             >
-              <X size={15} />
+              <X size={13} />
             </button>
           )}
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           <button
             type="button"
-            className="w-10 h-10 rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-slate-700 cursor-pointer transition-colors"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-slate-700 cursor-pointer transition-colors"
             aria-label="Toggle wishlist"
             aria-pressed={wishlistOnly}
             onClick={() => {
@@ -825,13 +923,13 @@ function App() {
 
           <button
             type="button"
-            className="px-4 h-10 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
+            className="px-3 sm:px-4 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
             aria-label={`Open cart, ${cartCount} items`}
             onClick={() => setCartOpen(true)}
           >
             <ShoppingCart size={17} />
-            <span className="hidden sm:inline">Cart</span>
-            <span className="bg-slate-950 text-cyan-300 text-xs px-2 py-0.5 rounded-full font-extrabold min-w-[20px] text-center">
+            <span className="hidden md:inline">Cart</span>
+            <span className="bg-slate-950 text-cyan-300 text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-extrabold min-w-[18px] text-center">
               {cartCount}
             </span>
           </button>
@@ -843,7 +941,7 @@ function App() {
               setCurrentPage('profile')
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
-            className={`w-10 h-10 rounded-xl bg-[#13192b] border flex items-center justify-center transition-all cursor-pointer ${
+            className={`hidden sm:flex w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#13192b] border items-center justify-center transition-all cursor-pointer ${
               currentPage === 'profile'
                 ? 'border-cyan-400 text-cyan-400 bg-cyan-950/40 shadow-lg shadow-cyan-500/20'
                 : 'border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
@@ -853,14 +951,6 @@ function App() {
           >
             <CircleUserRound size={20} />
           </button>
-
-          <a
-            href="#categories"
-            className="md:hidden w-10 h-10 rounded-xl bg-[#13192b] border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white no-underline"
-            aria-label="Browse categories"
-          >
-            <Menu size={18} />
-          </a>
         </div>
       </header>
 
@@ -895,13 +985,13 @@ function App() {
             {currentPage === 'categories' ? 'See all products' : 'See all'} <ArrowRight size={15} />
           </button>
         </div>
-        <div className="quick-categories">
+        <div className="flex overflow-x-auto no-scrollbar gap-3 snap-x pb-3 md:grid md:grid-cols-3 lg:grid-cols-5 md:gap-3 md:overflow-visible">
           {categoryOrder.map((category) => {
             const Icon = categoryIcons[category] || Gamepad2
             const count = products.filter((product) => product?.category === category).length
             return (
               <button
-                className="quick-category"
+                className="quick-category shrink-0 snap-start min-w-[210px] md:min-w-0 min-h-[64px] flex items-center justify-between p-3 rounded-xl border border-slate-800 hover:border-cyan-500/50 bg-[#0f1627] text-left transition-all cursor-pointer relative overflow-hidden group"
                 style={{ backgroundImage: `linear-gradient(90deg, rgba(11,15,25,.96), rgba(11,15,25,.7)), url("${getCategoryCover(category)}")` }}
                 type="button"
                 key={category}
@@ -1238,7 +1328,7 @@ function App() {
             {/* Strict CSS Grid Catalog without Masonry Columns */}
             <ErrorBoundary>
               {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 p-2 sm:p-3 items-stretch">
                   {filteredProducts.map((product, index) => {
                     if (!product || typeof product !== 'object') return null
                     return (
@@ -1348,6 +1438,91 @@ function App() {
       <a className="whatsapp-float" href="https://wa.me/9779700979030" target="_blank" rel="noreferrer" aria-label="Chat with Sagarmatha Gaming Store on WhatsApp">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.4 28.6l6.4-1.7A12.8 12.8 0 1 0 16 3.2Zm0 23.2a10.3 10.3 0 0 1-5.2-1.4l-.4-.2-3.8 1 1-3.7-.3-.4a10.2 10.2 0 1 1 8.7 4.7Zm5.6-7.6c-.3-.2-1.7-.9-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.1.2-.3.2-.6.1-1.7-.9-2.8-1.6-3.9-3.5-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.1.2 2.2 3.4 5.4 4.8 2 .9 2.8 1 3.8.8.6-.1 1.7-.7 1.9-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z" /></svg>
       </a>
+
+      {/* Sticky Bottom Navigation Bar for Mobile Phones */}
+      <nav 
+        className="fixed bottom-0 left-0 right-0 z-40 bg-[#090d18]/95 backdrop-blur-xl border-t border-cyan-500/20 md:hidden flex items-center justify-around px-2 py-1.5 pb-[max(0.4rem,env(safe-area-inset-bottom))]"
+        aria-label="Mobile Navigation"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            window.location.hash = 'home'
+            setCurrentPage('home')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[44px] px-1 py-1 rounded-lg transition-colors cursor-pointer border-0 bg-transparent ${
+            currentPage === 'home' ? 'text-cyan-400 font-bold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Home size={19} className={currentPage === 'home' ? 'stroke-[2.5]' : 'stroke-2'} />
+          <span className="text-[10px] mt-0.5 tracking-tight">Home</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            window.location.hash = 'shop'
+            openShop()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[44px] px-1 py-1 rounded-lg transition-colors cursor-pointer border-0 bg-transparent ${
+            currentPage === 'shop' && !wishlistOnly ? 'text-cyan-400 font-bold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Gamepad2 size={19} className={currentPage === 'shop' && !wishlistOnly ? 'stroke-[2.5]' : 'stroke-2'} />
+          <span className="text-[10px] mt-0.5 tracking-tight">Shop</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            window.location.hash = 'categories'
+            setCurrentPage('categories')
+            setActiveCategory('All products')
+            setWishlistOnly(false)
+            setSearchTerm('')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[44px] px-1 py-1 rounded-lg transition-colors cursor-pointer border-0 bg-transparent ${
+            currentPage === 'categories' ? 'text-cyan-400 font-bold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Blocks size={19} className={currentPage === 'categories' ? 'stroke-[2.5]' : 'stroke-2'} />
+          <span className="text-[10px] mt-0.5 tracking-tight">Categories</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setCartOpen(true)}
+          className="relative flex flex-col items-center justify-center min-w-[54px] min-h-[44px] px-1 py-1 rounded-lg text-slate-400 hover:text-slate-200 transition-colors cursor-pointer border-0 bg-transparent"
+        >
+          <div className="relative">
+            <ShoppingCart size={19} className="stroke-2" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1.5 -right-2.5 bg-cyan-400 text-slate-950 text-[10px] font-black px-1.5 py-0.2 rounded-full min-w-[16px] text-center leading-tight">
+                {cartCount}
+              </span>
+            )}
+          </div>
+          <span className="text-[10px] mt-0.5 tracking-tight">Cart</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            window.location.hash = 'profile'
+            setCurrentPage('profile')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[44px] px-1 py-1 rounded-lg transition-colors cursor-pointer border-0 bg-transparent ${
+            currentPage === 'profile' ? 'text-cyan-400 font-bold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <CircleUserRound size={19} className={currentPage === 'profile' ? 'stroke-[2.5]' : 'stroke-2'} />
+          <span className="text-[10px] mt-0.5 tracking-tight">Profile</span>
+        </button>
+      </nav>
 
       {/* Cart Drawer */}
       {cartOpen && (

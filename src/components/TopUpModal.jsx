@@ -167,13 +167,13 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
       <div 
-        className="relative w-full max-w-2xl bg-[#0c1220] border border-cyan-500/30 rounded-2xl shadow-2xl overflow-hidden text-white my-auto flex flex-col max-h-[92vh]"
+        className="relative w-full sm:max-w-2xl bg-[#0c1220] border-t sm:border border-cyan-500/30 rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden text-white flex flex-col max-h-[90vh] sm:max-h-[88vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="relative px-6 py-4 border-b border-slate-800 bg-[#0f172a]/90 flex items-center justify-between shrink-0">
+        <div className="relative px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-800 bg-[#0f172a]/90 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-12 h-16 rounded-lg overflow-hidden border border-cyan-500/30 shrink-0 bg-slate-900 shadow-md">
               <img 
@@ -196,7 +196,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
           <button 
             type="button" 
             onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer border-0"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer border-0"
             aria-label="Close Top-Up modal"
           >
             <X size={18} />
@@ -316,7 +316,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
                       isGenshin ? 'Enter Genshin UID (e.g. 812345678)' :
                       'Enter your Player ID / Character UID'
                     }
-                    className="w-full h-11 px-4 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white placeholder-slate-500 text-sm font-mono outline-none transition-colors"
+                    className="w-full h-11 px-4 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white placeholder-slate-500 text-base font-mono outline-none transition-colors"
                   />
                 </div>
 
@@ -325,7 +325,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
                     <select
                       value={serverRegion}
                       onChange={(e) => setServerRegion(e.target.value)}
-                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-xs outline-none"
+                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-base sm:text-xs outline-none"
                     >
                       <option>Global / Nepal</option>
                       <option>Middle East</option>
@@ -337,7 +337,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
                     <select
                       value={serverRegion}
                       onChange={(e) => setServerRegion(e.target.value)}
-                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-xs outline-none"
+                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-base sm:text-xs outline-none"
                     >
                       <option>Nepal / India</option>
                       <option>Singapore</option>
@@ -355,7 +355,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
                     <select
                       value={serverRegion}
                       onChange={(e) => setServerRegion(e.target.value)}
-                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-xs outline-none"
+                      className="w-full h-11 px-3 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white text-base sm:text-xs outline-none"
                     >
                       <option>Asia</option>
                       <option>America</option>
@@ -485,7 +485,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
               <button
                 type="submit"
                 disabled={!playerUid.trim()}
-                className="w-full py-3.5 px-6 rounded-xl bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 transition-all cursor-pointer border-0"
+                className="w-full py-3.5 px-6 rounded-xl bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 transition-all cursor-pointer border-0 min-h-[48px]"
               >
                 <Zap size={18} className="fill-slate-950" />
                 Confirm &amp; Recharge

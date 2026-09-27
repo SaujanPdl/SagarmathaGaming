@@ -104,13 +104,13 @@ export default function GiftCardModal({ product, onClose, onAddToCart, onDirectC
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
       <div 
-        className="relative w-full max-w-xl bg-[#0c1220] border border-cyan-500/30 rounded-2xl shadow-2xl overflow-hidden text-white my-auto flex flex-col max-h-[92vh]"
+        className="relative w-full sm:max-w-xl bg-[#0c1220] border-t sm:border border-cyan-500/30 rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden text-white flex flex-col max-h-[90vh] sm:max-h-[88vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="relative px-6 py-4 border-b border-slate-800 bg-[#0f172a]/90 flex items-center justify-between shrink-0">
+        <div className="relative px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-800 bg-[#0f172a]/90 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-12 h-16 rounded-lg overflow-hidden border border-cyan-500/30 shrink-0 bg-slate-900 shadow-md">
               <img 
@@ -133,7 +133,7 @@ export default function GiftCardModal({ product, onClose, onAddToCart, onDirectC
           <button 
             type="button" 
             onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer border-0"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer border-0"
             aria-label="Close Gift Card modal"
           >
             <X size={18} />
@@ -201,7 +201,7 @@ export default function GiftCardModal({ product, onClose, onAddToCart, onDirectC
                 value={deliveryContact}
                 onChange={(e) => setDeliveryContact(e.target.value)}
                 placeholder="Enter Email or WhatsApp (e.g. 98XXXXXXXX)"
-                className="w-full h-11 px-4 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white placeholder-slate-500 text-sm outline-none transition-colors"
+                className="w-full h-11 px-4 rounded-xl bg-[#141b2d] border border-slate-700/80 focus:border-cyan-400 text-white placeholder-slate-500 text-base outline-none transition-colors"
               />
             </div>
             <p className="flex items-center gap-1.5 text-slate-400 text-[11px]">
@@ -217,7 +217,7 @@ export default function GiftCardModal({ product, onClose, onAddToCart, onDirectC
               <button
                 type="button"
                 onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center transition-colors cursor-pointer border-0"
+                className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center transition-colors cursor-pointer border-0"
               >
                 -
               </button>
@@ -225,7 +225,7 @@ export default function GiftCardModal({ product, onClose, onAddToCart, onDirectC
               <button
                 type="button"
                 onClick={() => setQuantity(q => q + 1)}
-                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center transition-colors cursor-pointer border-0"
+                className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center transition-colors cursor-pointer border-0"
               >
                 +
               </button>
@@ -253,7 +253,7 @@ export default function GiftCardModal({ product, onClose, onAddToCart, onDirectC
               <button
                 type="button"
                 onClick={handleAdd}
-                className="flex-1 py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer border-0"
+                className="flex-1 py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer border-0 min-h-[46px]"
               >
                 {addedAnimation ? <Check size={16} className="text-emerald-400" /> : <ShoppingCart size={16} />}
                 {addedAnimation ? 'Added to Cart!' : 'Add to Cart'}
@@ -261,7 +261,7 @@ export default function GiftCardModal({ product, onClose, onAddToCart, onDirectC
               <button
                 type="button"
                 onClick={handleBuyNow}
-                className="flex-1 py-3 px-4 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 transition-all cursor-pointer border-0"
+                className="flex-1 py-3 px-4 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 transition-all cursor-pointer border-0 min-h-[46px]"
               >
                 <Zap size={16} className="fill-slate-950" />
                 Instant Checkout

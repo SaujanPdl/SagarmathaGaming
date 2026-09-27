@@ -228,7 +228,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 text-white">
+    <div className="max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8 text-white">
       {/* Top Navigation */}
       <div className="flex items-center justify-between mb-6">
         <button
@@ -239,7 +239,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
               window.location.hash = 'home'
             }
           }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#12192b] border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white text-xs sm:text-sm font-bold transition-all cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#12192b] border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white text-xs sm:text-sm font-bold transition-all cursor-pointer min-h-[44px]"
         >
           <ArrowLeft size={16} />
           Back to Store
@@ -379,7 +379,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
                         <button
                           type="button"
                           onClick={() => handleCopyCode(order.redeemCode, order.orderId)}
-                          className="ml-2 text-slate-400 hover:text-white transition-colors cursor-pointer border-0 bg-transparent p-1"
+                          className="ml-2 min-w-[40px] min-h-[40px] text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer border-0 bg-transparent p-1"
                           title="Copy Voucher Code"
                         >
                           {copiedCode === order.orderId ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
