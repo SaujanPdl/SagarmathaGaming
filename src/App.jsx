@@ -732,8 +732,9 @@ function App() {
 
   function submitOrder(event) {
     event.preventDefault()
-    setOrder({
-      orderNumber: `SGS-${Math.floor(10000 + Math.random() * 90000)}`,
+    const orderNumber = `SGS-${Math.floor(10000 + Math.random() * 90000)}`
+    const orderData = {
+      orderNumber,
       items: [...cart],
       paymentMethod,
       playerUid: hasTopUp ? playerUid : '',
@@ -743,7 +744,60 @@ function App() {
       customerName,
       phoneNumber,
       email,
-    })
+    }
+    setOrder(orderData)
+
+    // Save to gamer_orders in localStorage so Profile updates dynamically
+    try {
+      const existingOrders = JSON.parse(localStorage.getItem('gamer_orders') || '[]')
+      const orderDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      const orderTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+
+      const newGamerOrders = cart.map((item, idx) => {
+        const isDigital = item?.category === 'Gift Cards' || item?.category === 'Game Keys' || item?.deliveryType?.toLowerCase().includes('digital')
+        const randomCode = isDigital ? `SG-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}` : null
+
+        return {
+          orderId: `${orderNumber}${cart.length > 1 ? `-${idx + 1}` : ''}`,
+          date: orderDate,
+          time: orderTime,
+          game: item?.name || 'Game Order',
+          item: item?.name || 'Game Order',
+          packageName: item?.category || 'Standard',
+          amount: (item?.price || 0) * (item?.quantity || 1),
+          redeemCode: randomCode,
+          uid: hasTopUp ? playerUid : '',
+          server: hasTopUp ? serverId : '',
+          paymentMethod,
+          status: 'Completed',
+          deliveryType: item?.deliveryType || 'Digital',
+          image: item?.image || getCoverImage(item)
+        }
+      })
+
+      localStorage.setItem('gamer_orders', JSON.stringify([...newGamerOrders, ...existingOrders]))
+
+      if (hasTopUp && playerUid.trim()) {
+        const existingUids = JSON.parse(localStorage.getItem('saved_player_ids') || '[]')
+        if (!existingUids.some(u => u.uid === playerUid.trim())) {
+          const gameItem = cart.find(i => i.category === 'Game Top-Up' || i.category === 'Topup')
+          const updatedUids = [
+            {
+              id: Date.now(),
+              game: gameItem?.name || 'Game Top-Up',
+              uid: playerUid.trim(),
+              server: serverId.trim(),
+              nickname: customerName || 'My Account'
+            },
+            ...existingUids
+          ]
+          localStorage.setItem('saved_player_ids', JSON.stringify(updatedUids))
+        }
+      }
+    } catch (e) {
+      console.error('Failed to save order to localStorage:', e)
+    }
+
     setCart([])
     setPlayerUid('')
     setServerId('')

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   User,
   ShoppingBag,
@@ -20,109 +20,40 @@ import {
 import getCoverImage, { DEFAULT_FALLBACK_COVER } from '../utils/gameImages'
 import { DiscordIcon } from './AuthModal'
 
-const DEFAULT_ORDERS = [
-  {
-    orderId: 'SG-VOUCH-78912',
-    date: 'Sep 27, 2026',
-    time: '04:15 PM',
-    game: 'Steam Gift Card (Global Region)',
-    item: 'Steam $10 Card',
-    packageName: '$10 USD Wallet Code',
-    amount: 1450,
-    redeemCode: 'ABCD-1234-EFGH',
-    paymentMethod: 'eSewa',
-    status: 'Completed',
-    deliveryType: 'Digital code delivery',
-    image: '/covers/steam-random-keys.jpg'
-  },
-  {
-    orderId: 'SG-VOUCH-65201',
-    date: 'Sep 26, 2026',
-    time: '01:20 PM',
-    game: 'Roblox Gift Card',
-    item: 'Roblox 800 Robux Card',
-    packageName: '800 Robux Digital Code',
-    amount: 1350,
-    redeemCode: 'RBLX-9921-8842-KLPQ',
-    paymentMethod: 'Khalti',
-    status: 'Completed',
-    deliveryType: 'Digital code delivery',
-    image: '/covers/roblox-gift-card.jpg'
-  },
-  {
-    orderId: 'SG-TOPUP-941824',
-    date: 'Sep 25, 2026',
-    time: '08:40 PM',
-    game: 'PUBG Mobile UID Topup',
-    item: 'PUBG Mobile - 325 UC',
-    packageName: '325 UC',
-    amount: 650,
-    uid: '5123456789',
-    server: 'Global / Nepal',
-    paymentMethod: 'eSewa',
-    status: 'Completed',
-    deliveryType: 'UID/Player ID digital top-up',
-    image: '/covers/pubg-mobile-uid-topup.jpg'
-  },
-  {
-    orderId: 'SG-TOPUP-872311',
-    date: 'Sep 23, 2026',
-    time: '06:10 PM',
-    game: 'Free Fire',
-    item: 'Free Fire - 240 Diamonds',
-    packageName: '240 Diamonds',
-    amount: 240,
-    uid: '789123456',
-    server: '',
-    paymentMethod: 'Khalti',
-    status: 'Completed',
-    deliveryType: 'UID/Player ID digital top-up',
-    image: '/covers/free-fire.jpg'
-  },
-  {
-    orderId: 'SG-VOUCH-41908',
-    date: 'Sep 20, 2026',
-    time: '11:05 AM',
-    game: 'PlayStation Gift Card US',
-    item: 'PlayStation $20 Network Card',
-    packageName: '$20 USD PSN Wallet',
-    amount: 2850,
-    redeemCode: 'PSN-7741-9923-MNBV',
-    paymentMethod: 'Mobile Banking',
-    status: 'Completed',
-    deliveryType: 'Digital code delivery',
-    image: '/covers/playstation-gift-card-us.jpg'
-  }
-]
-
-const DEFAULT_SAVED_IDS = [
-  {
-    id: 1,
-    game: 'Free Fire',
-    uid: '789123456',
-    server: '',
-    nickname: 'SagarSniper'
-  },
-  {
-    id: 2,
-    game: 'PUBG Mobile UID Topup',
-    uid: '5123456789',
-    server: 'Global / Nepal',
-    nickname: 'HimalayanHunter'
-  },
-  {
-    id: 3,
-    game: 'Mobile Legends: Bang Bang Nepal',
-    uid: '98124712',
-    server: '2314',
-    nickname: 'EverestMage'
-  }
-]
-
 export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentUser, onLogout, onOpenLogin }) {
   const [activeTab, setActiveTab] = useState('orders')
-  const [orders, setOrders] = useState([])
-  const [savedIds, setSavedIds] = useState([])
+  const [orders, setOrders] = useState(() => {
+    try {
+      const stored = localStorage.getItem('gamer_orders')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        if (Array.isArray(parsed)) {
+          // Filter out legacy mock data if present
+          return parsed.filter(o => !o.orderId?.startsWith('SG-TOPUP-872311') && !o.orderId?.startsWith('SG-TOPUP-290670') && !o.orderId?.startsWith('SG-VOUCH-78912') && !o.orderId?.startsWith('SG-VOUCH-65201') && !o.orderId?.startsWith('SG-TOPUP-941824') && !o.orderId?.startsWith('SG-VOUCH-41908'))
+        }
+      }
+      return []
+    } catch {
+      return []
+    }
+  })
+
+  const [savedIds, setSavedIds] = useState(() => {
+    try {
+      const stored = localStorage.getItem('saved_player_ids')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        if (Array.isArray(parsed)) {
+          // Filter out legacy default mock IDs
+          return parsed.filter(item => item.uid !== '789123456' && item.uid !== '5123456789' && item.uid !== '98124712')
+        }
+      }
+      return []
+    } catch {
+      return []
+    }
+  })
+
   const [copiedCode, setCopiedCode] = useState(null)
   const [copiedUid, setCopiedUid] = useState(null)
   const [isLoggedOut, setIsLoggedOut] = useState(false)
@@ -135,40 +66,52 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
   const [newNickname, setNewNickname] = useState('')
 
   useEffect(() => {
-    try {
-      const storedOrders = localStorage.getItem('sagarmatha_orders')
-      if (storedOrders) {
-        const parsed = JSON.parse(storedOrders)
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setOrders(parsed)
+    const loadProfileData = () => {
+      try {
+        const rawOrders = localStorage.getItem('gamer_orders')
+        if (rawOrders) {
+          const parsed = JSON.parse(rawOrders)
+          const filtered = Array.isArray(parsed)
+            ? parsed.filter(o => !o.orderId?.startsWith('SG-TOPUP-872311') && !o.orderId?.startsWith('SG-TOPUP-290670') && !o.orderId?.startsWith('SG-VOUCH-78912') && !o.orderId?.startsWith('SG-VOUCH-65201') && !o.orderId?.startsWith('SG-TOPUP-941824') && !o.orderId?.startsWith('SG-VOUCH-41908'))
+            : []
+          setOrders(filtered)
         } else {
-          setOrders(DEFAULT_ORDERS)
-          localStorage.setItem('sagarmatha_orders', JSON.stringify(DEFAULT_ORDERS))
+          setOrders([])
         }
-      } else {
-        setOrders(DEFAULT_ORDERS)
-        localStorage.setItem('sagarmatha_orders', JSON.stringify(DEFAULT_ORDERS))
-      }
 
-      const storedUids = localStorage.getItem('sagarmatha_saved_uids')
-      if (storedUids) {
-        const parsedUids = JSON.parse(storedUids)
-        if (Array.isArray(parsedUids) && parsedUids.length > 0) {
-          setSavedIds(parsedUids)
+        const rawUids = localStorage.getItem('saved_player_ids')
+        if (rawUids) {
+          const parsed = JSON.parse(rawUids)
+          const filtered = Array.isArray(parsed)
+            ? parsed.filter(item => item.uid !== '789123456' && item.uid !== '5123456789' && item.uid !== '98124712')
+            : []
+          setSavedIds(filtered)
         } else {
-          setSavedIds(DEFAULT_SAVED_IDS)
-          localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(DEFAULT_SAVED_IDS))
+          setSavedIds([])
         }
-      } else {
-        setSavedIds(DEFAULT_SAVED_IDS)
-        localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(DEFAULT_SAVED_IDS))
+      } catch (e) {
+        console.error('Error loading profile data:', e)
+        setOrders([])
+        setSavedIds([])
       }
-    } catch (e) {
-      console.error(e)
-      setOrders(DEFAULT_ORDERS)
-      setSavedIds(DEFAULT_SAVED_IDS)
     }
+
+    loadProfileData()
+    window.addEventListener('storage', loadProfileData)
+    return () => window.removeEventListener('storage', loadProfileData)
   }, [])
+
+  // Dynamic VIP calculation: 5+ orders or spent over Rs. 5,000
+  const totalSpent = useMemo(() => {
+    return orders.reduce((sum, order) => {
+      const val = typeof order?.amount === 'number' ? order.amount : Number(order?.amount) || 0
+      return sum + val
+    }, 0)
+  }, [orders])
+
+  const isVip = useMemo(() => {
+    return orders.length >= 5 || totalSpent >= 5000
+  }, [orders.length, totalSpent])
 
   const handleCopyCode = (code, id) => {
     navigator.clipboard?.writeText(code)
@@ -186,7 +129,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
     const updated = savedIds.filter(item => item.id !== id)
     setSavedIds(updated)
     try {
-      localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(updated))
+      localStorage.setItem('saved_player_ids', JSON.stringify(updated))
     } catch (e) {
       console.error(e)
     }
@@ -207,7 +150,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
     const updated = [newEntry, ...savedIds]
     setSavedIds(updated)
     try {
-      localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(updated))
+      localStorage.setItem('saved_player_ids', JSON.stringify(updated))
     } catch (err) {
       console.error(err)
     }
@@ -247,7 +190,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
         </button>
 
         <span className="text-xs text-slate-400 font-mono">
-          Customer Portal  Sagarmatha Gaming
+          Customer Portal • Sagarmatha Gaming
         </span>
       </div>
 
@@ -296,9 +239,16 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
                     <Sparkles size={11} className="text-cyan-400" /> Guest Gamer
                   </span>
                 )}
-                <span className="text-[11px] font-bold bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                  <Sparkles size={11} className="text-cyan-400" /> VIP Gold Member
-                </span>
+                {/* Dynamic VIP Badge */}
+                {isVip ? (
+                  <span className="text-[11px] font-bold bg-amber-500/20 border border-amber-500/50 text-amber-300 px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-sm shadow-amber-500/10">
+                    <Sparkles size={11} className="text-amber-400" /> VIP Gold Member
+                  </span>
+                ) : (
+                  <span className="text-[11px] font-bold bg-slate-800/80 border border-slate-700 text-slate-300 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    Member
+                  </span>
+                )}
               </div>
               <p className="text-slate-400 text-xs sm:text-sm mt-1">
                 {currentUser?.email ? currentUser.email : 'gamer@sagarmatha.com'}
@@ -334,6 +284,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
           </div>
         </div>
       </div>
+
       {/* Tabs */}
       <div className="flex border-b border-slate-800 mb-6 gap-2 sm:gap-4">
         <button
@@ -369,20 +320,25 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
       {activeTab === 'orders' && (
         <div className="space-y-4">
           {orders.length === 0 ? (
-            <div className="p-12 text-center bg-[#0d1424] border border-slate-800 rounded-2xl">
-              <ShoppingBag size={48} className="mx-auto text-slate-600 mb-3" />
-              <h3 className="text-lg font-bold text-white mb-1">No Orders Yet</h3>
-              <p className="text-slate-400 text-xs sm:text-sm mb-4">Your digital vouchers and mobile top-ups will appear here.</p>
-              <button
-                type="button"
-                onClick={() => {
-                  window.location.hash = 'shop'
-                  if (onNavigateShop) onNavigateShop()
-                }}
-                className="px-5 py-2.5 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm hover:bg-cyan-300 transition-colors"
-              >
-                Browse Shop
-              </button>
+            <div className="p-10 sm:p-14 text-center bg-[#0d1424] border border-slate-800/80 rounded-2xl space-y-3">
+              <ShoppingBag size={48} className="mx-auto text-slate-600 mb-2" />
+              <h3 className="text-lg font-bold text-white">No orders yet</h3>
+              <p className="text-slate-400 text-xs sm:text-sm max-w-md mx-auto">
+                Your game top-ups, gift cards, and voucher codes will appear here after checkout.
+              </p>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.location.hash = 'shop'
+                    if (onNavigateShop) onNavigateShop()
+                    if (onClose) onClose()
+                  }}
+                  className="px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm transition-colors cursor-pointer border-0 shadow-lg shadow-cyan-500/20"
+                >
+                  Browse Games &amp; Top-ups
+                </button>
+              </div>
             </div>
           ) : (
             orders.map((order, idx) => (
@@ -394,7 +350,7 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
                   <div className="w-14 h-18 sm:w-16 sm:h-22 rounded-xl overflow-hidden border border-slate-800 bg-slate-900 shrink-0 shadow-md">
                     <img
                       src={order.image || DEFAULT_FALLBACK_COVER}
-                      alt={order.game}
+                      alt={order.game || order.item || 'Game'}
                       className="w-full h-full object-cover"
                       onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = DEFAULT_FALLBACK_COVER; }}
                     />
@@ -537,65 +493,84 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentU
           )}
 
           {/* Saved IDs Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {savedIds.map((item) => (
-              <div
-                key={item.id}
-                className="bg-[#0e1629] border border-slate-800 hover:border-slate-700 rounded-2xl p-5 flex flex-col justify-between transition-all"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-black uppercase text-cyan-400 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                      {item.game}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteSavedId(item.id)}
-                      className="text-slate-500 hover:text-rose-400 transition-colors cursor-pointer border-0 bg-transparent p-1"
-                      title="Remove Saved ID"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
-
-                  <h4 className="font-bold text-white text-base">{item.nickname || 'My ID'}</h4>
-
-                  <div className="mt-3 flex items-center justify-between bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800/80">
-                    <span className="font-mono text-sm text-cyan-300">{item.uid}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleCopyUid(item.uid, item.id)}
-                      className="text-slate-400 hover:text-white transition-colors cursor-pointer border-0 bg-transparent"
-                      title="Copy UID"
-                    >
-                      {copiedUid === item.id ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                    </button>
-                  </div>
-                  {item.server && (
-                    <span className="text-[11px] text-slate-400 block mt-1 font-mono">Region: {item.server}</span>
-                  )}
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-slate-800/80">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (onOpenTopUp) {
-                        onOpenTopUp({ name: item.game, category: 'Game Top-Up' })
-                      } else {
-                        window.location.hash = 'shop'
-                        if (onNavigateShop) onNavigateShop('Game Top-Up')
-                      }
-                    }}
-                    className="w-full py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    <Zap size={14} className="fill-cyan-400" />
-                    Fast Recharge Now
-                  </button>
-                </div>
+          {savedIds.length === 0 ? (
+            <div className="p-10 sm:p-14 text-center bg-[#0d1424] border border-slate-800/80 rounded-2xl space-y-3">
+              <Gamepad2 size={48} className="mx-auto text-slate-600 mb-2" />
+              <h3 className="text-lg font-bold text-white">No saved player IDs yet</h3>
+              <p className="text-slate-400 text-xs sm:text-sm max-w-md mx-auto">
+                No saved player IDs yet. Your game UIDs will be saved here for 1-click recharges.
+              </p>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddForm(true)}
+                  className="px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm transition-colors cursor-pointer border-0 shadow-lg shadow-cyan-500/20"
+                >
+                  Add Player ID
+                </button>
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {savedIds.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-[#0e1629] border border-slate-800 hover:border-slate-700 rounded-2xl p-5 flex flex-col justify-between transition-all"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-black uppercase text-cyan-400 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
+                        {item.game}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteSavedId(item.id)}
+                        className="text-slate-500 hover:text-rose-400 transition-colors cursor-pointer border-0 bg-transparent p-1"
+                        title="Remove Saved ID"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+
+                    <h4 className="font-bold text-white text-base">{item.nickname || 'My ID'}</h4>
+
+                    <div className="mt-3 flex items-center justify-between bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800/80">
+                      <span className="font-mono text-sm text-cyan-300">{item.uid}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopyUid(item.uid, item.id)}
+                        className="text-slate-400 hover:text-white transition-colors cursor-pointer border-0 bg-transparent"
+                        title="Copy UID"
+                      >
+                        {copiedUid === item.id ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                      </button>
+                    </div>
+                    {item.server && (
+                      <span className="text-[11px] text-slate-400 block mt-1 font-mono">Region: {item.server}</span>
+                    )}
+                  </div>
+
+                  <div className="mt-5 pt-3 border-t border-slate-800/80">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onOpenTopUp) {
+                          onOpenTopUp({ name: item.game, category: 'Game Top-Up' })
+                        } else {
+                          window.location.hash = 'shop'
+                          if (onNavigateShop) onNavigateShop('Game Top-Up')
+                        }
+                      }}
+                      className="w-full py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <Zap size={14} className="fill-cyan-400" />
+                      Fast Recharge Now
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

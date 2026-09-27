@@ -88,7 +88,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
 
   useEffect(() => {
     try {
-      const stored = localStorage.getItem('sagarmatha_saved_uids')
+      const stored = localStorage.getItem('saved_player_ids') || localStorage.getItem('sagarmatha_saved_uids')
       if (stored) {
         const parsed = JSON.parse(stored)
         if (Array.isArray(parsed)) {
@@ -128,11 +128,12 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
     }
 
     try {
-      const existing = JSON.parse(localStorage.getItem('sagarmatha_orders') || '[]')
+      const existing = JSON.parse(localStorage.getItem('gamer_orders') || localStorage.getItem('sagarmatha_orders') || '[]')
+      localStorage.setItem('gamer_orders', JSON.stringify([orderData, ...existing]))
       localStorage.setItem('sagarmatha_orders', JSON.stringify([orderData, ...existing]))
 
       if (saveThisUid && playerUid.trim()) {
-        const uids = JSON.parse(localStorage.getItem('sagarmatha_saved_uids') || '[]')
+        const uids = JSON.parse(localStorage.getItem('saved_player_ids') || localStorage.getItem('sagarmatha_saved_uids') || '[]')
         const alreadyExists = uids.some(u => u.uid === playerUid.trim())
         if (!alreadyExists) {
           const newSaved = [
@@ -145,6 +146,7 @@ export default function TopUpModal({ product, onClose, onConfirmRecharge, onOpen
             },
             ...uids
           ]
+          localStorage.setItem('saved_player_ids', JSON.stringify(newSaved))
           localStorage.setItem('sagarmatha_saved_uids', JSON.stringify(newSaved))
         }
       }
