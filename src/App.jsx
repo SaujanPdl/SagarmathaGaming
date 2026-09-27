@@ -38,6 +38,8 @@ import getCoverImage, { getCoverImage as namedGetCoverImage, DEFAULT_FALLBACK_CO
 import GiftCardModal from './components/GiftCardModal'
 import TopUpModal from './components/TopUpModal'
 import Profile from './components/Profile'
+import AuthModal, { DiscordIcon } from './components/AuthModal'
+import { handleDiscordCallback, getSavedUser, logoutUser } from './utils/discordAuth'
 import './App.css'
 
 class ErrorBoundary extends Component {
@@ -522,6 +524,35 @@ function HeroCarousel({ onNavigateShop, setCurrentPage }) {
 function App() {
   const [currentPage, setCurrentPage] = useState(getPageFromHash)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState(getSavedUser)
+  const [authModalOpen, setAuthModalOpen] = useState(false)
+
+  useEffect(() => {
+    const initDiscordAuth = async () => {
+      const callbackUser = await handleDiscordCallback()
+      if (callbackUser) {
+        setCurrentUser(callbackUser)
+        window.location.hash = 'profile'
+        setCurrentPage('profile')
+      } else {
+        const saved = getSavedUser()
+        if (saved) setCurrentUser(saved)
+      }
+    }
+    initDiscordAuth()
+  }, [])
+
+  useEffect(() => {
+    if (currentUser) {
+      if (!customerName) setCustomerName(currentUser.global_name || currentUser.username || '')
+      if (!email && currentUser.email) setEmail(currentUser.email)
+    }
+  }, [currentUser])
+
+  const handleUserLogout = () => {
+    logoutUser()
+    setCurrentUser(null)
+  }
   const [activeCategory, setActiveCategory] = useState('All products')
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState('date')
@@ -765,6 +796,50 @@ function App() {
                 </button>
               </div>
 
+              {/* Mobile Drawer Auth Bar */}
+              <div className="py-3 border-b border-slate-800/80">
+                {currentUser ? (
+                  <div className="flex items-center justify-between gap-3 bg-[#12192b] p-2.5 rounded-xl border border-cyan-500/30">
+                    <div 
+                      className="flex items-center gap-2.5 min-w-0 cursor-pointer"
+                      onClick={() => {
+                        window.location.hash = 'profile'
+                        setCurrentPage('profile')
+                        setMobileMenuOpen(false)
+                      }}
+                    >
+                      <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-cyan-400 shrink-0">
+                        <img src={currentUser.avatarUrl} alt="" className="w-full h-full object-cover" />
+                        <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full absolute top-0 right-0 border border-black" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-xs font-bold text-white block truncate">{currentUser.global_name || currentUser.username}</span>
+                        <span className="text-[10px] text-cyan-400 flex items-center gap-1"><DiscordIcon size={10} /> Discord Verified</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleUserLogout}
+                      className="text-[11px] text-rose-400 hover:text-rose-300 px-2 py-1 rounded bg-rose-500/10 border border-rose-500/20"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      setAuthModalOpen(true)
+                    }}
+                    className="w-full py-2.5 px-3 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer border-0 shadow-md shadow-[#5865F2]/20"
+                  >
+                    <DiscordIcon size={16} />
+                    <span>Sign In with Discord</span>
+                  </button>
+                )}
+              </div>
+
               <div className="py-4 space-y-1">
                 <span className="text-[10px] font-bold tracking-widest uppercase text-cyan-400/80 px-3">Navigation</span>
                 {navItems.map(({ label, page }) => (
@@ -934,23 +1009,45 @@ function App() {
             </span>
           </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              window.location.hash = 'profile'
-              setCurrentPage('profile')
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-            className={`hidden sm:flex w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#13192b] border items-center justify-center transition-all cursor-pointer ${
-              currentPage === 'profile'
-                ? 'border-cyan-400 text-cyan-400 bg-cyan-950/40 shadow-lg shadow-cyan-500/20'
-                : 'border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
-            }`}
-            aria-label="User Profile and Orders"
-            title="My Profile & Orders"
-          >
-            <CircleUserRound size={20} />
-          </button>
+          {currentUser ? (
+            <button
+              type="button"
+              onClick={() => {
+                window.location.hash = 'profile'
+                setCurrentPage('profile')
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+              className={`hidden sm:flex relative w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl overflow-hidden border-2 items-center justify-center transition-all cursor-pointer group hover:scale-105 ${
+                currentPage === 'profile'
+                  ? 'border-cyan-400 shadow-lg shadow-cyan-500/30 ring-2 ring-cyan-400/40'
+                  : 'border-cyan-500/50 hover:border-cyan-400'
+              }`}
+              aria-label={`Logged in as ${currentUser.global_name || currentUser.username}`}
+              title={`${currentUser.global_name || currentUser.username} (View Profile)`}
+            >
+              <img 
+                src={currentUser.avatarUrl} 
+                alt={currentUser.global_name || currentUser.username}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.onerror = null
+                  e.currentTarget.src = "https://cdn.discordapp.com/embed/avatars/0.png"
+                }}
+              />
+              <span className="w-3 h-3 bg-emerald-500 border-2 border-[#0b0f19] rounded-full absolute -top-0.5 -right-0.5" title="Online" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setAuthModalOpen(true)}
+              className="hidden sm:flex items-center gap-2 px-3.5 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-xs transition-all shadow-md shadow-[#5865F2]/25 cursor-pointer border-0"
+              aria-label="Sign in with Discord"
+              title="Sign in with Discord"
+            >
+              <DiscordIcon size={16} />
+              <span>Sign In</span>
+            </button>
+          )}
         </div>
       </header>
 
@@ -1013,6 +1110,9 @@ function App() {
       {/* Profile View */}
       {currentPage === 'profile' && (
         <Profile
+          currentUser={currentUser}
+          onLogout={handleUserLogout}
+          onOpenLogin={() => setAuthModalOpen(true)}
           onClose={() => {
             window.location.hash = 'home'
             setCurrentPage('home')
@@ -1519,8 +1619,15 @@ function App() {
             currentPage === 'profile' ? 'text-cyan-400 font-bold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]' : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <CircleUserRound size={19} className={currentPage === 'profile' ? 'stroke-[2.5]' : 'stroke-2'} />
-          <span className="text-[10px] mt-0.5 tracking-tight">Profile</span>
+          {currentUser ? (
+            <div className="relative w-5 h-5 rounded-full overflow-hidden border border-cyan-400">
+              <img src={currentUser.avatarUrl} alt="" className="w-full h-full object-cover" />
+              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full absolute top-0 right-0 border border-black" />
+            </div>
+          ) : (
+            <CircleUserRound size={19} className={currentPage === 'profile' ? 'stroke-[2.5]' : 'stroke-2'} />
+          )}
+          <span className="text-[10px] mt-0.5 tracking-tight">{currentUser ? 'Profile' : 'Sign In'}</span>
         </button>
       </nav>
 
@@ -1603,6 +1710,20 @@ function App() {
           }}
           onOpenProfile={() => {
             setTopUpModalProduct(null)
+            window.location.hash = 'profile'
+            setCurrentPage('profile')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+        />
+      )}
+
+      {/* Discord Authentication Modal */}
+      {authModalOpen && (
+        <AuthModal
+          onClose={() => setAuthModalOpen(false)}
+          onLoginSuccess={(user) => {
+            setCurrentUser(user)
+            setAuthModalOpen(false)
             window.location.hash = 'profile'
             setCurrentPage('profile')
             window.scrollTo({ top: 0, behavior: 'smooth' })

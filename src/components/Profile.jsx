@@ -18,6 +18,7 @@ import {
   ExternalLink
 } from 'lucide-react'
 import getCoverImage, { DEFAULT_FALLBACK_COVER } from '../utils/gameImages'
+import { DiscordIcon } from './AuthModal'
 
 const DEFAULT_ORDERS = [
   {
@@ -118,7 +119,7 @@ const DEFAULT_SAVED_IDS = [
   }
 ]
 
-export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
+export default function Profile({ onClose, onOpenTopUp, onNavigateShop, currentUser, onLogout, onOpenLogin }) {
   const [activeTab, setActiveTab] = useState('orders')
   const [orders, setOrders] = useState([])
   const [savedIds, setSavedIds] = useState([])
@@ -219,12 +220,12 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
 
   const handleLogout = () => {
     setIsLoggedOut(true)
+    if (onLogout) {
+      onLogout()
+    }
     setTimeout(() => {
-      if (onClose) onClose()
-      else {
-        window.location.hash = 'home'
-      }
-    }, 1200)
+      setIsLoggedOut(false)
+    }, 800)
   }
 
   return (
@@ -257,23 +258,52 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
         <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             {/* Avatar */}
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-cyan-500/20 via-blue-600/30 to-purple-600/20 border-2 border-cyan-400/60 p-1 flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/20">
-              <div className="w-full h-full rounded-xl bg-[#090d18] flex items-center justify-center text-cyan-300 font-black text-2xl sm:text-3xl">
-                SG
-              </div>
-              <span className="absolute -bottom-2 -right-1 bg-cyan-400 text-slate-950 p-1 rounded-lg shadow-md" title="Verified Customer">
-                <ShieldCheck size={14} className="stroke-[3]" />
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#5865F2]/40 via-cyan-500/30 to-purple-600/30 border-2 border-cyan-400/60 p-1 flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/20">
+              {currentUser?.avatarUrl ? (
+                <img 
+                  src={currentUser.avatarUrl} 
+                  alt={currentUser.global_name || currentUser.username} 
+                  className="w-full h-full rounded-xl object-cover bg-slate-900" 
+                  onError={(e) => {
+                    e.currentTarget.onerror = null
+                    e.currentTarget.src = "https://cdn.discordapp.com/embed/avatars/0.png"
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full rounded-xl bg-[#090d18] flex items-center justify-center text-cyan-300 font-black text-2xl sm:text-3xl">
+                  SG
+                </div>
+              )}
+              {currentUser && (
+                <span className="w-4 h-4 bg-emerald-500 border-2 border-[#0e1526] rounded-full absolute -top-1 -right-1" title="Online" />
+              )}
+              <span className="absolute -bottom-2 -right-1 bg-[#5865F2] text-white p-1 rounded-lg shadow-md" title={currentUser ? "Verified Discord Account" : "Verified Customer"}>
+                {currentUser ? <DiscordIcon size={14} /> : <ShieldCheck size={14} className="stroke-[3]" />}
               </span>
             </div>
 
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
-                <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Sagarmatha Gamer</h1>
+                <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                  {currentUser?.global_name || currentUser?.username || 'Sagarmatha Gamer'}
+                </h1>
+                {currentUser ? (
+                  <span className="text-[11px] font-bold bg-[#5865F2]/20 border border-[#5865F2]/50 text-indigo-300 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                    <DiscordIcon size={12} /> Discord Verified
+                  </span>
+                ) : (
+                  <span className="text-[11px] font-bold bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <Sparkles size={11} className="text-cyan-400" /> Guest Gamer
+                  </span>
+                )}
                 <span className="text-[11px] font-bold bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 px-2.5 py-0.5 rounded-full flex items-center gap-1">
                   <Sparkles size={11} className="text-cyan-400" /> VIP Gold Member
                 </span>
               </div>
-              <p className="text-slate-400 text-xs sm:text-sm mt-1">gamer@sagarmatha.com  +977 98XXXXXXXX</p>
+              <p className="text-slate-400 text-xs sm:text-sm mt-1">
+                {currentUser?.email ? currentUser.email : 'gamer@sagarmatha.com'}
+                {currentUser?.username && <span className="text-cyan-400 ml-2 font-mono">@{currentUser.username}</span>}
+              </p>
               <div className="flex items-center gap-4 mt-3 text-xs text-slate-300">
                 <span className="flex items-center gap-1.5"><ShoppingBag size={14} className="text-cyan-400" /> <b>{orders.length}</b> Orders &amp; Vouchers</span>
                 <span className="flex items-center gap-1.5"><Gamepad2 size={14} className="text-cyan-400" /> <b>{savedIds.length}</b> Saved Player UIDs</span>
@@ -282,18 +312,28 @@ export default function Profile({ onClose, onOpenTopUp, onNavigateShop }) {
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto">
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-rose-500/20 border border-slate-700/80 hover:border-rose-500/40 text-slate-300 hover:text-rose-400 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
-            >
-              <LogOut size={16} />
-              {isLoggedOut ? 'Logged Out' : 'Logout'}
-            </button>
+            {currentUser ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-rose-500/20 border border-slate-700/80 hover:border-rose-500/40 text-slate-300 hover:text-rose-400 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[44px]"
+              >
+                <LogOut size={16} />
+                {isLoggedOut ? 'Signing Out...' : 'Sign Out'}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onOpenLogin}
+                className="py-2.5 px-4 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#5865F2]/25 transition-all cursor-pointer border-0 min-h-[44px]"
+              >
+                <DiscordIcon size={16} />
+                Connect Discord
+              </button>
+            )}
           </div>
         </div>
       </div>
-
       {/* Tabs */}
       <div className="flex border-b border-slate-800 mb-6 gap-2 sm:gap-4">
         <button
